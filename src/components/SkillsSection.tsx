@@ -3,6 +3,7 @@ const skills = [
   "Responsive Web Design",
   "Front-End Fundamentals",
   "Basic JavaScript",
+  "Python",
   "UI/UX Principles",
   "Figma",
   "Wireframing & Prototyping",

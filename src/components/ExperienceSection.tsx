@@ -1,6 +1,7 @@
 interface ExperienceItem {
   role: string;
   company: string;
+  location: string;
   period: string;
   description: string;
 }
@@ -8,28 +9,32 @@ interface ExperienceItem {
 const experiences: ExperienceItem[] = [
   {
     role: "IT Intern – Front-End / Full Stack Development",
-    company: "Tech Company",
+    company: "Techverse Global",
+    location: "Cotonou",
     period: "Recent",
     description:
       "Gained hands-on experience building user interfaces and learning front-end and back-end fundamentals. Worked on real-world projects to strengthen development skills.",
   },
   {
     role: "SIWES Intern – Broadcast Engineering",
-    company: "Radio Station",
+    company: "Splash FM",
+    location: "Ibadan",
     period: "Industrial Training",
     description:
       "Assisted with technical operations including equipment handling, generator management, and transmitter changeovers during live broadcast sessions.",
   },
   {
     role: "IT Support / Studio Assistant",
-    company: "Radio Station",
+    company: "Fresh FM",
+    location: "Ado-Ekiti",
     period: "Support Role",
     description:
       "Supported studio workflows, managed adverts playback, and assisted with live broadcast operations and technical troubleshooting.",
   },
   {
     role: "Student Information Officer",
-    company: "University Admissions",
+    company: "St. Louis Africa University",
+    location: "Benin, Cotonou",
     period: "Administrative",
     description:
       "Managed admissions data, student records, and provided administrative support. Ensured accuracy and organization of critical student information.",
@@ -63,7 +68,7 @@ const ExperienceSection = () => {
                   {exp.role}
                 </h3>
                 <p className="text-highlight text-sm font-mono mb-2">
-                  @ {exp.company}
+                  @ {exp.company}, {exp.location}
                 </p>
                 <p className="text-foreground/70 text-sm leading-relaxed max-w-lg">
                   {exp.description}

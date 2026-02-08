@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
+import { useActiveSection } from "@/hooks/use-active-section";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -13,6 +15,7 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const activeSection = useActiveSection();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -37,20 +40,28 @@ const Navbar = () => {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a key={item.href} href={item.href} className="nav-link">
+              <a
+                key={item.href}
+                href={item.href}
+                className={`nav-link ${activeSection === item.href.slice(1) ? "active" : ""}`}
+              >
                 {item.label}
               </a>
             ))}
+            <ThemeToggle />
           </div>
 
           {/* Mobile toggle */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              className="text-foreground"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile nav */}
@@ -61,7 +72,7 @@ const Navbar = () => {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="nav-link text-base"
+                  className={`nav-link text-base ${activeSection === item.href.slice(1) ? "active" : ""}`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}

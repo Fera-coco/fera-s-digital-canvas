@@ -54,15 +54,60 @@
     --shadow-glow: 0 0 30px hsl(166 72% 50% / 0.15);
   }
 
-  .dark {
-    --background: 220 20% 7%;
-    --foreground: 210 20% 90%;
+  .light {
+    --background: 210 20% 98%;
+    --foreground: 220 20% 15%;
+
+    --card: 210 18% 96%;
+    --card-foreground: 220 20% 15%;
+
+    --popover: 210 18% 96%;
+    --popover-foreground: 220 20% 15%;
+
+    --primary: 166 72% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 220 16% 30%;
+
+    --muted: 210 14% 92%;
+    --muted-foreground: 215 14% 45%;
+
+    --accent: 166 72% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 14% 88%;
+    --input: 210 14% 88%;
+    --ring: 166 72% 40%;
+
+    --heading: 220 25% 12%;
+    --highlight: 166 72% 38%;
+    --surface: 210 16% 94%;
+    --surface-hover: 210 16% 90%;
+    --gradient-primary: linear-gradient(135deg, hsl(166 72% 38%), hsl(180 60% 32%));
+    --shadow-glow: 0 0 30px hsl(166 72% 40% / 0.1);
+
+    --sidebar-background: 210 18% 96%;
+    --sidebar-foreground: 220 20% 15%;
+    --sidebar-primary: 166 72% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 16% 93%;
+    --sidebar-accent-foreground: 220 16% 30%;
+    --sidebar-border: 210 14% 88%;
+    --sidebar-ring: 166 72% 40%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {

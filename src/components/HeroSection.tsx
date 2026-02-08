@@ -16,9 +16,10 @@ const HeroSection = () => {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 opacity-0 animate-fade-up"
             style={{ animationDelay: "0.2s" }}
           >
-            Segun-Babs Peace
+            Peace{" "}
+            <span className="text-gradient">Oluwaferanmi</span>
             <br />
-            <span className="text-gradient">Oluwaferanmi.</span>
+            Segun-Babs.
           </h1>
 
           <h2
