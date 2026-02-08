@@ -11,7 +11,6 @@ const ContactSection = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Placeholder submit
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
     setFormData({ name: "", email: "", message: "" });
@@ -92,21 +91,25 @@ const ContactSection = () => {
 
           <div className="flex items-center justify-center gap-6 mt-10">
             <a
-              href="#"
+              href="https://github.com/Fera-coco"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-muted-foreground hover:text-highlight transition-colors"
               aria-label="GitHub"
             >
               <Github size={20} />
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/in/peace-segun-babs-961bbb365"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-muted-foreground hover:text-highlight transition-colors"
               aria-label="LinkedIn"
             >
               <Linkedin size={20} />
             </a>
             <a
-              href="mailto:hello@fera.dev"
+              href="mailto:ferrababs@gmail.com"
               className="text-muted-foreground hover:text-highlight transition-colors"
               aria-label="Email"
             >

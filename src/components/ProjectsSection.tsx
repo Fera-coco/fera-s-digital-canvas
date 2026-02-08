@@ -3,7 +3,6 @@ import { ExternalLink, Github, Folder } from "lucide-react";
 interface Project {
   title: string;
   description: string;
-  details: string;
   tech: string[];
   github: string;
   live: string;
@@ -11,44 +10,36 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "Responsive Portfolio Website",
+    title: "Gamerzverse",
     description:
-      "A clean, mobile-first personal portfolio built with semantic HTML and modern CSS techniques.",
-    details:
-      "Implemented a fully responsive layout using CSS Grid and Flexbox. Focused on accessibility, performance, and a strong visual hierarchy across all screen sizes.",
+      "A gaming-themed front-end website focused on layout structure, styling, and responsive design.",
     tech: ["HTML", "CSS", "Responsive Design"],
-    github: "#",
-    live: "#",
+    github: "https://github.com/Fera-coco/LumenaXEstam300ComputerScience",
+    live: "https://gamerzverse.vercel.app/",
   },
   {
-    title: "Product Landing Page",
+    title: "SweetSips Landing Page",
     description:
-      "A modern landing page designed for a fictional product with clear CTAs and engaging sections.",
-    details:
-      "Used CSS custom properties for consistent theming and media queries for responsive breakpoints. Emphasized clean typography and whitespace for readability.",
-    tech: ["HTML", "CSS", "Figma"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Interactive Dashboard UI",
-    description:
-      "A dashboard interface mockup with cards, charts placeholder, and responsive sidebar navigation.",
-    details:
-      "Built with a mobile-first approach using Flexbox for the sidebar layout and Grid for the card system. Added hover states and subtle transitions for interactivity.",
-    tech: ["HTML", "CSS", "JavaScript"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Survey Form Application",
-    description:
-      "An accessible survey form with validation styling and clean input designs.",
-    details:
-      "Focused on form UX best practices including proper label associations, focus states, and clear error/success indicators. Fully responsive across devices.",
+      "A responsive landing page for a fictional beverage brand, emphasizing visual hierarchy, branding, and clean UI layout.",
     tech: ["HTML", "CSS", "UI/UX"],
-    github: "#",
-    live: "#",
+    github: "https://github.com/Fera-coco/sweetsips-landing-page-project",
+    live: "https://sweetsips-landing-page-project.vercel.app/",
+  },
+  {
+    title: "UBA Clone",
+    description:
+      "A front-end clone of a banking interface demonstrating form structure, layout accuracy, and professional UI patterns.",
+    tech: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/Fera-coco/UbaClone",
+    live: "https://uba-clone-iota.vercel.app/",
+  },
+  {
+    title: "Read Smartly",
+    description:
+      "A learning-focused front-end application showcasing structured layouts and content presentation.",
+    tech: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/Fera-coco/read-smartly",
+    live: "https://read-smartly.vercel.app/",
   },
 ];
 
@@ -71,6 +62,8 @@ const ProjectsSection = () => {
                 <div className="flex gap-3">
                   <a
                     href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-highlight transition-colors"
                     aria-label="GitHub"
                   >
@@ -78,6 +71,8 @@ const ProjectsSection = () => {
                   </a>
                   <a
                     href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-highlight transition-colors"
                     aria-label="Live preview"
                   >
@@ -89,14 +84,11 @@ const ProjectsSection = () => {
               <h3 className="text-lg font-semibold text-heading mb-2">
                 {project.title}
               </h3>
-              <p className="text-foreground/70 text-sm mb-3 leading-relaxed">
+              <p className="text-foreground/70 text-sm mb-4 leading-relaxed">
                 {project.description}
               </p>
-              <p className="text-muted-foreground text-xs mb-4 leading-relaxed">
-                {project.details}
-              </p>
 
-              <div className="flex flex-wrap gap-2 mt-auto">
+              <div className="flex flex-wrap gap-2 mt-auto pt-2 border-t border-border">
                 {project.tech.map((t) => (
                   <span
                     key={t}
@@ -105,6 +97,27 @@ const ProjectsSection = () => {
                     {t}
                   </span>
                 ))}
+              </div>
+
+              <div className="flex gap-3 mt-4">
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-highlight bg-transparent px-3 py-1.5 font-mono text-xs text-highlight transition-all duration-200 hover:bg-highlight/10"
+                >
+                  <ExternalLink size={12} />
+                  Live Demo
+                </a>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-transparent px-3 py-1.5 font-mono text-xs text-muted-foreground transition-all duration-200 hover:text-highlight hover:border-highlight/30"
+                >
+                  <Github size={12} />
+                  GitHub
+                </a>
               </div>
             </div>
           ))}
