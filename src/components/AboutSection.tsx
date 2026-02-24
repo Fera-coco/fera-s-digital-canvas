@@ -7,8 +7,20 @@ const AboutSection = () => {
         <p className="section-label">01. About</p>
         <h2 className="section-title">About Me</h2>
 
-        <div className="grid md:grid-cols-3 gap-10">
-          <div className="md:col-span-2 space-y-4 text-foreground/80 leading-relaxed">
+        <div className="relative min-h-[400px] md:min-h-[450px]">
+          {/* Full-height background image on the right */}
+          <div className="absolute right-0 top-0 bottom-0 w-full md:w-[55%] rounded-lg overflow-hidden">
+            <img
+              src={profilePhoto}
+              alt="Peace Oluwaferanmi Segun-Babs"
+              className="w-full h-full object-cover object-top"
+            />
+            {/* Blur overlay on the left side where text overlaps */}
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent md:via-background/60" />
+          </div>
+
+          {/* Text content overlapping the image */}
+          <div className="relative z-10 md:w-[65%] space-y-4 text-foreground/80 leading-relaxed py-6">
             <p>
               Hello! I'm <span className="text-highlight font-medium">Fera</span>, a front-end developer
               passionate about creating clean, responsive, and user-friendly web interfaces.
@@ -25,15 +37,6 @@ const AboutSection = () => {
               layouts to understanding how great user experiences are crafted. I focus on writing
               clean, maintainable code and staying up-to-date with modern front-end practices.
             </p>
-          </div>
-
-          <div className="flex items-start justify-center md:justify-end">
-            <div className="relative group">
-              <div className="w-64 h-72 md:w-72 md:h-80 rounded-lg border-2 border-highlight/30 overflow-hidden bg-surface transition-all duration-300 group-hover:border-highlight/60">
-                <img src={profilePhoto} alt="Peace Oluwaferanmi Segun-Babs" className="w-full h-full object-cover object-top" />
-              </div>
-              <div className="absolute -inset-1 rounded-lg border border-highlight/20 -z-10 translate-x-3 translate-y-3 transition-transform duration-300 group-hover:translate-x-2 group-hover:translate-y-2" />
-            </div>
           </div>
         </div>
       </div>
