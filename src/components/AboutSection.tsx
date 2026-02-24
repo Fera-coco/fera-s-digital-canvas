@@ -9,14 +9,15 @@ const AboutSection = () => {
 
         <div className="relative min-h-[400px]">
           {/* Full-height background image on the right */}
-          <div className="absolute right-0 top-0 bottom-0 w-[55%] rounded-lg overflow-hidden">
+          {/* <div className="absolute right-0 top-0 bottom-[10] w-[45%] rounded-lg overflow-hidden"> */}
+          <div className="absolute left-[50%] right-[0%] top-[-20%] bottom-[-30%] w-[50%] rounded-lg overflow-hidden">
             <img
               src={profilePhoto}
               alt="Peace Oluwaferanmi Segun-Babs"
               className="w-full h-full object-cover object-top"
             />
             {/* Blur overlay on the left side where text overlaps */}
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/20 to-transparent" />
           </div>
 
           {/* Text content overlapping the image */}
