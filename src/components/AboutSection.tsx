@@ -29,8 +29,8 @@ const AboutSection = () => {
 
           <div className="flex items-start justify-center md:justify-end">
             <div className="relative group">
-              <div className="w-48 h-48 md:w-56 md:h-56 rounded-lg border-2 border-highlight/30 overflow-hidden bg-surface transition-all duration-300 group-hover:border-highlight/60">
-                <img src={profilePhoto} alt="Peace Oluwaferanmi Segun-Babs" className="w-full h-full object-cover" />
+              <div className="w-64 h-72 md:w-72 md:h-80 rounded-lg border-2 border-highlight/30 overflow-hidden bg-surface transition-all duration-300 group-hover:border-highlight/60">
+                <img src={profilePhoto} alt="Peace Oluwaferanmi Segun-Babs" className="w-full h-full object-cover object-top" />
               </div>
               <div className="absolute -inset-1 rounded-lg border border-highlight/20 -z-10 translate-x-3 translate-y-3 transition-transform duration-300 group-hover:translate-x-2 group-hover:translate-y-2" />
             </div>
