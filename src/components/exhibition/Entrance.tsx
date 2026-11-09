@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
-import { exhibits, toneStyles } from "@/content/exhibits";
+import { exhibits, getExhibit, toneStyles, type Shot } from "@/content/exhibits";
 import { cn } from "@/lib/utils";
 
-const [rs, ss, gz] = exhibits;
+const rs = getExhibit("readsmartly")!;
+const gz = getExhibit("gamerzverse")!;
+const wg = getExhibit("we-go")!;
+const wgPhone: Shot = { src: "/exhibits/wego-intro.webp", alt: "", caption: "", width: 390, height: 847, device: "mobile" };
 
 /* Three works hung on the entrance wall, each with a pinned wall label. */
 const hung = [
   { ex: rs, shot: rs.cover, cls: "left-0 top-4 w-[84%]", tilt: "-1.5deg", delay: 250 },
   { ex: gz, shot: gz.cover, cls: "right-0 top-[47%] w-[60%]", tilt: "2deg", delay: 450 },
-  { ex: ss, shot: ss.secondary!, cls: "left-[3%] top-[58%] w-[25%]", tilt: "-3deg", delay: 650 },
+  { ex: wg, shot: wgPhone, cls: "left-[3%] top-[58%] w-[25%]", tilt: "-3deg", delay: 650 },
 ];
 
 const Entrance = () => (

@@ -78,7 +78,6 @@ export const exhibits: Exhibit[] = [
     stack: ["HTML", "CSS", "JavaScript", "Bootstrap 5", "Firebase Auth", "Cloud Firestore", "Chart.js", "Service worker (PWA)", "Vercel"],
     links: [
       { label: "Visit the live app", href: "https://readsmartly.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/readsmartly" },
     ],
     cover: desk(
       "readsmartly-landing",
@@ -149,8 +148,106 @@ export const exhibits: Exhibit[] = [
     ],
   },
   {
-    slug: "sweetsips",
+    slug: "we-go",
     no: "02",
+    title: "WE-GO",
+    medium: "UX/UI design · Mobile app",
+    year: "2026",
+    statuses: ["In progress", "Academic"],
+    tone: "butter",
+    summary:
+      "A mobile app for finding company when your usual people can't make it. Pick a plan, see who else is going and ask someone to go with you.",
+    intro:
+      "WE-GO is my UX/UI design capstone: a mobile app that helps people find company for plans and outings when their usual people are unavailable. Its idea is plans first, people second. I designed the product end to end, from onboarding and discovery to requests, chat and hosting a plan, across 30 screens.",
+    role: ["UX research & flows", "UI design", "Prototyping in Figma"],
+    stack: ["Figma"],
+    links: [],
+    cover: {
+      src: "/exhibits/wego-cover.webp",
+      alt: "Four WE-GO phone screens: the purple splash screen, the 'Plans? Better together.' intro, the 'Who's going' list and a chat with Tomi",
+      caption: "Splash, intro, who's going and chat. A bright, friendly system built around plans, not profiles.",
+      width: 1440,
+      height: 900,
+      device: "desktop",
+    },
+    sections: [
+      {
+        kicker: "The problem",
+        title: "The plan is good. Your people just can't come.",
+        body: [
+          "Most plans fall through for one simple reason: the friends you'd usually go with are busy. WE-GO starts from the plan instead of the person. You find a beach hangout, a film or a brunch, see who else is going, and ask one of them to go with you.",
+        ],
+      },
+      {
+        kicker: "First visit",
+        title: "An entrance that sets the tone",
+        body: [
+          "The onboarding is short and warm: a promise ('Plans? Better together.'), sign-up with Apple, Google or email, then a simple profile so others know who they're meeting.",
+        ],
+        shots: [
+          phone("wego-intro", "WE-GO intro screen: 'Plans? Better together.' with photos of friends and stickers reading Movie tonight, Coffee and Beach day", "Intro"),
+          phone("wego-signup", "WE-GO sign-up screen: 'Let's get you in.' with Apple, Google and email options", "Sign up"),
+          phone("wego-create-profile", "WE-GO create-profile screen with a photo, name and short bio", "Create your profile"),
+        ],
+      },
+      {
+        kicker: "Finding company",
+        title: "From a plan to a person in four taps",
+        body: [
+          "Home shows what's happening tonight and this weekend nearby. Open a plan, see who's going and who's interested, check what you have in common, then send a request with a short note.",
+        ],
+        shots: [
+          phone("wego-home", "WE-GO home screen: 'Hey Fera, what's the plan?' with category chips and plans near Calavi, Cotonou", "Home. Photo placeholders mark where imagery goes."),
+          phone("wego-whos-going", "WE-GO 'Who's going' list showing people going and interested, with shared interests", "Who's going"),
+          phone("wego-profile-tomi", "WE-GO participant profile for Tomi, with shared interests and the plan they're going to", "A participant's profile"),
+          phone("wego-send-request", "WE-GO send-request sheet with an optional note and quick-note suggestions", "Send a request"),
+        ],
+      },
+      {
+        kicker: "Design decisions",
+        title: "Designed for meeting strangers safely",
+        points: [
+          {
+            title: "Both people choose",
+            text: "A chat only opens when the other person accepts. Declining is private, so saying no never feels awkward.",
+          },
+          {
+            title: "Public places only",
+            text: "Hosts pick a public meeting place that everyone can see, and the app reminds you to let a friend know where you're going. Profiles and chats have report and block options.",
+          },
+          {
+            title: "Common ground up front",
+            text: "Every person in a plan shows 'You both like...', so choosing who to ask is based on shared interests, not just a photo.",
+          },
+          {
+            title: "Company size is a real choice",
+            text: "One person, a small group or a bigger group: hosts set it, and visitors can filter by it alongside date, distance, category and cost in CFA.",
+          },
+        ],
+        shots: [
+          phone("wego-requests", "WE-GO requests screen with Accept and Decline, noting that declining is private", "Requests: declining is private"),
+          phone("wego-going-together", "WE-GO 'You're going together!' confirmation with a safety reminder to meet at the plan's public spot", "Matched, with a safety reminder"),
+          phone("wego-chat", "WE-GO chat with Tomi, with quick replies: On my way, I'm here, Running late", "Chat with quick replies for the day"),
+        ],
+      },
+      {
+        kicker: "Hosting",
+        title: "Create a plan in three steps",
+        body: [
+          "Hosts describe the plan, set when and where, then choose who they're looking for: group size, spots to fill and whether to approve people before they join. A preview shows exactly how others will see it before it goes live.",
+        ],
+        shots: [
+          phone("wego-create-1", "WE-GO create plan step 1: title, category and description", "Step 1: basics"),
+          phone("wego-create-2", "WE-GO create plan step 2: date, time, public meeting place and cost", "Step 2: when and where"),
+          phone("wego-create-3", "WE-GO create plan step 3: group size, spots, who can join and approval toggle", "Step 3: company"),
+          phone("wego-my-plans", "WE-GO My plans screen listing a plan the user is going to and one they're hosting", "My plans"),
+        ],
+      },
+    ],
+  },
+  {
+    slug: "sweetsips",
+    no: "03",
     title: "SweetSips",
     medium: "Brand website & ordering experience",
     year: "2025",
@@ -164,7 +261,6 @@ export const exhibits: Exhibit[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://sweetsips-landing-page-project.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/sweetsips-landing-page-project" },
     ],
     cover: desk(
       "sweetsips-hero",
@@ -197,7 +293,7 @@ export const exhibits: Exhibit[] = [
   },
   {
     slug: "gamerzverse",
-    no: "03",
+    no: "04",
     title: "GamerzVerse",
     medium: "Web platform, front-end development",
     year: "2025",
@@ -211,7 +307,6 @@ export const exhibits: Exhibit[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Supabase", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://gamerzverse.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/LumenaXEstam300ComputerScience" },
     ],
     cover: desk(
       "gamerzverse-hero",
@@ -240,25 +335,65 @@ export const exhibits: Exhibit[] = [
       },
     ],
   },
+  {
+    slug: "gracelink-empire",
+    no: "05",
+    title: "Gracelink Empire",
+    medium: "E-commerce website, design & development",
+    year: "2026",
+    statuses: ["In progress", "Client project"],
+    tone: "blush",
+    summary:
+      "An online store for a Nigerian hair business selling human hair, extensions and ponytails, with guest checkout, order tracking and bank-transfer payments.",
+    intro:
+      "Gracelink Empire is an e-commerce website I'm designing and building for a Nigerian hair business. It's in active development: the storefront, checkout and the owner's tools are working in a demo while the business's real products and details are connected.",
+    role: ["Web design", "Front-end & back-end development", "Client project"],
+    stack: ["Next.js (App Router)", "TypeScript", "Tailwind CSS", "Supabase", "Vercel"],
+    links: [],
+    cover: {
+      src: "/exhibits/gracelink-hero.webp",
+      alt: "Gracelink Empire homepage: two illustrated hair textures labelled Curls and Sleek, with Shop Human Hair and Shop Ponytails buttons",
+      caption: "Homepage. Two illustrated textures, Curls and Sleek, lead straight into the main categories.",
+      width: 1520,
+      height: 730,
+      device: "desktop",
+    },
+    sections: [
+      {
+        kicker: "The brief",
+        title: "A real shop, without payment-gateway fees",
+        body: [
+          "The business sells in Naira and wanted to avoid the fees that come with payment gateways. So customers pay by bank transfer and the owner confirms each payment, instead of routing money through a provider. The work is making that flow feel simple for customers and manageable for the owner.",
+        ],
+      },
+      {
+        kicker: "Design decisions",
+        title: "Built around how the business actually runs",
+        points: [
+          {
+            title: "Delivery priced by area",
+            text: "Delivery fees come from dispatch riders' area price lists, so most customers see their fee at checkout. For areas not on the list, the owner quotes a fee after the order and follows up on WhatsApp.",
+          },
+          {
+            title: "Stock that stays honest",
+            text: "Items stay on sale until the owner confirms payment. Confirming checks and deducts stock, and refuses if an item has sold out. Unpaid orders cancel automatically after a deadline.",
+          },
+          {
+            title: "No account needed",
+            text: "Customers can check out as guests and track every order from a dedicated page.",
+          },
+          {
+            title: "Tools for the owner",
+            text: "An admin area for confirming payments, setting delivery fees and keeping on top of orders that need attention.",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 /* Works in the studio: real, ongoing, not yet ready to hang. */
-export const inStudio = [
-  {
-    title: "WE-GO",
-    medium: "UX/UI capstone · Mobile app",
-    status: "In progress · Academic",
-    tone: "butter" as Tone,
-    text: "An app that helps people find company for activities when their usual people are unavailable. Plans first, people second.",
-  },
-  {
-    title: "Gracelink Empire",
-    medium: "E-commerce website · Client work",
-    status: "In development · Client project",
-    tone: "blush" as Tone,
-    text: "An online store for a Nigerian hair business, with a product catalogue, area-based delivery pricing and bank-transfer checkout.",
-  },
-];
+export const inStudio: { title: string; medium: string; status: string; tone: Tone; text: string }[] = [];
 
 export const toneStyles: Record<Tone, { bg: string; soft: string; ink: string; hex: string }> = {
   lavender: { bg: "bg-lavender", soft: "bg-lavender-soft", ink: "text-lavender-ink", hex: "#C5B8F1" },
