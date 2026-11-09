@@ -1,30 +1,31 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/hooks/use-theme";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import Header from "@/components/exhibition/Header";
+import { useReveal, useScrollManager } from "@/hooks/use-exhibition";
 import Index from "./pages/Index";
+import CaseStudy from "./pages/CaseStudy";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const Layout = () => {
+  useScrollManager();
+  useReveal();
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
+};
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Index />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );
 
 export default App;
