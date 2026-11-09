@@ -49,6 +49,7 @@
     @apply bg-cream text-ink font-sans antialiased;
     font-feature-settings: "ss01";
     text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ::selection {
