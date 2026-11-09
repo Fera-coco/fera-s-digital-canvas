@@ -31,8 +31,17 @@ const provenance = [
     where: "St. Louis Africa University · Handling student enquiries, admissions data and student records",
     when: "Role",
   },
+  {
+    what: "IT Support / Studio Assistant",
+    where: "Fresh FM, Ado-Ekiti · Studio workflows, adverts playback, live broadcast support and troubleshooting",
+    when: "Role",
+  },
+  {
+    what: "SIWES Intern, Broadcast Engineering",
+    where: "Splash FM, Ibadan · Equipment handling, power management and transmitter changeovers during live broadcasts",
+    when: "Industrial training",
+  },
   { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
-  { what: "Earlier roles", where: "Broadcast engineering at Splash FM and Fresh FM", when: "Before tech" },
 ];
 
 const materials = ["Figma", "HTML & CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Firebase", "Git & GitHub", "Vercel"];
