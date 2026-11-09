@@ -23,7 +23,7 @@ const approach = [
 ];
 
 const provenance = [
-  { what: "B.Sc. Computer Science", where: "ESTAM University", when: "Final year" },
+  { what: "B.Sc. Computer Science", where: "ESTAM University", when: "Completed" },
   { what: "UX/UI design bootcamp", where: "Research, sitemaps, task flows, wireframes, capstone", when: "Coursework" },
   { what: "IT Intern, front-end & full-stack development", where: "Techverse Global, Cotonou", when: "Internship" },
   { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
@@ -74,7 +74,7 @@ const Curator = () => (
           <div className="mt-10 grid gap-6 text-[1.05rem] leading-relaxed text-ink/85 md:grid-cols-2" data-reveal>
             <p>
               I'm Peace Oluwaferanmi Segun-Babs, and most people call me Fera. I'm a UX/UI designer and front-end
-              developer in the final year of a B.Sc. in Computer Science, after first training in Electrical
+              developer with a B.Sc. in Computer Science from ESTAM University, after first training in Electrical
               Engineering.
             </p>
             <p>

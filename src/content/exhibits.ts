@@ -78,7 +78,7 @@ export const exhibits: Exhibit[] = [
     summary:
       "An AI-assisted study companion that tracks reading, plans the semester around exam dates and quizzes students on their own notes.",
     intro:
-      "ReadSmartly is my final-year Computer Science thesis project: a progressive web app that helps university students build a reading habit and arrive at exams prepared. I designed and built it end to end, from the landing page and onboarding to the dashboard, timers and AI features.",
+      "ReadSmartly was my final-year Computer Science thesis project: a progressive web app that helps university students build a reading habit and arrive at exams prepared. I designed and built it end to end, from the landing page and onboarding to the dashboard, timers and AI features.",
     role: ["Product & UX/UI design", "Front-end development", "Firebase integration", "Thesis research & write-up"],
     stack: ["HTML", "CSS", "JavaScript", "Bootstrap 5", "Firebase Auth", "Cloud Firestore", "Chart.js", "Service worker (PWA)", "Vercel"],
     links: [
