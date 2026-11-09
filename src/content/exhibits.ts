@@ -78,7 +78,6 @@ export const exhibits: Exhibit[] = [
     stack: ["HTML", "CSS", "JavaScript", "Bootstrap 5", "Firebase Auth", "Cloud Firestore", "Chart.js", "Service worker (PWA)", "Vercel"],
     links: [
       { label: "Visit the live app", href: "https://readsmartly.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/readsmartly" },
     ],
     cover: desk(
       "readsmartly-landing",
@@ -164,7 +163,6 @@ export const exhibits: Exhibit[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://sweetsips-landing-page-project.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/sweetsips-landing-page-project" },
     ],
     cover: desk(
       "sweetsips-hero",
@@ -211,7 +209,6 @@ export const exhibits: Exhibit[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Supabase", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://gamerzverse.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/LumenaXEstam300ComputerScience" },
     ],
     cover: desk(
       "gamerzverse-hero",
