@@ -41,9 +41,15 @@ const CaseStudy = () => {
                 <div className="lg:col-span-8">
                   <p className="label flex items-center gap-3 text-stone rise">
                     <span className={cn("inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-ink", tone.bg)}>{ex.no}</span>
-                    Exhibit {ex.no} · {ex.year}
+                    Exhibit {ex.no}
+                    {ex.year ? ` · ${ex.year}` : ""}
                   </p>
-                  <h1 id="exhibit-title" className="display rise mt-6 text-[clamp(3.6rem,12vw,10rem)]" style={{ "--delay": "80ms" } as React.CSSProperties}>
+                  <h1
+                    id="exhibit-title"
+                    className={cn(
+                      "display rise mt-6",
+                      ex.title.length > 18 ? "text-[clamp(3rem,7vw,6.5rem)]" : "text-[clamp(3.6rem,12vw,10rem)]",
+                    )} style={{ "--delay": "80ms" } as React.CSSProperties}>
                     {ex.title}
                   </h1>
                   <p className={cn("label rise mt-4", tone.ink)} style={{ "--delay": "160ms" } as React.CSSProperties}>
@@ -82,6 +88,12 @@ const CaseStudy = () => {
               <div>
                 <dt className="label text-stone">Status</dt>
                 <dd className="mt-2 space-y-1">
+                  {ex.badge && (
+                    <span className={cn("mb-2 inline-flex items-baseline gap-2 rounded-full px-3 py-1", tone.bg)}>
+                      <span className="font-serif text-lg leading-none">{ex.badge.value}</span>
+                      <span className="text-xs">{ex.badge.label}</span>
+                    </span>
+                  )}
                   {ex.statuses.map((s) => (
                     <span key={s} className="block">
                       {s}
@@ -89,6 +101,12 @@ const CaseStudy = () => {
                   ))}
                 </dd>
               </div>
+              {ex.meta?.map((m) => (
+                <div key={m.label}>
+                  <dt className="label text-stone">{m.label}</dt>
+                  <dd className="mt-2 text-[0.95rem] leading-relaxed">{m.value}</dd>
+                </div>
+              ))}
               <div>
                 <dt className="label text-stone">My role</dt>
                 <dd className="mt-2 space-y-1">
@@ -103,10 +121,11 @@ const CaseStudy = () => {
                 <dt className="label text-stone">Made with</dt>
                 <dd className="mt-2 text-[0.95rem] leading-relaxed">{ex.stack.join(", ")}</dd>
               </div>
+              {(ex.links.length > 0 || ex.linkNote) && (
               <div className="col-span-2 md:col-span-1">
                 <dt className="label text-stone">{ex.links.length ? "See it for yourself" : "Launch"}</dt>
                 <dd className="mt-2 space-y-2">
-                  {ex.links.length === 0 && <span className="block text-[0.95rem] leading-relaxed">Not public yet. The live site will be linked here at launch.</span>}
+                  {ex.linkNote && <span className="block text-[0.95rem] leading-relaxed">{ex.linkNote}</span>}
                   {ex.links.map((l) => (
                     <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 font-medium">
                       <span className="link-underline">{l.label}</span>
@@ -116,6 +135,8 @@ const CaseStudy = () => {
                   ))}
                 </dd>
               </div>
+              )}
+
             </dl>
           </section>
 
@@ -137,6 +158,27 @@ const CaseStudy = () => {
                       {p}
                     </p>
                   ))}
+                  {s.steps && (
+                    <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-1" aria-label="User flow steps">
+                      {s.steps.map((step, k) => (
+                        <li key={step} className="flex items-center gap-4">
+                          <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs", k === 0 || k === s.steps!.length - 1 ? "bg-ink text-cream" : tone.soft)}>
+                            {String(k + 1).padStart(2, "0")}
+                          </span>
+                          <span className="text-[1.02rem]">{step}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                  {s.stat && (
+                    <div className={cn("mt-10 flex flex-col gap-6 rounded-sm p-8 sm:flex-row sm:items-center sm:gap-10 md:p-10", tone.soft)}>
+                      <div className="shrink-0">
+                        <p className="display text-[clamp(4rem,9vw,6.5rem)]">{s.stat.value}</p>
+                        <p className={cn("label mt-2", tone.ink)}>{s.stat.label}</p>
+                      </div>
+                      <p className="max-w-md text-[1.05rem] leading-relaxed text-ink/85">{s.stat.text}</p>
+                    </div>
+                  )}
                   {s.points && (
                     <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
                       {s.points.map((pt) => (
@@ -188,7 +230,12 @@ const CaseStudy = () => {
             <Link to={`/work/${next.slug}`} viewTransition className="group grid grid-cols-1 items-end gap-6 border-t border-ink/15 pt-8 md:grid-cols-12">
               <div className="md:col-span-8">
                 <p className="label text-stone">Next in the collection · Exhibit {next.no}</p>
-                <p className="display mt-4 text-[clamp(3rem,9vw,7.5rem)] transition-transform duration-500 ease-gallery group-hover:translate-x-2">
+                <p
+                  className={cn(
+                    "display mt-4 transition-transform duration-500 ease-gallery group-hover:translate-x-2",
+                    next.title.length > 18 ? "text-[clamp(2.6rem,6vw,5rem)]" : "text-[clamp(3rem,9vw,7.5rem)]",
+                  )}
+                >
                   {next.title} <span aria-hidden className="font-sans text-[0.5em]">→</span>
                 </p>
               </div>

@@ -5,7 +5,7 @@
   Screenshots in /public/exhibits were captured from each project's real build.
 */
 
-export type Tone = "lavender" | "coral" | "mint" | "butter" | "blush";
+export type Tone = "lavender" | "coral" | "mint" | "butter" | "blush" | "peach";
 
 export type Status = "Completed" | "Concept" | "In progress" | "Client project" | "Academic" | "Team project";
 
@@ -24,6 +24,8 @@ export interface Section {
   body?: string[];
   points?: { title: string; text: string }[];
   shots?: Shot[];
+  steps?: string[];
+  stat?: { value: string; label: string; text: string };
 }
 
 export interface Exhibit {
@@ -31,7 +33,9 @@ export interface Exhibit {
   no: string;
   title: string;
   medium: string; // category, written like a gallery "medium" line
-  year: string;
+  year?: string;
+  badge?: { value: string; label: string };
+  meta?: { label: string; value: string }[];
   statuses: Status[];
   tone: Tone;
   summary: string; // one line for the collection wall
@@ -39,6 +43,7 @@ export interface Exhibit {
   role: string[];
   stack: string[];
   links: { label: string; href: string }[];
+  linkNote?: string;
   cover: Shot;
   secondary?: Shot;
   sections: Section[];
@@ -246,8 +251,213 @@ export const exhibits: Exhibit[] = [
     ],
   },
   {
-    slug: "sweetsips",
+    slug: "temu-product-comparison",
     no: "03",
+    title: "A Better Way to Compare Before Buying",
+    medium: "UX/UI design · Product design · Feature improvement",
+    statuses: ["Concept", "Academic"],
+    tone: "peach",
+    badge: { value: "100/100", label: "Capstone score" },
+    meta: [
+      { label: "Product context", value: "Temu mobile shopping (proposed concept, not a live feature)" },
+      { label: "Product explored", value: "Samsung Galaxy Buds" },
+      { label: "Duration", value: "2 weeks" },
+    ],
+    summary:
+      "A proposed comparison feature for Temu that lets shoppers put similar products side by side instead of jumping between listings. Explored through Samsung Galaxy Buds.",
+    intro:
+      "This capstone explores one small but real moment in online shopping: choosing between several similar products. Instead of redesigning Temu, I proposed a comparison feature that fits into the existing journey, then worked it through research, a user flow and low-fidelity wireframes.",
+    role: ["User research", "User flow", "Low-fidelity wireframes"],
+    stack: ["Figma", "Tally (survey)"],
+    links: [],
+    cover: {
+      src: "/exhibits/temu-cover.webp",
+      alt: "Four low-fidelity wireframes: search results, a comparison list, a side-by-side comparison table and a choose-your-product screen",
+      caption: "Low-fidelity wireframes: search, comparison list, side-by-side compare and choose.",
+      width: 1440,
+      height: 900,
+      device: "desktop",
+    },
+    sections: [
+      {
+        kicker: "The background",
+        title: "More choice doesn't always make choosing easier",
+        body: [
+          "A shopper looking for Samsung Galaxy Buds on Temu finds several similar listings. To understand each one's price, ratings and specifications, they have to open them one by one and remember what they saw on the last page.",
+          "That back and forth adds effort right at the moment of decision. The project focuses on improving just this part of the shopping experience.",
+        ],
+      },
+      {
+        kicker: "Understanding the problem",
+        title: "Asking shoppers how they compare today",
+        body: [
+          "I ran a short online survey with four Temu users about how they shop, what gets in the way and what they'd like to see improved. The research objective was to understand what stops people from choosing confidently between similar products.",
+        ],
+        points: [
+          { title: "3 of 4", text: "use Temu mainly for deals and discounts." },
+          { title: "2 of 4", text: "reported difficulty comparing product options." },
+          { title: "2 of 4", text: "rated the current comparison experience as dissatisfying." },
+          {
+            title: "Issues they raised",
+            text: "Comparing specifications and prices across products, cluttered navigation, trusting reviews and judging quality, and concerns around checkout, delivery and returns.",
+          },
+        ],
+      },
+      {
+        kicker: "The problem",
+        title: "How might we help shoppers compare similar products without switching between listings?",
+        body: [
+          "When product information is spread across separate pages, shoppers compare details manually and rely on memory. That makes it harder to see the differences quickly and to know which product suits them best.",
+        ],
+      },
+      {
+        kicker: "The opportunity",
+        title: "Add one feature, don't rebuild the store",
+        body: [
+          "The proposed solution lets shoppers select several products and view them side by side, focusing on price, customer ratings, specifications and other relevant details. The aim is to make differences obvious and reduce the effort of weighing up alternatives.",
+        ],
+      },
+      {
+        kicker: "User flow",
+        title: "The proposed journey, from browsing to checkout",
+        steps: [
+          "Browse or search products",
+          "Find a product of interest",
+          "Select products to compare",
+          "Open the comparison view",
+          "Review side by side",
+          "Choose the preferred option",
+          "Continue to checkout",
+        ],
+        body: [
+          "If the shopper isn't satisfied after comparing, the flow loops back to the comparison list so they can add or remove items.",
+        ],
+        shots: [
+          {
+            src: "/exhibits/temu-flow.webp",
+            alt: "Temu user flow diagram: open Temu, search or browse, view results, select items to compare, open comparison list, compare side by side, choose preferred product (loop back if not satisfied), add to cart, checkout, place order, order confirmation",
+            caption: "The user flow, with a loop back to the comparison list when the shopper isn't satisfied.",
+            width: 2000,
+            height: 836,
+            device: "desktop",
+          },
+        ],
+      },
+      {
+        kicker: "UX approach",
+        title: "Why the comparison works the way it does",
+        points: [
+          {
+            title: "Deliberate product selection",
+            text: "Shoppers tick products straight from search results into a comparison list, so they never have to remember listings they've already seen.",
+          },
+          {
+            title: "Side by side",
+            text: "Putting products in one view makes differences visible at a glance, without repeatedly navigating between pages.",
+          },
+          {
+            title: "A scannable hierarchy",
+            text: "Price, rating and reviews come first, then specifications like Bluetooth version, noise cancellation, battery life and water resistance, in consistent rows that are easy to scan.",
+          },
+          {
+            title: "A clear way out",
+            text: "The comparison ends in a decision: select a product, add it to the cart and continue to checkout, or keep shopping.",
+          },
+        ],
+      },
+      {
+        kicker: "Wireframes",
+        title: "Selecting, comparing and choosing",
+        shots: [
+          {
+            src: "/exhibits/temu-search.webp",
+            alt: "Wireframe: search results for wireless earbuds with a select circle on each product",
+            caption: "Select from search results",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+          {
+            src: "/exhibits/temu-list.webp",
+            alt: "Wireframe: comparison list of three Galaxy Buds with Compare Now (3) and Continue Shopping",
+            caption: "Comparison list",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+          {
+            src: "/exhibits/temu-compare.webp",
+            alt: "Wireframe: side-by-side comparison of three products by price, rating, reviews, Bluetooth, noise cancellation, battery life and water resistance",
+            caption: "Side-by-side comparison",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+          {
+            src: "/exhibits/temu-choose.webp",
+            alt: "Wireframe: choose your product, with one product selected and Add to cart",
+            caption: "Choose and add to cart",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+        ],
+      },
+      {
+        kicker: "Into checkout",
+        title: "The decision carries straight through",
+        shots: [
+          {
+            src: "/exhibits/temu-cart.webp",
+            alt: "Wireframe: shopping cart with the chosen Galaxy Buds and accessories",
+            caption: "Cart",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+          {
+            src: "/exhibits/temu-checkout.webp",
+            alt: "Wireframe: checkout with shipping address, payment method and totals",
+            caption: "Checkout",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+          {
+            src: "/exhibits/temu-confirmation.webp",
+            alt: "Wireframe: order placed successfully, with order details and estimated delivery",
+            caption: "Order confirmation",
+            width: 390,
+            height: 847,
+            device: "mobile",
+          },
+        ],
+      },
+      {
+        kicker: "Outcome",
+        title: "A low-fidelity concept for comparing with confidence",
+        body: [
+          "The project resulted in a low-fidelity UX concept for a product comparison feature within Temu's shopping experience, bringing the relevant information together so shoppers can weigh alternatives in one place.",
+        ],
+        stat: {
+          value: "100/100",
+          label: "Capstone assessment",
+          text: "The assessment recognised the clarity of the problem understanding, user needs, user flow and wireframing.",
+        },
+      },
+      {
+        kicker: "What I learned",
+        title: "Small fixes can matter as much as new products",
+        body: [
+          "This project reinforced how valuable it is to look for friction inside experiences that already exist. A useful feature doesn't have to be a whole new product. Sometimes improving one specific interaction is what makes the experience more convenient.",
+          "It also showed me how closely problem definition, user needs, information organisation and interface design depend on each other.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "sweetsips",
+    no: "04",
     title: "SweetSips",
     medium: "Brand website & ordering experience",
     year: "2025",
@@ -293,7 +503,7 @@ export const exhibits: Exhibit[] = [
   },
   {
     slug: "gamerzverse",
-    no: "04",
+    no: "05",
     title: "GamerzVerse",
     medium: "Web platform, front-end development",
     year: "2025",
@@ -337,7 +547,7 @@ export const exhibits: Exhibit[] = [
   },
   {
     slug: "gracelink-empire",
-    no: "05",
+    no: "06",
     title: "Gracelink Empire",
     medium: "E-commerce website, design & development",
     year: "2026",
@@ -350,6 +560,7 @@ export const exhibits: Exhibit[] = [
     role: ["Web design", "Front-end & back-end development", "Client project"],
     stack: ["Next.js (App Router)", "TypeScript", "Tailwind CSS", "Supabase", "Vercel"],
     links: [],
+    linkNote: "Not public yet. The live site will be linked here at launch.",
     cover: {
       src: "/exhibits/gracelink-hero.webp",
       alt: "Gracelink Empire homepage: two illustrated hair textures labelled Curls and Sleek, with Shop Human Hair and Shop Ponytails buttons",
@@ -401,6 +612,7 @@ export const toneStyles: Record<Tone, { bg: string; soft: string; ink: string; h
   mint: { bg: "bg-mint", soft: "bg-mint-soft", ink: "text-mint-ink", hex: "#B9E2D1" },
   butter: { bg: "bg-butter", soft: "bg-butter-soft", ink: "text-butter-ink", hex: "#F5ECA7" },
   blush: { bg: "bg-blush", soft: "bg-blush-soft", ink: "text-blush-ink", hex: "#F2C3D2" },
+  peach: { bg: "bg-peach", soft: "bg-peach-soft", ink: "text-peach-ink", hex: "#F6C4A3" },
 };
 
 export const getExhibit = (slug?: string) => exhibits.find((e) => e.slug === slug);
