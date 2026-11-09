@@ -23,15 +23,25 @@ const approach = [
 ];
 
 const provenance = [
-  { what: "B.Sc. Computer Science", where: "ESTAM University", when: "Final year" },
-  { what: "UX/UI design bootcamp", where: "Research, sitemaps, task flows, wireframes, capstone", when: "Coursework" },
+  { what: "B.Sc. Computer Science", where: "ESTAM University", when: "Completed" },
+  { what: "UX/UI design bootcamp", where: "TS Academy · Research, sitemaps, task flows, wireframes, capstone", when: "Training" },
   { what: "IT Intern, front-end & full-stack development", where: "Techverse Global, Cotonou", when: "Internship" },
-  { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
   {
-    what: "Earlier roles",
-    where: "Broadcast engineering at Splash FM and Fresh FM; student information officer at St. Louis Africa University",
-    when: "Before tech",
+    what: "Student Information Officer",
+    where: "St. Louis Africa University · Handling student enquiries, admissions data and student records",
+    when: "Role",
   },
+  {
+    what: "IT Support / Studio Assistant",
+    where: "Fresh FM, Ado-Ekiti · Studio workflows, adverts playback, live broadcast support and troubleshooting",
+    when: "Role",
+  },
+  {
+    what: "SIWES Intern, Broadcast Engineering",
+    where: "Splash FM, Ibadan · Equipment handling, power management and transmitter changeovers during live broadcasts",
+    when: "Industrial training",
+  },
+  { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
 ];
 
 const materials = ["Figma", "HTML & CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Firebase", "Git & GitHub", "Vercel"];
@@ -74,7 +84,7 @@ const Curator = () => (
           <div className="mt-10 grid gap-6 text-[1.05rem] leading-relaxed text-ink/85 md:grid-cols-2" data-reveal>
             <p>
               I'm Peace Oluwaferanmi Segun-Babs, and most people call me Fera. I'm a UX/UI designer and front-end
-              developer in the final year of a B.Sc. in Computer Science, after first training in Electrical
+              developer with a B.Sc. in Computer Science from ESTAM University, after first training in Electrical
               Engineering.
             </p>
             <p>
