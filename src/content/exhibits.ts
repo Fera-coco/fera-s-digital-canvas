@@ -257,7 +257,7 @@ export const exhibits: Exhibit[] = [
     medium: "UX/UI design · Product design · Feature improvement",
     statuses: ["Concept", "Academic"],
     tone: "peach",
-    badge: { value: "100/100", label: "Capstone score" },
+    badge: { value: "100/100", label: "Assignment score" },
     meta: [
       { label: "Product context", value: "Temu mobile shopping (proposed concept, not a live feature)" },
       { label: "Product explored", value: "Samsung Galaxy Buds" },
@@ -266,7 +266,7 @@ export const exhibits: Exhibit[] = [
     summary:
       "A proposed comparison feature for Temu that lets shoppers put similar products side by side instead of jumping between listings. Explored through Samsung Galaxy Buds.",
     intro:
-      "This capstone explores one small but real moment in online shopping: choosing between several similar products. Instead of redesigning Temu, I proposed a comparison feature that fits into the existing journey, then worked it through research, a user flow and low-fidelity wireframes.",
+      "This UX/UI course assignment explores one small but real moment in online shopping: choosing between several similar products. Instead of redesigning Temu, I proposed a comparison feature that fits into the existing journey, then worked it through research, a user flow and low-fidelity wireframes.",
     role: ["User research", "User flow", "Low-fidelity wireframes"],
     stack: ["Figma", "Tally (survey)"],
     links: [],
@@ -441,7 +441,7 @@ export const exhibits: Exhibit[] = [
         ],
         stat: {
           value: "100/100",
-          label: "Capstone assessment",
+          label: "Assignment assessment",
           text: "The assessment recognised the clarity of the problem understanding, user needs, user flow and wireframing.",
         },
       },
