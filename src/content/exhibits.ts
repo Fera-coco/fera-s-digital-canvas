@@ -201,13 +201,13 @@ export const exhibits: Exhibit[] = [
     title: "GamerzVerse",
     medium: "Web platform, front-end development",
     year: "2025",
-    statuses: ["Concept", "Team project"],
+    statuses: ["Concept", "Academic"],
     tone: "mint",
     summary:
       "A play-to-earn gaming platform concept featuring Whot, Ludo Naija and Ayo Olopon, with accounts, a wallet and leaderboards.",
     intro:
-      "GamerzVerse is a team-built concept for a play-to-earn gaming platform centred on familiar Nigerian games. I worked on the team as a front-end developer, building the interface for the platform's pages and flows.",
-    role: ["Front-end development", "Team project"],
+      "GamerzVerse is a concept for a play-to-earn gaming platform centred on familiar Nigerian games, created by a student team as a school project. I was the team's front-end developer and built the website: its pages, flows and interface.",
+    role: ["Website build (front end)", "Front-end developer on the student team"],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Supabase", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://gamerzverse.vercel.app/" },
