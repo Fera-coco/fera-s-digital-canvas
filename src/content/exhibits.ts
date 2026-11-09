@@ -154,13 +154,13 @@ export const exhibits: Exhibit[] = [
     title: "SweetSips",
     medium: "Brand website & ordering experience",
     year: "2025",
-    statuses: ["Completed", "Team project"],
+    statuses: ["Completed", "Academic"],
     tone: "coral",
     summary:
-      "A bright, appetite-first website for a Cotonou parfait and smoothie brand, with a full menu, topping customisation and a delivery checkout.",
+      "A bright, appetite-first website for a student-run parfait and smoothie brand in Cotonou, with a full menu, topping customisation and a delivery checkout.",
     intro:
-      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, created as a team venture in which I served as COO. I designed and built its website to introduce the brand, present the menu and let customers place an order.",
-    role: ["Web design", "Front-end development", "Team member (COO)"],
+      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, started by a student team as a school entrepreneurship project, with me as COO. I designed and built the website on my own, to introduce the brand, present the menu and let customers place an order.",
+    role: ["Sole web designer & developer", "COO of the student team"],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://sweetsips-landing-page-project.vercel.app/" },
