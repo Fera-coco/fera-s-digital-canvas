@@ -145,8 +145,8 @@ const Collection = () => (
           </h2>
         </div>
         <p className="max-w-md self-end text-lg leading-relaxed text-ink/85 lg:col-span-5">
-          A small, curated selection of shipped work. Each piece is a real project you can open, use and inspect, with
-          the story of how it was made inside.
+          A small, curated selection of real projects, from finished builds to a client store in progress. Walk into
+          any piece for the story of how it was made.
         </p>
       </header>
 
@@ -170,7 +170,7 @@ const Collection = () => (
               key={w.title}
               className={cn(
                 "relative py-8 md:py-10",
-                i === 0 ? "md:border-r md:border-ink/15 md:pr-10" : "border-t border-ink/15 md:border-t-0 md:pl-10",
+                i === 0 ? (inStudio.length > 1 ? "md:border-r md:border-ink/15 md:pr-10" : "") : "border-t border-ink/15 md:border-t-0 md:pl-10",
               )}
             >
               <div className="flex items-start justify-between gap-4">

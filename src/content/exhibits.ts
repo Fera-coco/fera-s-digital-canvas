@@ -237,6 +237,61 @@ export const exhibits: Exhibit[] = [
       },
     ],
   },
+  {
+    slug: "gracelink-empire",
+    no: "04",
+    title: "Gracelink Empire",
+    medium: "E-commerce website, design & development",
+    year: "2026",
+    statuses: ["In progress", "Client project"],
+    tone: "blush",
+    summary:
+      "An online store for a Nigerian hair business selling human hair, extensions and ponytails, with guest checkout, order tracking and bank-transfer payments.",
+    intro:
+      "Gracelink Empire is an e-commerce website I'm designing and building for a Nigerian hair business. It's in active development: the storefront, checkout and the owner's tools are working in a demo while the business's real products and details are connected.",
+    role: ["Web design", "Front-end & back-end development", "Client project"],
+    stack: ["Next.js (App Router)", "TypeScript", "Tailwind CSS", "Supabase", "Vercel"],
+    links: [],
+    cover: {
+      src: "/exhibits/gracelink-hero.webp",
+      alt: "Gracelink Empire homepage: two illustrated hair textures labelled Curls and Sleek, with Shop Human Hair and Shop Ponytails buttons",
+      caption: "Homepage. Two illustrated textures, Curls and Sleek, lead straight into the main categories.",
+      width: 1520,
+      height: 730,
+      device: "desktop",
+    },
+    sections: [
+      {
+        kicker: "The brief",
+        title: "A real shop, without payment-gateway fees",
+        body: [
+          "The business sells in Naira and wanted to avoid the fees that come with payment gateways. So customers pay by bank transfer and the owner confirms each payment, instead of routing money through a provider. The work is making that flow feel simple for customers and manageable for the owner.",
+        ],
+      },
+      {
+        kicker: "Design decisions",
+        title: "Built around how the business actually runs",
+        points: [
+          {
+            title: "Delivery priced by area",
+            text: "Delivery fees come from dispatch riders' area price lists, so most customers see their fee at checkout. For areas not on the list, the owner quotes a fee after the order and follows up on WhatsApp.",
+          },
+          {
+            title: "Stock that stays honest",
+            text: "Items stay on sale until the owner confirms payment. Confirming checks and deducts stock, and refuses if an item has sold out. Unpaid orders cancel automatically after a deadline.",
+          },
+          {
+            title: "No account needed",
+            text: "Customers can check out as guests and track every order from a dedicated page.",
+          },
+          {
+            title: "Tools for the owner",
+            text: "An admin area for confirming payments, setting delivery fees and keeping on top of orders that need attention.",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 /* Works in the studio: real, ongoing, not yet ready to hang. */
@@ -247,13 +302,6 @@ export const inStudio = [
     status: "In progress · Academic",
     tone: "butter" as Tone,
     text: "An app that helps people find company for activities when their usual people are unavailable. Plans first, people second.",
-  },
-  {
-    title: "Gracelink Empire",
-    medium: "E-commerce website · Client work",
-    status: "In development · Client project",
-    tone: "blush" as Tone,
-    text: "An online store for a Nigerian hair business, with a product catalogue, area-based delivery pricing and bank-transfer checkout.",
   },
 ];
 
