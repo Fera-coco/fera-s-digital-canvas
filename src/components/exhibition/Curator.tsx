@@ -24,14 +24,15 @@ const approach = [
 
 const provenance = [
   { what: "B.Sc. Computer Science", where: "ESTAM University", when: "Completed" },
-  { what: "UX/UI design bootcamp", where: "Research, sitemaps, task flows, wireframes, capstone", when: "Coursework" },
+  { what: "UX/UI design bootcamp", where: "TS Academy · Research, sitemaps, task flows, wireframes, capstone", when: "Training" },
   { what: "IT Intern, front-end & full-stack development", where: "Techverse Global, Cotonou", when: "Internship" },
-  { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
   {
-    what: "Earlier roles",
-    where: "Broadcast engineering at Splash FM and Fresh FM; student information officer at St. Louis Africa University",
-    when: "Before tech",
+    what: "Student Information Officer",
+    where: "St. Louis Africa University · Handling student enquiries, admissions data and student records",
+    when: "Role",
   },
+  { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
+  { what: "Earlier roles", where: "Broadcast engineering at Splash FM and Fresh FM", when: "Before tech" },
 ];
 
 const materials = ["Figma", "HTML & CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Firebase", "Git & GitHub", "Vercel"];
