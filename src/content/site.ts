@@ -7,7 +7,6 @@ export const site = {
   email: "ferrababs@gmail.com",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/peace-segun-babs-961bbb365" },
-    { label: "GitHub", href: "https://github.com/Fera-coco" },
   ],
 } as const;
 
