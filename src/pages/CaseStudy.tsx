@@ -150,9 +150,16 @@ const CaseStudy = () => {
                 </div>
               </div>
               {s.shots && (
-                <div className={cn("mt-14 grid gap-10", s.shots.length > 1 ? "lg:grid-cols-2" : "")}>
+                <div
+                  className={cn(
+                    "mt-14 grid",
+                    s.shots.every((x) => x.device === "mobile")
+                      ? cn("grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8", s.shots.length >= 4 ? "lg:grid-cols-4" : "md:grid-cols-3 lg:mx-auto lg:max-w-[1000px]")
+                      : cn("gap-10", s.shots.length > 1 ? "lg:grid-cols-2" : ""),
+                  )}
+                >
                   {s.shots.map((shot, j) => (
-                    <div key={shot.src} data-reveal style={{ "--delay": `${j * 120}ms` } as React.CSSProperties}>
+                    <div key={shot.src} data-reveal style={{ "--delay": `${j * 100}ms` } as React.CSSProperties}>
                       <Frame shot={shot} caption className={s.shots!.length === 1 ? "mx-auto max-w-[1000px]" : ""} />
                     </div>
                   ))}

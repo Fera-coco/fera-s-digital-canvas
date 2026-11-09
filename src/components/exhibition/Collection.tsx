@@ -157,6 +157,7 @@ const Collection = () => (
       </div>
 
       {/* Works still in the studio */}
+      {inStudio.length > 0 && (
       <aside aria-labelledby="in-studio-title" className="mt-36 md:mt-48" data-reveal>
         <div className="flex flex-wrap items-end justify-between gap-4 border-b border-ink/15 pb-5">
           <h3 id="in-studio-title" className="display text-[clamp(2rem,4vw,3rem)]">
@@ -187,6 +188,7 @@ const Collection = () => (
           ))}
         </ul>
       </aside>
+      )}
     </div>
   </section>
 );
