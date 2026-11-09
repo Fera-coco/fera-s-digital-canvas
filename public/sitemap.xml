@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ferasportfolio.vercel.app/</loc></url>
+  <url><loc>https://ferasportfolio.vercel.app/collection</loc></url>
+  <url><loc>https://ferasportfolio.vercel.app/curator</loc></url>
+  <url><loc>https://ferasportfolio.vercel.app/studio</loc></url>
+  <url><loc>https://ferasportfolio.vercel.app/contact</loc></url>
   <url><loc>https://ferasportfolio.vercel.app/work/readsmartly</loc></url>
   <url><loc>https://ferasportfolio.vercel.app/work/we-go</loc></url>
   <url><loc>https://ferasportfolio.vercel.app/work/temu-product-comparison</loc></url>

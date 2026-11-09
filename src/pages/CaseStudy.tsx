@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import Frame from "@/components/exhibition/Frame";
-import Exit from "@/components/exhibition/Exit";
+import NextRoom from "@/components/exhibition/NextRoom";
 import NotFound from "./NotFound";
 import { exhibits, getExhibit, toneStyles } from "@/content/exhibits";
 import { usePageMeta } from "@/hooks/use-exhibition";
@@ -23,14 +23,14 @@ const CaseStudy = () => {
   const next = exhibits[(idx + 1) % exhibits.length];
 
   return (
-    <>
+    <div className="flex min-h-[100svh] flex-col">
       <main id="main">
         <article aria-labelledby="exhibit-title">
           {/* Title wall */}
           <header className="pt-[var(--header-h)]">
             <div className="gallery-x pb-12 pt-12 md:pb-16 md:pt-20">
               <nav aria-label="Breadcrumb" className="label mb-10 flex flex-wrap gap-2 text-stone">
-                <Link to={{ pathname: "/", hash: "#collection" }} className="link-underline">
+                <Link to="/collection" className="link-underline">
                   The Collection
                 </Link>
                 <span aria-hidden>/</span>
@@ -73,7 +73,6 @@ const CaseStudy = () => {
                     height={ex.cover.height}
                     decoding="async"
                     loading="eager"
-                    style={{ viewTransitionName: `exhibit-${ex.slug}` } as React.CSSProperties}
                     className="block w-full bg-wall"
                   />
                 </div>
@@ -227,7 +226,7 @@ const CaseStudy = () => {
 
           {/* Continue the walk */}
           <nav aria-label="Next exhibit" className="gallery-x py-20 md:py-28">
-            <Link to={`/work/${next.slug}`} viewTransition className="group grid grid-cols-1 items-end gap-6 border-t border-ink/15 pt-8 md:grid-cols-12">
+            <Link to={`/work/${next.slug}`} className="group grid grid-cols-1 items-end gap-6 border-t border-ink/15 pt-8 md:grid-cols-12">
               <div className="md:col-span-8">
                 <p className="label text-stone">Next in the collection · Exhibit {next.no}</p>
                 <p
@@ -248,8 +247,8 @@ const CaseStudy = () => {
           </nav>
         </article>
       </main>
-      <Exit />
-    </>
+      <NextRoom from="collection" />
+    </div>
   );
 };
 

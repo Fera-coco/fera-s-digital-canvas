@@ -16,14 +16,14 @@ const Exit = () => {
   };
 
   return (
-    <footer id="exit" aria-labelledby="exit-title" className="relative overflow-hidden bg-ink text-cream">
-      <div className="gallery-x pb-10 pt-24 md:pt-36">
+    <section aria-labelledby="exit-title" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-ink text-cream">
+      <div className="gallery-x flex flex-1 flex-col pb-10 pt-[calc(var(--header-h)+3rem)] md:pt-[calc(var(--header-h)+5rem)]">
         <p className="label text-cream/60">Room 04 · The Exit</p>
-        <h2 id="exit-title" className="display mt-6 max-w-5xl text-[clamp(3rem,9vw,8rem)]" data-reveal>
+        <h1 id="exit-title" className="display mt-6 max-w-5xl text-[clamp(3rem,9vw,8rem)]" data-reveal>
           Thanks for visiting. Shall we make the <em className="italic text-lavender">next exhibit</em> together?
-        </h2>
+        </h1>
 
-        <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12" data-reveal>
+        <div className="mt-14 grid grid-cols-1 gap-12 pb-20 lg:grid-cols-12" data-reveal>
           <div className="lg:col-span-7">
             <p className="max-w-lg text-lg leading-relaxed text-cream/80">
               Tell me about your website, product or idea, and where you'd like it to go. Fera's Studio is open for
@@ -72,17 +72,17 @@ const Exit = () => {
         </div>
 
         {/* Colophon */}
-        <div className="mt-28 flex flex-col gap-4 border-t border-cream/15 pt-6 text-sm text-cream/60 md:flex-row md:items-center md:justify-between">
+        <div className="mt-auto flex flex-col gap-4 border-t border-cream/15 pt-6 text-sm text-cream/60 md:flex-row md:items-center md:justify-between">
           <p>
             © {new Date().getFullYear()} {site.studio} · {site.person}
           </p>
           <p className="label">Set in Instrument Serif, DM Sans &amp; Space Mono · Designed and built by Fera</p>
-          <Link to={{ pathname: "/", hash: "#entrance" }} className="link-underline self-start md:self-auto">
-            Back to the entrance ↑
+          <Link to="/" className="link-underline self-start md:self-auto">
+            ← Back to the entrance
           </Link>
         </div>
       </div>
-    </footer>
+    </section>
   );
 };
 
