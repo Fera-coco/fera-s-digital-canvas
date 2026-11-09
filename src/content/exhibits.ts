@@ -77,7 +77,7 @@ export const exhibits: Exhibit[] = [
     role: ["Product & UX/UI design", "Front-end development", "Firebase integration", "Thesis research & write-up"],
     stack: ["HTML", "CSS", "JavaScript", "Bootstrap 5", "Firebase Auth", "Cloud Firestore", "Chart.js", "Service worker (PWA)", "Vercel"],
     links: [
-      { label: "Visit the live app", href: "https://read-smartly.vercel.app/" },
+      { label: "Visit the live app", href: "https://readsmartly.vercel.app/" },
       { label: "View the code", href: "https://github.com/Fera-coco/readsmartly" },
     ],
     cover: desk(
@@ -154,13 +154,13 @@ export const exhibits: Exhibit[] = [
     title: "SweetSips",
     medium: "Brand website & ordering experience",
     year: "2025",
-    statuses: ["Completed", "Team project"],
+    statuses: ["Completed", "Academic"],
     tone: "coral",
     summary:
-      "A bright, appetite-first website for a Cotonou parfait and smoothie brand, with a full menu, topping customisation and a delivery checkout.",
+      "A bright, appetite-first website for a student-run parfait and smoothie brand in Cotonou, with a full menu, topping customisation and a delivery checkout.",
     intro:
-      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, created as a team venture in which I served as COO. I designed and built its website to introduce the brand, present the menu and let customers place an order.",
-    role: ["Web design", "Front-end development", "Team member (COO)"],
+      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, started by a student team as a school entrepreneurship project, with me as COO. I designed and built the website on my own, to introduce the brand, present the menu and let customers place an order.",
+    role: ["Sole web designer & developer", "COO of the student team"],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://sweetsips-landing-page-project.vercel.app/" },
@@ -201,17 +201,17 @@ export const exhibits: Exhibit[] = [
     title: "GamerzVerse",
     medium: "Web platform, front-end development",
     year: "2025",
-    statuses: ["Concept", "Team project"],
+    statuses: ["Concept", "Academic"],
     tone: "mint",
     summary:
       "A play-to-earn gaming platform concept featuring Whot, Ludo Naija and Ayo Olopon, with accounts, a wallet and leaderboards.",
     intro:
-      "GamerzVerse is a team-built concept for a play-to-earn gaming platform centred on familiar Nigerian games. I worked on the team as a front-end developer, building the interface for the platform's pages and flows.",
-    role: ["Front-end development", "Team project"],
+      "GamerzVerse is a concept for a play-to-earn gaming platform centred on familiar Nigerian games, created by a student team as a school project. I was the team's front-end developer and built the website: its pages, flows and interface.",
+    role: ["Website build (front end)", "Front-end developer on the student team"],
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Supabase", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://gamerzverse.vercel.app/" },
-      { label: "View the code", href: "https://github.com/Fera-coco/gamerz-verse-play-earn" },
+      { label: "View the code", href: "https://github.com/Fera-coco/LumenaXEstam300ComputerScience" },
     ],
     cover: desk(
       "gamerzverse-hero",
