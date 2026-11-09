@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { rooms, type RoomId, site } from "@/content/site";
+import { site } from "@/content/site";
 
 /** Reveal anything marked data-reveal as it enters the viewport. */
 export function useReveal() {
@@ -22,43 +22,6 @@ export function useReveal() {
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [pathname]);
-}
-
-/** Which room the visitor is standing in, plus how far through the exhibition they are. */
-export function useRoomProgress(enabled: boolean) {
-  const [active, setActive] = useState<RoomId>("entrance");
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    if (!enabled) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? Math.min(1, window.scrollY / max) : 0);
-      const line = window.innerHeight * 0.35;
-      let current: RoomId = "entrance";
-      for (const r of rooms) {
-        const el = document.getElementById(r.id);
-        if (el && el.getBoundingClientRect().top <= line) current = r.id;
-      }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = "exit";
-      setActive(current);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [enabled]);
-
-  return { active, progress };
 }
 
 /** Scroll to top on new pages, or to the hash target when one is given. */

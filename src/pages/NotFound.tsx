@@ -16,7 +16,7 @@ const NotFound = () => {
         <Link to="/" className="btn-ink">
           Return to the entrance
         </Link>
-        <Link to={{ pathname: "/", hash: "#collection" }} className="btn-line">
+        <Link to="/collection" className="btn-line">
           See the collection
         </Link>
       </div>

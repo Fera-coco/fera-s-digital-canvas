@@ -1,28 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { rooms, site } from "@/content/site";
-import { useRoomProgress } from "@/hooks/use-exhibition";
+import { roomFor, rooms, site } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /*
-  Navigation as a floor plan.
-  Desktop: rooms are listed by number with a progress rail that fills as you walk.
-  Mobile: a single "Floor plan" button opens a full-screen map of the rooms.
+  The gallery's signage.
+  A quiet bar that tells you which room you're in, plus a "Floor plan" button
+  that opens a full-screen map of every room in giant type.
 */
 const Header = () => {
   const { pathname } = useLocation();
-  const onHome = pathname === "/";
-  const { active, progress } = useRoomProgress(onHome);
+  const current = roomFor(pathname);
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -30,6 +22,7 @@ const Header = () => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    firstLinkRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
@@ -43,126 +36,140 @@ const Header = () => {
     };
   }, [open]);
 
-  const current = rooms.find((r) => r.id === active) ?? rooms[0];
+  const accent = rooms.find((r) => r.id === hovered)?.tone;
+  const dark = pathname === "/contact" && !open;
 
   return (
     <>
       <a
         href="#main"
-        className="sr-only z-[70] rounded-full bg-ink px-4 py-2 text-sm text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="sr-only z-[90] rounded-full bg-ink px-4 py-2 text-sm text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to content
       </a>
+
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 h-[var(--header-h)] transition-[background-color,box-shadow] duration-500",
-          scrolled || !onHome ? "bg-cream/90 shadow-[0_1px_0_rgba(40,38,36,0.08)] backdrop-blur-md" : "bg-transparent",
+          "fixed inset-x-0 top-0 z-[60] h-[var(--header-h)] backdrop-blur-md transition-colors duration-500",
+          dark ? "bg-ink/85 text-cream" : "bg-cream/85 text-ink",
         )}
       >
-        <div className="gallery-x flex h-full items-center justify-between gap-6">
-          <Link to="/" className="group flex items-baseline gap-2" aria-label={`${site.studio}, home`}>
+        <div className="gallery-x grid h-full grid-cols-[1fr_auto] items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
+          <Link to="/" className="flex items-baseline gap-2 justify-self-start" aria-label={`${site.studio}, back to the entrance`}>
             <span className="display text-[1.65rem] leading-none">Fera's Studio</span>
-            <span className="label hidden text-stone sm:inline">Est. digital</span>
           </Link>
 
-          {/* Desktop floor plan */}
-          <nav aria-label="Rooms" className="hidden lg:block">
-            <ol className="flex items-center gap-1">
-              {rooms.map((r) => {
-                const isActive = onHome && r.id === active;
-                return (
-                  <li key={r.id}>
-                    <Link
-                      to={{ pathname: "/", hash: `#${r.id}` }}
-                      aria-current={isActive ? "location" : undefined}
-                      className={cn(
-                        "group flex items-baseline gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors duration-300",
-                        isActive ? "bg-ink text-cream" : "text-ink hover:bg-wall",
-                      )}
-                    >
-                      <span className={cn("font-mono text-[0.65rem]", isActive ? "text-lavender" : "text-stone")}>{r.no}</span>
-                      {r.short}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
+          {/* Where you are */}
+          <p className={cn("label hidden items-center gap-2 md:flex", dark ? "text-cream/60" : "text-stone")} aria-live="polite">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: current?.tone ?? "#282624" }} aria-hidden />
+            {current ? (
+              <>
+                Room {current.no} <span aria-hidden>·</span> <span className={dark ? "text-cream" : "text-ink"}>{current.label}</span>
+              </>
+            ) : (
+              "Off the floor plan"
+            )}
+          </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             <Link
-              to={{ pathname: "/", hash: "#exit" }}
-              className="hidden rounded-full bg-coral px-4 py-2 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5 md:inline-flex lg:hidden xl:inline-flex"
+              to="/contact"
+              className="hidden rounded-full bg-coral px-4 py-2 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5 sm:inline-flex"
             >
               Start a project
             </Link>
             <button
               ref={toggleRef}
               type="button"
-              className="flex items-center gap-2 rounded-full border border-ink/70 px-4 py-2 text-sm lg:hidden"
               aria-expanded={open}
               aria-controls="floor-plan"
               onClick={() => setOpen((o) => !o)}
+              className={cn("group flex items-center gap-2 rounded-full border py-2 pl-4 pr-3 text-sm", dark ? "border-cream/60" : "border-ink/70")}
             >
-              <span className="font-mono text-[0.65rem] text-stone">{onHome ? current.no : "··"}</span>
               {open ? "Close" : "Floor plan"}
+              <span
+                aria-hidden
+                className={cn(
+                  "flex h-5 w-5 items-center justify-center text-lg leading-none transition-transform duration-500 ease-gallery",
+                  open ? "rotate-45" : "group-hover:rotate-90",
+                )}
+              >
+                +
+              </span>
             </button>
           </div>
         </div>
-
-        {/* Progress rail */}
-        {onHome && (
-          <div className="absolute inset-x-0 bottom-0 h-[2px] bg-transparent" aria-hidden>
-            <div
-              className="h-full origin-left bg-ink transition-transform duration-150"
-              style={{ transform: `scaleX(${progress})` }}
-            />
-          </div>
-        )}
       </header>
 
-      {/* Mobile floor plan overlay */}
+      {/* Full-screen floor plan */}
       <div
         id="floor-plan"
-        className={cn(
-          "fixed inset-0 z-40 bg-cream pt-[var(--header-h)] transition-[opacity,visibility] duration-500 ease-gallery lg:hidden",
-          open ? "visible opacity-100" : "invisible opacity-0",
-        )}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Floor plan"
         aria-hidden={!open}
+        className={cn(
+          "fixed inset-0 z-50 flex flex-col bg-cream pt-[var(--header-h)] transition-[clip-path,visibility] duration-700 ease-gallery",
+          open ? "visible [clip-path:inset(0_0_0_0)]" : "invisible [clip-path:inset(0_0_100%_0)]",
+        )}
       >
-        <nav aria-label="Floor plan" className="gallery-x flex h-full flex-col justify-between pb-8 pt-6">
-          <div>
-            <p className="label mb-6 text-stone">Floor plan · {rooms.length} rooms</p>
-            <ol className="border-t border-ink/15">
-              {rooms.map((r, i) => (
-                <li key={r.id} className="border-b border-ink/15">
+        {/* a wash of the hovered room's colour */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+          style={{ background: accent ? `radial-gradient(60% 70% at 75% 55%, ${accent}66, transparent 70%)` : undefined, opacity: accent ? 1 : 0 }}
+        />
+        <nav className="gallery-x relative flex flex-1 flex-col justify-center py-6">
+          <p className="label mb-6 text-stone">Floor plan · {rooms.length} rooms · choose where to go</p>
+          <ol className="space-y-1">
+            {rooms.map((r, i) => {
+              const here = current?.id === r.id;
+              return (
+                <li key={r.id}>
                   <Link
-                    to={{ pathname: "/", hash: `#${r.id}` }}
+                    ref={i === 0 ? firstLinkRef : undefined}
+                    to={r.path}
                     tabIndex={open ? 0 : -1}
+                    aria-current={here ? "page" : undefined}
+                    onMouseEnter={() => setHovered(r.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    onFocus={() => setHovered(r.id)}
+                    onBlur={() => setHovered(null)}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline justify-between py-4"
-                    style={{ transitionDelay: open ? `${i * 40}ms` : "0ms" }}
+                    className="group grid grid-cols-[3rem_1fr] items-center gap-3 sm:grid-cols-[4.5rem_1fr_auto]"
+                    style={{ transitionDelay: open ? `${120 + i * 50}ms` : "0ms" }}
                   >
-                    <span className="display text-[2.4rem]">{r.label}</span>
-                    <span className="font-mono text-xs text-stone">{r.no} · {r.short}</span>
+                    <span className="font-mono text-xs text-stone">{r.no}</span>
+                    <span
+                      className={cn(
+                        "display text-[clamp(2.8rem,9vw,7.5rem)] transition-[transform,color] duration-500 ease-gallery group-hover:translate-x-3 group-focus-visible:translate-x-3",
+                        here && "italic",
+                      )}
+                    >
+                      {r.label}
+                    </span>
+                    <span className="label hidden max-w-[16rem] text-right text-stone opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
+                      {here ? "You are here" : r.blurb}
+                    </span>
                   </Link>
                 </li>
-              ))}
-            </ol>
-          </div>
-          <div className="space-y-2">
-            <a href={`mailto:${site.email}`} tabIndex={open ? 0 : -1} className="block text-lg underline underline-offset-4">
+              );
+            })}
+          </ol>
+        </nav>
+        <div className="gallery-x relative flex flex-col gap-3 border-t border-ink/15 py-5 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-stone">Open for freelance projects and collaborations.</p>
+          <div className="flex flex-wrap items-center gap-5">
+            <a href={`mailto:${site.email}`} tabIndex={open ? 0 : -1} className="link-underline">
               {site.email}
             </a>
-            <div className="flex gap-5 text-sm text-stone">
-              {site.socials.map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1}>
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            {site.socials.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1} className="link-underline">
+                {s.label} ↗
+              </a>
+            ))}
           </div>
-        </nav>
+        </div>
       </div>
     </>
   );

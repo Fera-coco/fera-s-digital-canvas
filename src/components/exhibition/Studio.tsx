@@ -38,14 +38,14 @@ const commissions = [
 ];
 
 const Studio = () => (
-  <section id="studio" aria-labelledby="studio-title" className="py-24 md:py-36">
+  <section aria-labelledby="studio-title" className="pb-24 pt-[calc(var(--header-h)+3rem)] md:pb-32 md:pt-[calc(var(--header-h)+5rem)]">
     <div className="gallery-x">
       <header className="grid grid-cols-1 gap-8 lg:grid-cols-12" data-reveal>
         <div className="lg:col-span-7">
           <p className="label text-stone">Room 03</p>
-          <h2 id="studio-title" className="display mt-4 text-[clamp(3rem,8vw,6.5rem)]">
-            The Studio
-          </h2>
+          <h1 id="studio-title" className="display mt-4 text-[clamp(3.4rem,9vw,7.5rem)]">
+            The <em className="italic">Studio</em>
+          </h1>
         </div>
         <p className="max-w-md self-end text-lg leading-relaxed text-ink/85 lg:col-span-5">
           Fera's Studio takes commissions from small businesses, founders and teams who want digital work that looks

@@ -47,15 +47,15 @@ const provenance = [
 const materials = ["Figma", "HTML & CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Firebase", "Git & GitHub", "Vercel"];
 
 const Curator = () => (
-  <section id="curator" aria-labelledby="curator-title" className="relative bg-wall/60 py-24 md:py-36">
+  <section aria-labelledby="curator-title" className="relative pb-24 pt-[calc(var(--header-h)+3rem)] md:pb-32 md:pt-[calc(var(--header-h)+5rem)]">
     <div className="gallery-x">
       <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
         {/* Portrait */}
         <div className="lg:col-span-5" data-reveal>
           <p className="label text-stone">Room 02</p>
-          <h2 id="curator-title" className="display mt-4 text-[clamp(3rem,8vw,6.5rem)]">
-            The Curator
-          </h2>
+          <h1 id="curator-title" className="display mt-4 text-[clamp(3.4rem,9vw,7.5rem)]">
+            The <em className="italic">Curator</em>
+          </h1>
           <figure className="mt-10 max-w-[420px]">
             <div className="frame p-3 sm:p-4" style={{ transform: "rotate(-1.2deg)" }}>
               <img

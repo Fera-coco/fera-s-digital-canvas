@@ -11,14 +11,20 @@ export const site = {
 } as const;
 
 export const rooms = [
-  { id: "entrance", no: "00", label: "Entrance", short: "Home" },
-  { id: "collection", no: "01", label: "The Collection", short: "Work" },
-  { id: "curator", no: "02", label: "The Curator", short: "About" },
-  { id: "studio", no: "03", label: "The Studio", short: "Services" },
-  { id: "exit", no: "04", label: "The Exit", short: "Contact" },
+  { id: "entrance", path: "/", no: "00", label: "Entrance", short: "Home", tone: "#282624", blurb: "Where the visit begins." },
+  { id: "collection", path: "/collection", no: "01", label: "The Collection", short: "Work", tone: "#C5B8F1", blurb: "Selected exhibits, from shipped builds to design studies." },
+  { id: "curator", path: "/curator", no: "02", label: "The Curator", short: "About", tone: "#B9E2D1", blurb: "Who's behind the studio, and how she works." },
+  { id: "studio", path: "/studio", no: "03", label: "The Studio", short: "Services", tone: "#F5ECA7", blurb: "What you can commission from Fera's Studio." },
+  { id: "contact", path: "/contact", no: "04", label: "The Exit", short: "Contact", tone: "#F28B79", blurb: "Leave a note in the guestbook." },
 ] as const;
 
-export type RoomId = (typeof rooms)[number]["id"];
+export type Room = (typeof rooms)[number];
+export type RoomId = Room["id"];
+
+export const roomFor = (pathname: string): Room | undefined =>
+  pathname.startsWith("/work/") ? rooms[1] : rooms.find((r) => r.path === pathname);
+
+export const nextRoom = (id: RoomId): Room => rooms[(rooms.findIndex((r) => r.id === id) + 1) % rooms.length];
 
 export const mailto = (subject: string, body = "") =>
   `mailto:${site.email}?subject=${encodeURIComponent(subject)}${

@@ -32,6 +32,8 @@ export interface Exhibit {
   slug: string;
   no: string;
   title: string;
+  short?: string; // name used where space is tight, e.g. the collection reel
+  discipline: "design" | "build" | "both";
   medium: string; // category, written like a gallery "medium" line
   year?: string;
   badge?: { value: string; label: string };
@@ -71,6 +73,7 @@ export const exhibits: Exhibit[] = [
     slug: "readsmartly",
     no: "01",
     title: "ReadSmartly",
+    discipline: "both",
     medium: "Product design & web app development",
     year: "2026",
     statuses: ["Completed", "Academic"],
@@ -156,6 +159,7 @@ export const exhibits: Exhibit[] = [
     slug: "we-go",
     no: "02",
     title: "WE-GO",
+    discipline: "design",
     medium: "UX/UI design · Mobile app",
     year: "2026",
     statuses: ["In progress", "Academic"],
@@ -254,6 +258,8 @@ export const exhibits: Exhibit[] = [
     slug: "temu-product-comparison",
     no: "03",
     title: "A Better Way to Compare Before Buying",
+    short: "Compare Before Buying",
+    discipline: "design",
     medium: "UX/UI design · Product design · Feature improvement",
     statuses: ["Concept", "Academic"],
     tone: "peach",
@@ -459,6 +465,7 @@ export const exhibits: Exhibit[] = [
     slug: "sweetsips",
     no: "04",
     title: "SweetSips",
+    discipline: "both",
     medium: "Brand website & ordering experience",
     year: "2025",
     statuses: ["Completed", "Academic"],
@@ -505,6 +512,7 @@ export const exhibits: Exhibit[] = [
     slug: "gamerzverse",
     no: "05",
     title: "GamerzVerse",
+    discipline: "build",
     medium: "Web platform, front-end development",
     year: "2025",
     statuses: ["Concept", "Academic"],
@@ -549,6 +557,7 @@ export const exhibits: Exhibit[] = [
     slug: "gracelink-empire",
     no: "06",
     title: "Gracelink Empire",
+    discipline: "both",
     medium: "E-commerce website, design & development",
     year: "2026",
     statuses: ["In progress", "Client project"],

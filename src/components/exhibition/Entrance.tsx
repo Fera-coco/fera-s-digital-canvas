@@ -48,11 +48,11 @@ const Entrance = () => (
         </p>
 
         <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ "--delay": "520ms" } as React.CSSProperties}>
-          <Link to={{ pathname: "/", hash: "#collection" }} className="btn-ink group">
+          <Link to="/collection" className="btn-ink group">
             Enter the collection
             <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
           </Link>
-          <Link to={{ pathname: "/", hash: "#exit" }} className="btn-line">
+          <Link to="/contact" className="btn-line">
             Start a project
           </Link>
         </div>
@@ -78,7 +78,6 @@ const Entrance = () => (
             <Link
               key={ex.slug + shot.src}
               to={`/work/${ex.slug}`}
-              viewTransition
               className={cn("hang group absolute block focus-visible:outline-offset-8", cls)}
               style={{ "--tilt": tilt, "--delay": `${delay}ms` } as React.CSSProperties}
               aria-label={`Exhibit ${ex.no}: ${ex.title}`}
