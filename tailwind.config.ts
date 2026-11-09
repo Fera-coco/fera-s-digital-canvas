@@ -28,6 +28,7 @@ export default {
         mint: { DEFAULT: "#B9E2D1", ink: "#1E5A46", soft: "#DDF1E8" },
         butter: { DEFAULT: "#F5ECA7", ink: "#6B5A10", soft: "#FAF5D2" },
         blush: { DEFAULT: "#F2C3D2", ink: "#86304E", soft: "#F9E1E9" },
+        peach: { DEFAULT: "#F6C4A3", ink: "#8A4317", soft: "#FBEADF" },
 
         /* shadcn tokens (kept so existing ui primitives still render) */
         border: "hsl(var(--border))",

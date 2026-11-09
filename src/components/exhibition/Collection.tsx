@@ -42,9 +42,10 @@ const ExhibitPiece = ({ ex, index }: { ex: Exhibit; index: number }) => {
       <div>
         <p className="label flex items-center gap-3 text-stone">
           <span className={cn("inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-ink", tone.bg)}>{ex.no}</span>
-          Exhibit {ex.no} · {ex.year}
+          Exhibit {ex.no}
+          {ex.year ? ` · ${ex.year}` : ""}
         </p>
-        <h3 className="display mt-5 text-[clamp(2.75rem,6vw,4.75rem)]">
+        <h3 className={cn("display mt-5", ex.title.length > 18 ? "text-[clamp(2.5rem,4.6vw,3.9rem)]" : "text-[clamp(2.75rem,6vw,4.75rem)]")}>
           <Link to={`/work/${ex.slug}`} viewTransition className="link-underline">
             {ex.title}
           </Link>
@@ -116,6 +117,14 @@ const ExhibitPiece = ({ ex, index }: { ex: Exhibit; index: number }) => {
                 className="block w-full bg-wall"
               />
             </div>
+          )}
+          {ex.badge && (
+            <span
+              className="absolute -left-3 -top-5 z-10 flex h-24 w-24 rotate-[-10deg] flex-col items-center justify-center rounded-full bg-ink text-center text-cream shadow-lg transition-transform duration-500 ease-gallery group-hover:rotate-0 sm:-left-6 sm:-top-8 sm:h-28 sm:w-28"
+            >
+              <span className="font-serif text-2xl leading-none sm:text-3xl">{ex.badge.value}</span>
+              <span className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.12em] text-peach">{ex.badge.label}</span>
+            </span>
           )}
           {/* cursor label (desktop mouse only) */}
           {cursor && (
