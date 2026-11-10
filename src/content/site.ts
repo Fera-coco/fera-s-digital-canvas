@@ -11,7 +11,7 @@ export const site = {
 } as const;
 
 export const rooms = [
-  { id: "entrance", path: "/", no: "00", label: "Entrance", short: "Home", tone: "#282624", blurb: "Where the visit begins." },
+  { id: "entrance", path: "/", no: "00", label: "Ticket desk", short: "Home", tone: "#282624", blurb: "Pick a visitor and walk the gallery." },
   { id: "collection", path: "/collection", no: "01", label: "The Collection", short: "Work", tone: "#C5B8F1", blurb: "Selected exhibits, from shipped builds to design studies." },
   { id: "curator", path: "/curator", no: "02", label: "The Curator", short: "About", tone: "#B9E2D1", blurb: "Who's behind the studio, and how she works." },
   { id: "studio", path: "/studio", no: "03", label: "The Studio", short: "Services", tone: "#F5ECA7", blurb: "What you can commission from Fera's Studio." },
@@ -30,3 +30,6 @@ export const mailto = (subject: string, body = "") =>
   `mailto:${site.email}?subject=${encodeURIComponent(subject)}${
     body ? `&body=${encodeURIComponent(body)}` : ""
   }`;
+
+/* The gallery walk sits between the ticket desk and the rooms. */
+export const WALK = { path: "/visit", label: "The gallery walk", tone: "#C5B8F1" } as const;

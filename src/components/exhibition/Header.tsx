@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { roomFor, rooms, site } from "@/content/site";
+import { roomFor, rooms, site, WALK } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /*
@@ -61,8 +61,10 @@ const Header = () => {
 
           {/* Where you are */}
           <p className={cn("label hidden items-center gap-2 md:flex", dark ? "text-cream/60" : "text-stone")} aria-live="polite">
-            <span className="inline-block h-2 w-2 rounded-full" style={{ background: current?.tone ?? "#282624" }} aria-hidden />
-            {current ? (
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: pathname === WALK.path ? WALK.tone : current?.tone ?? "#282624" }} aria-hidden />
+            {pathname === WALK.path ? (
+              <span className={dark ? "text-cream" : "text-ink"}>{WALK.label}</span>
+            ) : current ? (
               <>
                 Room {current.no} <span aria-hidden>·</span> <span className={dark ? "text-cream" : "text-ink"}>{current.label}</span>
               </>
@@ -120,7 +122,12 @@ const Header = () => {
           style={{ background: accent ? `radial-gradient(60% 70% at 75% 55%, ${accent}66, transparent 70%)` : undefined, opacity: accent ? 1 : 0 }}
         />
         <nav className="gallery-x relative flex flex-1 flex-col justify-center py-6">
-          <p className="label mb-6 text-stone">Floor plan · {rooms.length} rooms · choose where to go</p>
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <p className="label text-stone">Floor plan · {rooms.length} rooms · choose where to go</p>
+            <Link to={WALK.path} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full bg-lavender px-4 py-2 text-sm font-medium">
+              Take the gallery walk →
+            </Link>
+          </div>
           <ol className="space-y-1">
             {rooms.map((r, i) => {
               const here = current?.id === r.id;

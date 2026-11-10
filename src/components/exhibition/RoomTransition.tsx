@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getExhibit } from "@/content/exhibits";
 import { toneStyles } from "@/content/exhibits";
-import { roomFor } from "@/content/site";
+import { roomFor, WALK } from "@/content/site";
 
 /*
   Walking between rooms.
@@ -25,7 +25,11 @@ const RoomTransition = () => {
     let label = "";
     let color = "#282624";
     const ex = pathname.startsWith("/work/") ? getExhibit(pathname.split("/")[2]) : undefined;
-    if (ex) {
+    if (pathname === WALK.path) {
+      no = "Now entering";
+      label = WALK.label;
+      color = WALK.tone;
+    } else if (ex) {
       no = `Exhibit ${ex.no}`;
       label = ex.title;
       color = toneStyles[ex.tone].hex;
