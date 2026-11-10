@@ -76,10 +76,24 @@ const Header = () => {
             )}
           </p>
 
-          <div className="flex items-center gap-3 justify-self-end">
+          <div className="flex items-center gap-2 justify-self-end sm:gap-3">
+            <Link
+              to={OPEN_CALL_PATH}
+              aria-current={pathname === OPEN_CALL_PATH ? "page" : undefined}
+              className={cn(
+                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full py-2 pl-3 pr-4 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
+                pathname === OPEN_CALL_PATH ? "bg-blush ring-2 ring-ink" : "bg-blush",
+              )}
+            >
+              <span aria-hidden className="oc-nav-dot relative flex h-2 w-2">
+                <span className="absolute inset-0 rounded-full bg-coral" />
+              </span>
+              Open Call
+              <span className="sr-only">: five free websites</span>
+            </Link>
             <Link
               to="/contact"
-              className="hidden rounded-full bg-coral px-4 py-2 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5 sm:inline-flex"
+              className="hidden whitespace-nowrap rounded-full bg-coral px-4 py-2 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5 xl:inline-flex"
             >
               Start a project
             </Link>
@@ -89,9 +103,16 @@ const Header = () => {
               aria-expanded={open}
               aria-controls="floor-plan"
               onClick={() => setOpen((o) => !o)}
-              className={cn("group flex items-center gap-2 rounded-full border py-2 pl-4 pr-3 text-sm", dark ? "border-cream/60" : "border-ink/70")}
+              className={cn("group flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-4 pr-3 text-sm", dark ? "border-cream/60" : "border-ink/70")}
             >
-              {open ? "Close" : "Floor plan"}
+              {open ? (
+                "Close"
+              ) : (
+                <>
+                  <span className="sm:hidden">Menu</span>
+                  <span className="hidden sm:inline">Floor plan</span>
+                </>
+              )}
               <span
                 aria-hidden
                 className={cn(
