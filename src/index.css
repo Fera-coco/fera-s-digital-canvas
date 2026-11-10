@@ -277,3 +277,70 @@
 }
 .ticket-stamp { opacity: 0; transform: translateY(-50%) rotate(-12deg) scale(1.6); transition: opacity 0.3s, transform 0.35s cubic-bezier(0.2, 1.6, 0.4, 1); }
 .ticket.is-stamped .ticket-stamp { opacity: 1; transform: translateY(-50%) rotate(-12deg) scale(1); }
+
+/* ---------- The Open Call: whimsical entrances ---------- */
+/* Hidden only while motion is allowed; reduced motion shows everything at once. */
+.motion-ok .oc-reveal:not(.is-seen) { opacity: 0; }
+.oc-reveal.is-seen { animation-duration: 0.9s; animation-fill-mode: both; animation-delay: var(--oc-delay, 0ms); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+.oc-rise.is-seen { animation-name: oc-rise; }
+.oc-drop.is-seen { animation-name: oc-drop; animation-duration: 1.1s; transform-origin: 50% -40px; }
+.oc-stamp.is-seen { animation-name: oc-stamp; animation-duration: 0.55s; animation-timing-function: cubic-bezier(0.2, 1.6, 0.4, 1); }
+.oc-left.is-seen { animation-name: oc-left; }
+.oc-right.is-seen { animation-name: oc-right; }
+.oc-flip.is-seen { animation-name: oc-flip; animation-duration: 1s; transform-origin: 50% 0; }
+.oc-pop.is-seen { animation-name: oc-pop; animation-duration: 0.6s; animation-timing-function: cubic-bezier(0.2, 1.5, 0.4, 1); }
+.oc-swing.is-seen { animation-name: oc-swing; animation-duration: 1.6s; transform-origin: 50% -30px; }
+
+@keyframes oc-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes oc-drop {
+  0% { opacity: 0; transform: translateY(-120px) rotate(-8deg); }
+  55% { opacity: 1; transform: translateY(8px) rotate(4deg); }
+  75% { transform: translateY(-3px) rotate(-2deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes oc-stamp {
+  0% { opacity: 0; transform: scale(2.2) rotate(-24deg); }
+  70% { opacity: 1; transform: scale(0.92) rotate(var(--stamp-rot, -12deg)); }
+  100% { opacity: 1; transform: scale(1) rotate(var(--stamp-rot, -12deg)); }
+}
+@keyframes oc-left { from { opacity: 0; transform: translateX(-60px) rotate(-3deg); } to { opacity: 1; transform: none; } }
+@keyframes oc-right { from { opacity: 0; transform: translateX(60px) rotate(3deg); } to { opacity: 1; transform: none; } }
+@keyframes oc-flip { from { opacity: 0; transform: perspective(900px) rotateX(-75deg); } to { opacity: 1; transform: none; } }
+@keyframes oc-pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+@keyframes oc-swing {
+  0% { opacity: 0; transform: rotate(-16deg); }
+  30% { opacity: 1; transform: rotate(9deg); }
+  55% { transform: rotate(-5deg); }
+  75% { transform: rotate(2deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* idle life */
+@keyframes oc-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes oc-sway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+@keyframes oc-ping { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes oc-type { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+@keyframes oc-twinkle { 0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.3; } 50% { transform: scale(1) rotate(45deg); opacity: 1; } }
+.oc-bob { animation: oc-bob 3.4s ease-in-out infinite; animation-delay: var(--bob-delay, 0s); }
+.oc-sway { animation: oc-sway 4s ease-in-out infinite; transform-origin: 50% 0; animation-delay: var(--bob-delay, 0s); }
+.oc-twinkle { animation: oc-twinkle 2.4s ease-in-out infinite; animation-delay: var(--bob-delay, 0s); }
+.oc-nav-dot::after { content: ""; position: absolute; inset: 0; border-radius: 9999px; background: #f28b79; animation: oc-ping 1.8s ease-out infinite; }
+.oc-nav:hover .oc-nav-dot { transform: scale(1.3); transition: transform 0.3s; }
+
+/* envelope + chat bubble on the apply cards */
+.oc-envelope .flap { transform-box: view-box; transform-origin: 50% 33%; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+.oc-envelope .flap-open { opacity: 0; transform-box: view-box; transform-origin: 50% 33%; transform: scaleY(0); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, opacity 0s 0.2s; }
+.oc-envelope .letter { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s; }
+.group:hover .oc-envelope .flap, .group:focus-visible .oc-envelope .flap { transform: scaleY(0); }
+.group:hover .oc-envelope .flap-open, .group:focus-visible .oc-envelope .flap-open { opacity: 1; transform: none; }
+.group:hover .oc-envelope .letter, .group:focus-visible .oc-envelope .letter { transform: translateY(-22px); }
+.oc-dots span { display: inline-block; animation: oc-type 1.2s ease-in-out infinite; }
+.oc-dots span:nth-child(2) { animation-delay: 0.15s; }
+.oc-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+/* the walking guide on "How it works" */
+.oc-walker { transition: left 0.75s linear; }
+.oc-step-dot { transition: transform 0.4s cubic-bezier(0.2, 1.5, 0.4, 1), background-color 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .oc-reveal.is-seen { animation-delay: 0ms !important; }
+}
