@@ -36,6 +36,7 @@ interface AppRow {
   has_domain: string;
   links: string | null;
   agreed_to_costs: boolean;
+  agreed_to_feature: boolean | null;
   status: Status;
   admin_note: string | null;
   spot: number | null;
@@ -384,13 +385,13 @@ const AppDetail = ({ sb, a, spots, onChange, flash }: { sb: SupabaseClient; a: A
     setBusy(true);
     const { error } = await sb
       .from("open_call_spots")
-      .update({ stage: "Confirmed", business: a.business_name, category: a.category, country: a.country, share_details: false, updated_at: new Date().toISOString() })
+      .update({ stage: "Confirmed", business: a.business_name, category: a.category, country: a.country, share_details: !!a.agreed_to_feature, updated_at: new Date().toISOString() })
       .eq("number", Number(spot));
     if (!error) await sb.from("open_call_applications").update({ status: "Accepted", spot: Number(spot), admin_note: note.trim() || null }).eq("id", a.id);
     setBusy(false);
     if (error) return flash("Couldn't fill that spot. Try again.");
     setStatus("Accepted");
-    flash(`Spot ${spot.padStart(2, "0")} confirmed for ${a.business_name}. Details stay private until you share them.`);
+    flash(`Spot ${spot.padStart(2, "0")} confirmed for ${a.business_name}. Their details now show on the public page; untick Share publicly to hide them.`);
     onChange();
   };
 
@@ -419,6 +420,7 @@ const AppDetail = ({ sb, a, spots, onChange, flash }: { sb: SupabaseClient; a: A
         <Info k="What the business does" v={a.about} wide />
         <Info k="What the website should achieve" v={a.goal} wide />
         <Info k="Agreed to cover domain and hosting" v={a.agreed_to_costs ? "Yes" : "No"} />
+        <Info k="Agreed to be featured in portfolio" v={a.agreed_to_feature ? "Yes" : "No"} />
         <Info k="Received" v={fmtDate(a.created_at)} />
       </dl>
 
@@ -563,7 +565,7 @@ const SpotEditor = ({ sb, s, onChange, flash }: { sb: SupabaseClient; s: SpotRow
         </label>
         <label className="flex items-end gap-3 pb-2">
           <input type="checkbox" className="h-5 w-5 accent-ink" checked={f.share_details} onChange={(e) => set("share_details", e.target.checked)} />
-          <span>Share publicly (the business agreed)</span>
+          <span>Share publicly (applicants agree to this when they apply)</span>
         </label>
         <TextIn label="Business name" v={f.business} on={(v) => set("business", v)} />
         <label className="block">

@@ -135,6 +135,7 @@ export interface Application {
   has_domain: "Yes" | "No" | "Not sure" | "";
   links: string;
   agreed_to_costs: boolean;
+  agreed_to_feature: boolean;
 }
 
 export const emptyApplication: Application = {
@@ -149,6 +150,7 @@ export const emptyApplication: Application = {
   has_domain: "",
   links: "",
   agreed_to_costs: false,
+  agreed_to_feature: false,
 };
 
 export const submitApplication = async (a: Application) => {
@@ -195,6 +197,8 @@ Existing website or social media link:
 
 I understand that website design and development are free, while domain registration, hosting and any applicable third-party costs are my responsibility.
 
+I agree that Fera's Studio can feature the finished website in its portfolio, including my business name, screenshots and link.
+
 Thank you.`;
 
 const whatsappText = `Hello Fera! I'd like to apply for one of the five free website spots under The Open Call initiative.
@@ -205,6 +209,8 @@ Business category:
 What my business does:
 What I need a website for:
 Existing website or social media link:
+
+I'm happy for Fera's Studio to feature the finished website in its portfolio.
 
 I'd love to know the next steps.`;
 

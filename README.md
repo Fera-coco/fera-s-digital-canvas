@@ -42,4 +42,4 @@ Businesses apply through the form on `/open-call`; manage everything at `/open-c
   `insert into public.open_call_admins (user_id) select id from auth.users where email = 'their@email.com';`
 - Without the env values, the page falls back to `public/open-call.json` and the email/WhatsApp cards.
 
-Anyone can submit an application; only admins can read applications or change spots and settings. Confirming an application into a spot sets it to `Confirmed` with details hidden until you tick "Share publicly".
+Applicants must agree to cover domain and hosting and to the finished website being featured in the portfolio. Anyone can submit an application; only admins can read applications or change spots and settings. Confirming an application into a spot sets it to `Confirmed` with "Share publicly" on (untick it to keep details private until launch).

@@ -45,6 +45,7 @@ create table if not exists public.open_call_applications (
   has_domain text not null check (has_domain in ('Yes', 'No', 'Not sure')),
   links text check (links is null or char_length(links) <= 500),
   agreed_to_costs boolean not null check (agreed_to_costs = true),
+  agreed_to_feature boolean not null default false check (agreed_to_feature = true),
   status text not null default 'New'
     check (status in ('New', 'Reviewing', 'Shortlisted', 'Accepted', 'Declined')),
   admin_note text,
@@ -111,6 +112,11 @@ create policy "admins update settings" on public.open_call_settings
   for update to authenticated using (public.is_open_call_admin()) with check (public.is_open_call_admin());
 
 insert into public.open_call_settings (id) values (1) on conflict do nothing;
+
+-- Added later: applicants agree to the website being featured in the portfolio
+alter table public.open_call_applications add column if not exists agreed_to_feature boolean not null default false;
+alter table public.open_call_applications drop constraint if exists open_call_applications_agreed_to_feature_check;
+alter table public.open_call_applications add constraint open_call_applications_agreed_to_feature_check check (agreed_to_feature = true) not valid;
 
 -- Table access for the API roles (row level security above still decides what each can do)
 grant usage on schema public to anon, authenticated;

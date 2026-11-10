@@ -47,7 +47,8 @@ const conditions = [
   "Timelines depend on quick communication and delivery of materials.",
   "Revisions and final scope are agreed before development starts.",
   "Maintenance after launch isn't automatically included.",
-  "Fera's Studio will ask your permission before showcasing your website or any confidential materials.",
+  "In return, Fera's Studio will feature the finished website in its portfolio and on this page: business name, screenshots and link.",
+  "Confidential materials (private documents, internal data) are never shown.",
 ];
 
 const headline: { w: string; i?: boolean }[] = [

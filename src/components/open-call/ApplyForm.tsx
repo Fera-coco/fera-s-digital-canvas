@@ -19,10 +19,11 @@ const validate = (a: Application): Errors => {
   if (!a.goal.trim()) e.goal = "Tell us what you'd like the website to do for you.";
   if (!a.has_domain) e.has_domain = "Let us know if you already have a domain.";
   if (!a.agreed_to_costs) e.agreed_to_costs = "Please confirm you understand who pays for what.";
+  if (!a.agreed_to_feature) e.agreed_to_feature = "The website is free in exchange for being featured, so please confirm this.";
   return e;
 };
 
-const order: (keyof Application)[] = ["contact_name", "email", "phone", "business_name", "country", "category", "about", "goal", "has_domain", "agreed_to_costs"];
+const order: (keyof Application)[] = ["contact_name", "email", "phone", "business_name", "country", "category", "about", "goal", "has_domain", "agreed_to_costs", "agreed_to_feature"];
 
 /* The application, styled as a visitor's card from the exhibition. */
 const ApplyForm = () => {
@@ -168,6 +169,22 @@ const ApplyForm = () => {
           </span>
         </label>
         {errors.agreed_to_costs && <ErrorText id="err-agreed_to_costs">{errors.agreed_to_costs}</ErrorText>}
+        <label className={cn("mt-3 flex cursor-pointer items-start gap-3 rounded-sm p-3", errors.agreed_to_feature ? "bg-coral-soft/50" : "bg-butter-soft")}>
+          <input
+            type="checkbox"
+            name="agreed_to_feature"
+            checked={a.agreed_to_feature}
+            onChange={(e) => set("agreed_to_feature", e.target.checked)}
+            aria-invalid={!!errors.agreed_to_feature}
+            aria-describedby={errors.agreed_to_feature ? "err-agreed_to_feature" : undefined}
+            className="mt-1 h-5 w-5 shrink-0 accent-ink"
+          />
+          <span className="leading-relaxed">
+            I agree that Fera's Studio can feature the finished website in its portfolio and on this page, including my
+            business name, screenshots and link. Confidential materials won't be shown. *
+          </span>
+        </label>
+        {errors.agreed_to_feature && <ErrorText id="err-agreed_to_feature">{errors.agreed_to_feature}</ErrorText>}
       </div>
 
       {phase === "failed" && (
