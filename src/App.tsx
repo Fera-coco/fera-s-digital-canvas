@@ -2,7 +2,8 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Header from "@/components/exhibition/Header";
 import RoomTransition from "@/components/exhibition/RoomTransition";
 import { useReveal, useScrollManager } from "@/hooks/use-exhibition";
-import LobbyPage from "./pages/LobbyPage";
+import TicketDesk from "./pages/TicketDesk";
+import GalleryWalk from "./pages/GalleryWalk";
 import CollectionPage from "./pages/CollectionPage";
 import CuratorPage from "./pages/CuratorPage";
 import StudioPage from "./pages/StudioPage";
@@ -26,7 +27,8 @@ const App = () => (
   <BrowserRouter>
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<LobbyPage />} />
+        <Route path="/" element={<TicketDesk />} />
+        <Route path="/visit" element={<GalleryWalk />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/work/:slug" element={<CaseStudy />} />
         <Route path="/curator" element={<CuratorPage />} />
