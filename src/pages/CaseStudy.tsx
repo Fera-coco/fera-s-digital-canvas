@@ -1,9 +1,11 @@
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import Frame from "@/components/exhibition/Frame";
 import NextRoom from "@/components/exhibition/NextRoom";
 import NotFound from "./NotFound";
 import { exhibits, getExhibit, toneStyles } from "@/content/exhibits";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import { exhibitMeta, type PageMeta } from "@/content/seo";
 import { cn } from "@/lib/utils";
 
 const CaseStudy = () => {
@@ -11,9 +13,10 @@ const CaseStudy = () => {
   const ex = getExhibit(slug);
 
   usePageMeta(
-    ex ? `${ex.title}: ${ex.medium} | Fera's Studio` : "Exhibit not found | Fera's Studio",
-    ex ? ex.summary : "This exhibit isn't in the collection.",
-    ex ? `/work/${ex.slug}` : "/",
+    useMemo<PageMeta>(
+      () => (ex ? exhibitMeta(ex) : { path: "/", title: "Exhibit not found | Fera's Studio", description: "This exhibit isn't in the collection.", heading: "Exhibit not found", noindex: true }),
+      [ex],
+    ),
   );
 
   if (!ex) return <NotFound />;

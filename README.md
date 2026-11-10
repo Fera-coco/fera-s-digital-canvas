@@ -32,3 +32,14 @@ Availability and the five project cards live in `public/open-call.json`. Edit it
 - Keep `shareDetails: false` until the business agrees to be shown; until then only the stage appears.
 - Add a short `note` for progress updates and an `image` (put it in `public/open-call/`).
 - Applications close automatically when all five spots are taken, or set `applicationsOpen` to `false`.
+
+### Applications and admin panel (Supabase)
+Businesses apply through the form on `/open-call`; manage everything at `/open-call/admin`.
+
+- Supabase project: `feras-studio-open-call` (schema from `supabase/open-call.sql`, public sign-ups off).
+- The public URL and publishable key are in `.env.production` (safe to commit; row level security protects the data).
+- Admins are users listed in `open_call_admins`. To add one, create the user in Authentication → Users, then run:
+  `insert into public.open_call_admins (user_id) select id from auth.users where email = 'their@email.com';`
+- Without the env values, the page falls back to `public/open-call.json` and the email/WhatsApp cards.
+
+Applicants must agree to cover domain and hosting and to the finished website being featured in the portfolio. Anyone can submit an application; only admins can read applications or change spots and settings. Confirming an application into a spot sets it to `Confirmed` with "Share publicly" on (untick it to keep details private until launch).

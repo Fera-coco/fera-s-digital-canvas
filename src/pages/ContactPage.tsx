@@ -1,12 +1,9 @@
 import Exit from "@/components/exhibition/Exit";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import { PAGES } from "@/content/seo";
 
 const ContactPage = () => {
-  usePageMeta(
-    "The Exit: contact | Fera's Studio",
-    "Start a project with Fera's Studio. Email Fera about your website, product or idea.",
-    "/contact",
-  );
+  usePageMeta(PAGES.contact);
   return (
     <main id="main">
       <Exit />

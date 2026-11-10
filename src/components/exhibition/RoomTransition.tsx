@@ -26,7 +26,11 @@ const RoomTransition = () => {
     let label = "";
     let color = "#282624";
     const ex = pathname.startsWith("/work/") ? getExhibit(pathname.split("/")[2]) : undefined;
-    if (pathname === OPEN_CALL_PATH) {
+    if (pathname === `${OPEN_CALL_PATH}/admin`) {
+      no = "Staff only";
+      label = "The back office";
+      color = "#EFEADD";
+    } else if (pathname === OPEN_CALL_PATH) {
       no = "Special exhibition";
       label = "The Open Call";
       color = "#F2C3D2";

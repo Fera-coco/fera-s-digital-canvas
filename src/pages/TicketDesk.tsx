@@ -4,6 +4,7 @@ import Visitor from "@/components/gallery/Visitor";
 import { exhibits } from "@/content/exhibits";
 import { getVisitor, loadVisitor, saveVisitor, visitors, type VisitorId } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import { PAGES } from "@/content/seo";
 import { cn } from "@/lib/utils";
 
 /*
@@ -12,11 +13,7 @@ import { cn } from "@/lib/utils";
   Clients in a hurry can skip straight to the work.
 */
 const TicketDesk = () => {
-  usePageMeta(
-    "Fera's Studio: a walk-through exhibition of design & development work",
-    "Pick a visitor and walk through Fera's Studio, an interactive gallery of UX/UI design, product design and web development by Fera (Peace Oluwaferanmi Segun-Babs).",
-    "/",
-  );
+  usePageMeta(PAGES.home);
   const navigate = useNavigate();
   const [picked, setPicked] = useState<VisitorId>(() => loadVisitor() ?? "sketcher");
   const [stamped, setStamped] = useState(false);
