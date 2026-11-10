@@ -34,11 +34,12 @@ Availability and the five project cards live in `public/open-call.json`. Edit it
 - Applications close automatically when all five spots are taken, or set `applicationsOpen` to `false`.
 
 ### Applications and admin panel (Supabase)
-With Supabase connected, businesses apply through the form on `/open-call` and you manage everything at `/open-call/admin`. Without it, the page falls back to `public/open-call.json` and the email/WhatsApp cards.
+Businesses apply through the form on `/open-call`; manage everything at `/open-call/admin`.
 
-1. Create a Supabase project and run `supabase/open-call.sql` in the SQL Editor.
-2. In Authentication → Users, add your admin user (email and password). Turn off public sign-ups in Authentication → Providers → Email.
-3. Run the insert at the bottom of `supabase/open-call.sql` with your admin email.
-4. In Vercel → Settings → Environment Variables, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (Project Settings → API), then redeploy. See `.env.example` for local development.
+- Supabase project: `feras-studio-open-call` (schema from `supabase/open-call.sql`, public sign-ups off).
+- The public URL and publishable key are in `.env.production` (safe to commit; row level security protects the data).
+- Admins are users listed in `open_call_admins`. To add one, create the user in Authentication → Users, then run:
+  `insert into public.open_call_admins (user_id) select id from auth.users where email = 'their@email.com';`
+- Without the env values, the page falls back to `public/open-call.json` and the email/WhatsApp cards.
 
-Anyone can submit an application; only admins can read applications or change spots and settings (row level security). Confirming an application into a spot sets it to `Confirmed` with details hidden until you tick "Share publicly".
+Anyone can submit an application; only admins can read applications or change spots and settings. Confirming an application into a spot sets it to `Confirmed` with details hidden until you tick "Share publicly".

@@ -112,6 +112,15 @@ create policy "admins update settings" on public.open_call_settings
 
 insert into public.open_call_settings (id) values (1) on conflict do nothing;
 
+-- Table access for the API roles (row level security above still decides what each can do)
+grant usage on schema public to anon, authenticated;
+grant insert on public.open_call_applications to anon, authenticated;
+grant select, update, delete on public.open_call_applications to authenticated;
+grant select on public.open_call_spots, public.open_call_settings to anon, authenticated;
+grant update on public.open_call_spots, public.open_call_settings to authenticated;
+grant select on public.open_call_admins to authenticated;
+grant execute on function public.is_open_call_admin() to anon, authenticated;
+
 -- ------------------------------------------------------------------
 --  LAST STEP (after creating your admin user in Authentication -> Users):
 --  insert into public.open_call_admins (user_id)
