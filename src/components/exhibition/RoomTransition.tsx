@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getExhibit } from "@/content/exhibits";
 import { toneStyles } from "@/content/exhibits";
 import { roomFor, WALK } from "@/content/site";
+import { OPEN_CALL_PATH } from "@/content/openCall";
 
 /*
   Walking between rooms.
@@ -25,7 +26,11 @@ const RoomTransition = () => {
     let label = "";
     let color = "#282624";
     const ex = pathname.startsWith("/work/") ? getExhibit(pathname.split("/")[2]) : undefined;
-    if (pathname === WALK.path) {
+    if (pathname === OPEN_CALL_PATH) {
+      no = "Special exhibition";
+      label = "The Open Call";
+      color = "#F2C3D2";
+    } else if (pathname === WALK.path) {
       no = "Now entering";
       label = WALK.label;
       color = WALK.tone;

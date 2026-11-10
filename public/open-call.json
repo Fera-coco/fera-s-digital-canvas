@@ -1,0 +1,22 @@
+{
+  "_howToEdit": "Edit this file to update The Open Call. A spot only counts as taken when its stage is Confirmed or later (Discovery, Design, Development, Review, Ready to launch, Launched). Keep 'Available' or 'Application received' for open spots. Set shareDetails to true only once the business has agreed to be shown publicly; until then only the stage is shown. Set applicationsOpen to false to close applications early (they also close automatically when all five spots are taken).",
+  "applicationsOpen": true,
+  "spots": [
+    { "number": "01", "stage": "Available" },
+    { "number": "02", "stage": "Available" },
+    { "number": "03", "stage": "Available" },
+    { "number": "04", "stage": "Available" },
+    { "number": "05", "stage": "Available" }
+  ],
+  "_exampleConfirmedSpot": {
+    "number": "01",
+    "stage": "Design",
+    "shareDetails": true,
+    "business": "Business name",
+    "category": "Fashion and beauty",
+    "country": "Nigeria",
+    "note": "Website design is complete. Development is now underway.",
+    "image": "/open-call/business-name.webp",
+    "url": ""
+  }
+}

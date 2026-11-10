@@ -10,6 +10,7 @@ import StudioPage from "./pages/StudioPage";
 import ContactPage from "./pages/ContactPage";
 import CaseStudy from "./pages/CaseStudy";
 import NotFound from "./pages/NotFound";
+import OpenCallPage from "./pages/OpenCallPage";
 
 const Layout = () => {
   useScrollManager();
@@ -34,6 +35,7 @@ const App = () => (
         <Route path="/curator" element={<CuratorPage />} />
         <Route path="/studio" element={<StudioPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/open-call" element={<OpenCallPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

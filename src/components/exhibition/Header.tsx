@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { roomFor, rooms, site, WALK } from "@/content/site";
+import { OPEN_CALL_PATH } from "@/content/openCall";
 import { cn } from "@/lib/utils";
 
 /*
@@ -61,9 +62,11 @@ const Header = () => {
 
           {/* Where you are */}
           <p className={cn("label hidden items-center gap-2 md:flex", dark ? "text-cream/60" : "text-stone")} aria-live="polite">
-            <span className="inline-block h-2 w-2 rounded-full" style={{ background: pathname === WALK.path ? WALK.tone : current?.tone ?? "#282624" }} aria-hidden />
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: pathname === WALK.path ? WALK.tone : pathname === OPEN_CALL_PATH ? "#F28B79" : current?.tone ?? "#282624" }} aria-hidden />
             {pathname === WALK.path ? (
               <span className={dark ? "text-cream" : "text-ink"}>{WALK.label}</span>
+            ) : pathname === OPEN_CALL_PATH ? (
+              <span className={dark ? "text-cream" : "text-ink"}>Special exhibition · The Open Call</span>
             ) : current ? (
               <>
                 Room {current.no} <span aria-hidden>·</span> <span className={dark ? "text-cream" : "text-ink"}>{current.label}</span>
@@ -124,9 +127,14 @@ const Header = () => {
         <nav className="gallery-x relative flex flex-1 flex-col justify-center py-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <p className="label text-stone">Floor plan · {rooms.length} rooms · choose where to go</p>
-            <Link to={WALK.path} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full bg-lavender px-4 py-2 text-sm font-medium">
-              Take the gallery walk →
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link to={OPEN_CALL_PATH} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full border border-ink/70 px-4 py-2 text-sm font-medium">
+                Special exhibition: The Open Call
+              </Link>
+              <Link to={WALK.path} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full bg-lavender px-4 py-2 text-sm font-medium">
+                Take the gallery walk →
+              </Link>
+            </div>
           </div>
           <ol className="space-y-1">
             {rooms.map((r, i) => {
