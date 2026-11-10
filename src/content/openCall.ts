@@ -4,6 +4,7 @@
   so spots can be updated without touching this code.
 */
 import { useEffect, useState } from "react";
+import { backendReady, getSupabase } from "@/lib/supabase";
 
 export const OPEN_CALL_PATH = "/open-call";
 export const TOTAL_SPOTS = 5;
@@ -54,16 +55,53 @@ const clean = (raw: unknown): OpenCallData => {
 
 export type OpenCallState = { status: "loading" } | { status: "error" } | { status: "ready"; data: OpenCallData };
 
+type SpotRow = {
+  number: number;
+  stage: string;
+  share_details: boolean;
+  business: string | null;
+  category: string | null;
+  country: string | null;
+  note: string | null;
+  image: string | null;
+  url: string | null;
+};
+
+export const rowToSpot = (r: SpotRow): Spot => ({
+  number: String(r.number).padStart(2, "0"),
+  stage: (STAGES.includes(r.stage as Stage) ? r.stage : "Available") as Stage,
+  shareDetails: r.share_details,
+  business: r.business ?? undefined,
+  category: r.category ?? undefined,
+  country: r.country ?? undefined,
+  note: r.note ?? undefined,
+  image: r.image ?? undefined,
+  url: r.url ?? undefined,
+});
+
+/* Live from Supabase when connected; otherwise from public/open-call.json. */
+const loadFromBackend = async (): Promise<OpenCallData> => {
+  const sb = await getSupabase();
+  const [spots, settings] = await Promise.all([
+    sb.from("open_call_spots").select("*").order("number"),
+    sb.from("open_call_settings").select("applications_open").eq("id", 1).maybeSingle(),
+  ]);
+  if (spots.error) throw spots.error;
+  return clean({ applicationsOpen: settings.data?.applications_open !== false, spots: (spots.data as SpotRow[]).map(rowToSpot) });
+};
+
+const loadFromFile = async (): Promise<OpenCallData> => {
+  const r = await fetch("/open-call.json", { cache: "no-cache" });
+  if (!r.ok) throw new Error(String(r.status));
+  return clean(await r.json());
+};
+
 export function useOpenCall(): OpenCallState {
   const [state, setState] = useState<OpenCallState>({ status: "loading" });
   useEffect(() => {
     let alive = true;
-    fetch("/open-call.json", { cache: "no-cache" })
-      .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
-        return r.json();
-      })
-      .then((json) => alive && setState({ status: "ready", data: clean(json) }))
+    (backendReady ? loadFromBackend().catch(loadFromFile) : loadFromFile())
+      .then((data) => alive && setState({ status: "ready", data }))
       .catch(() => alive && setState({ status: "error" }));
     return () => {
       alive = false;
@@ -71,6 +109,63 @@ export function useOpenCall(): OpenCallState {
   }, []);
   return state;
 }
+
+/* ---------- Applying on the website ---------- */
+
+export const CATEGORIES = [
+  "Fashion and beauty",
+  "Retail",
+  "Food and hospitality",
+  "Service provider",
+  "Health and wellness",
+  "Education and training",
+  "Events and creative",
+  "Other",
+] as const;
+
+export interface Application {
+  business_name: string;
+  contact_name: string;
+  email: string;
+  phone: string;
+  country: "Nigeria" | "Benin Republic" | "";
+  category: string;
+  about: string;
+  goal: string;
+  has_domain: "Yes" | "No" | "Not sure" | "";
+  links: string;
+  agreed_to_costs: boolean;
+}
+
+export const emptyApplication: Application = {
+  business_name: "",
+  contact_name: "",
+  email: "",
+  phone: "",
+  country: "",
+  category: "",
+  about: "",
+  goal: "",
+  has_domain: "",
+  links: "",
+  agreed_to_costs: false,
+};
+
+export const submitApplication = async (a: Application) => {
+  const sb = await getSupabase();
+  const { error } = await sb.from("open_call_applications").insert({
+    ...a,
+    business_name: a.business_name.trim(),
+    contact_name: a.contact_name.trim(),
+    email: a.email.trim(),
+    phone: a.phone.trim(),
+    category: a.category.trim(),
+    about: a.about.trim(),
+    goal: a.goal.trim(),
+    links: a.links.trim() || null,
+  });
+  if (error) throw error;
+};
 
 export const summarise = (d: OpenCallData) => {
   const taken = d.spots.filter((s) => isTaken(s.stage)).length;

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import NextRoom from "@/components/exhibition/NextRoom";
 import Visitor from "@/components/gallery/Visitor";
 import Reveal from "@/components/open-call/Reveal";
+import ApplyForm from "@/components/open-call/ApplyForm";
+import { backendReady } from "@/lib/supabase";
 import { useSeen } from "@/hooks/use-seen";
 import {
   APPLY_EMAIL,
@@ -76,13 +78,13 @@ const OpenCallPage = () => {
     <main id="main" className="flex min-h-[100svh] flex-col overflow-x-hidden">
       {/* ---------- A. The invitation ---------- */}
       <section aria-labelledby="oc-title" className="relative pt-[var(--header-h)]">
-        <div className="gallery-x grid grid-cols-1 gap-12 pb-20 pt-12 lg:grid-cols-12 lg:items-end lg:pb-28 lg:pt-20">
-          <div className="lg:col-span-8">
+        <div className="gallery-x grid grid-cols-1 gap-12 pb-20 pt-12 lg:min-h-[calc(100svh-var(--header-h))] lg:grid-cols-12 lg:items-center lg:pb-24 lg:pt-12">
+          <div className="lg:col-span-7">
             <p className="label rise flex flex-wrap items-center gap-x-3 gap-y-1 text-stone">
               <span className="oc-nav-dot relative inline-flex h-2 w-2 rounded-full bg-coral" aria-hidden />
               Fera's Studio presents <span aria-hidden>·</span> A special open call
             </p>
-            <h1 id="oc-title" className="display mt-6 text-[clamp(3rem,8.4vw,7.8rem)]">
+            <h1 id="oc-title" className="display mt-6 text-[clamp(3rem,7.2vw,7rem)]">
               {headline.map((h, k) => (
                 <span key={k} className="rise inline-block" style={{ "--delay": `${80 + k * 90}ms` } as React.CSSProperties}>
                   {h.i ? <em className="italic">{h.w}</em> : h.w}
@@ -105,19 +107,20 @@ const OpenCallPage = () => {
             </div>
           </div>
 
-          {/* The special-exhibition ticket, hung on a pin */}
-          <div className="lg:col-span-4">
-            <div className="relative mx-auto max-w-sm pt-10">
-              <span aria-hidden className="absolute left-1/2 top-0 h-10 w-px -translate-x-1/2 bg-ink/40" />
-              <span aria-hidden className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-coral ring-2 ring-cream" />
+          {/* The special-exhibition notice board: a hung ticket, the five spots, and a curious visitor */}
+          <div className="lg:col-span-5">
+            <div className="relative mx-auto max-w-md pb-6 pt-10 lg:max-w-none lg:pl-10">
+              <span aria-hidden className="absolute left-1/2 top-0 h-10 w-px -translate-x-1/2 bg-ink/40 lg:left-[calc(50%+1.25rem)]" />
+              <span aria-hidden className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-coral ring-2 ring-cream lg:left-[calc(50%+1.25rem)]" />
               <Reveal kind="swing" delay={500}>
                 <div className="oc-sway" style={{ "--bob-delay": "2s" } as React.CSSProperties}>
                   <div className="relative">
-                    <div className="ticket bg-paper p-7">
+                    <div className="ticket bg-paper p-7 md:p-9">
                       <p className="label text-stone">Special exhibition · Nigeria &amp; Benin</p>
-                      <p className="display mt-3 text-5xl">The Open Call</p>
+                      <p className="display mt-3 text-[clamp(3rem,5vw,4.4rem)]">The Open Call</p>
+                      <p className="mt-2 text-sm text-stone">A Fera's Studio initiative for growing businesses.</p>
                       <div className="my-5 border-t-2 border-dashed border-ink/20" />
-                      <dl className="grid grid-cols-2 gap-4 text-sm">
+                      <dl className="grid grid-cols-3 gap-4 text-sm">
                         <div>
                           <dt className="label text-stone">Admits</dt>
                           <dd className="mt-1 font-serif text-3xl">Five</dd>
@@ -126,7 +129,24 @@ const OpenCallPage = () => {
                           <dt className="label text-stone">Dev fee</dt>
                           <dd className="mt-1 font-serif text-3xl">Waived</dd>
                         </div>
+                        <div>
+                          <dt className="label text-stone">Status</dt>
+                          <dd className="mt-1 font-serif text-3xl">{sum ? (sum.open ? "Open" : "Closed") : "…"}</dd>
+                        </div>
                       </dl>
+                      <div className="mt-6 border-t-2 border-dashed border-ink/20 pt-5">
+                        <p className="label text-stone">{sum ? `${pad(sum.remaining)} of ${pad(TOTAL_SPOTS)} spots left` : "Checking the spots…"}</p>
+                        <ol className="mt-3 flex gap-2" aria-hidden>
+                          {(data?.spots ?? Array.from({ length: TOTAL_SPOTS }, () => null)).map((sp, k) => {
+                            const t = sp ? isTaken(sp.stage) : false;
+                            return (
+                              <Reveal as="li" kind="pop" delay={1100 + k * 120} key={k} className={cn("flex h-11 flex-1 items-center justify-center rounded-sm font-mono text-xs", t ? "bg-ink text-cream" : "bg-mint/60 text-mint-ink")}>
+                                {pad(k + 1)}
+                              </Reveal>
+                            );
+                          })}
+                        </ol>
+                      </div>
                     </div>
                     <span aria-hidden className="absolute -right-3 -top-4">
                       <Reveal as="span" kind="stamp" delay={1500} className="block rounded-md border-2 border-coral bg-cream px-3 py-1 font-mono text-xs uppercase tracking-widest text-coral-ink" style={{ "--stamp-rot": "14deg" } as React.CSSProperties}>
@@ -136,9 +156,18 @@ const OpenCallPage = () => {
                   </div>
                 </div>
               </Reveal>
-              <Sparkle className="-left-4 top-16 h-5 w-5 text-butter" delay="0s" />
-              <Sparkle className="-right-2 bottom-6 h-4 w-4 text-lavender" delay="0.8s" />
-              <Sparkle className="-bottom-6 left-10 h-3 w-3 text-coral" delay="1.4s" />
+              {/* a visitor stops to read the notice */}
+              <Reveal kind="pop" delay={1900} className="absolute -bottom-6 -left-4 hidden sm:block lg:-left-8" aria-hidden>
+                <div className="relative">
+                  <span className="absolute -top-12 right-6 whitespace-nowrap rounded-2xl rounded-br-sm border-2 border-ink bg-paper px-3 py-1.5 font-serif text-lg italic">Only five?!</span>
+                  <div className="oc-bob">
+                    <Visitor v={guide} className="h-36 w-auto" />
+                  </div>
+                </div>
+              </Reveal>
+              <Sparkle className="-right-2 top-24 h-5 w-5 text-butter" delay="0s" />
+              <Sparkle className="-right-4 bottom-10 h-4 w-4 text-lavender" delay="0.8s" />
+              <Sparkle className="left-1/2 -bottom-4 h-3 w-3 text-coral" delay="1.4s" />
             </div>
           </div>
         </div>
@@ -177,15 +206,15 @@ const OpenCallPage = () => {
         <div className="gallery-x grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHead no="03" id="who-title" title="Who can apply?" />
-            <p className="sr-only">Businesses based in Nigeria and Benin Republic.</p>
+            <p className="sr-only">Businesses in Nigeria and businesses in Benin Republic.</p>
             <div className="mt-8 flex flex-wrap items-center gap-5" aria-hidden>
-              <Reveal kind="stamp" delay={150} className="flex h-36 w-36 flex-col items-center justify-center rounded-full border-[3px] border-mint-ink bg-mint/50 text-center text-mint-ink" style={{ "--stamp-rot": "-8deg" } as React.CSSProperties}>
-                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Admitted from</span>
+              <Reveal kind="stamp" delay={150} className="flex h-40 w-40 flex-col items-center justify-center rounded-full border-[3px] border-mint-ink bg-mint/50 text-center text-mint-ink" style={{ "--stamp-rot": "-8deg" } as React.CSSProperties}>
+                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Businesses in</span>
                 <span className="font-serif text-3xl leading-none">Nigeria</span>
                 <span className="mt-1 font-mono text-[0.6rem]">★ ★ ★</span>
               </Reveal>
-              <Reveal kind="stamp" delay={450} className="flex h-36 w-36 flex-col items-center justify-center rounded-full border-[3px] border-coral-ink bg-coral-soft/60 text-center text-coral-ink" style={{ "--stamp-rot": "7deg" } as React.CSSProperties}>
-                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Admitted from</span>
+              <Reveal kind="stamp" delay={450} className="flex h-40 w-40 flex-col items-center justify-center rounded-full border-[3px] border-coral-ink bg-coral-soft/60 text-center text-coral-ink" style={{ "--stamp-rot": "7deg" } as React.CSSProperties}>
+                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Businesses in</span>
                 <span className="font-serif text-[1.65rem] leading-none">Benin Republic</span>
                 <span className="mt-1 font-mono text-[0.6rem]">★ ★ ★</span>
               </Reveal>
@@ -281,6 +310,17 @@ const OpenCallPage = () => {
               </p>
             </div>
           ) : (
+            backendReady ? (
+              <>
+                <Reveal as="p" delay={100} className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/85">
+                  Fill in your application card below. It goes straight to Fera's Studio, and we'll reach you on the email
+                  or number you give us.
+                </Reveal>
+                <Reveal kind="rise" delay={200}>
+                  <ApplyForm />
+                </Reveal>
+              </>
+            ) : (
             <>
               <Reveal as="p" delay={100} className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/85">
                 Pick whichever is easier. Both open a message with the questions already filled in, so you just add your
@@ -319,6 +359,7 @@ const OpenCallPage = () => {
                 above changes only when a business is confirmed.
               </Reveal>
             </>
+            )
           )}
         </div>
       </section>

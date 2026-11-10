@@ -32,3 +32,13 @@ Availability and the five project cards live in `public/open-call.json`. Edit it
 - Keep `shareDetails: false` until the business agrees to be shown; until then only the stage appears.
 - Add a short `note` for progress updates and an `image` (put it in `public/open-call/`).
 - Applications close automatically when all five spots are taken, or set `applicationsOpen` to `false`.
+
+### Applications and admin panel (Supabase)
+With Supabase connected, businesses apply through the form on `/open-call` and you manage everything at `/open-call/admin`. Without it, the page falls back to `public/open-call.json` and the email/WhatsApp cards.
+
+1. Create a Supabase project and run `supabase/open-call.sql` in the SQL Editor.
+2. In Authentication → Users, add your admin user (email and password). Turn off public sign-ups in Authentication → Providers → Email.
+3. Run the insert at the bottom of `supabase/open-call.sql` with your admin email.
+4. In Vercel → Settings → Environment Variables, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (Project Settings → API), then redeploy. See `.env.example` for local development.
+
+Anyone can submit an application; only admins can read applications or change spots and settings (row level security). Confirming an application into a spot sets it to `Confirmed` with details hidden until you tick "Share publicly".
