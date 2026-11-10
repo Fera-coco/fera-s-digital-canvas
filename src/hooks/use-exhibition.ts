@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { site } from "@/content/site";
+import { abs, imageAltFor, imageFor, jsonLd, type PageMeta } from "@/content/seo";
 
 /** Reveal anything marked data-reveal as it enters the viewport. */
 export function useReveal() {
@@ -42,17 +42,34 @@ export function useScrollManager() {
 }
 
 /** Per-page title, description and canonical URL for SEO and sharing. */
-export function usePageMeta(title: string, description: string, path = "/") {
+/** Keep the document head in step with the room: title, description, canonical, social cards and structured data. */
+export function usePageMeta(m: PageMeta) {
   useEffect(() => {
-    document.title = title;
-    const set = (selector: string, attr: string, value: string) => {
-      const el = document.head.querySelector(selector);
-      if (el) el.setAttribute(attr, value);
+    document.title = m.title;
+    const head = document.head;
+    const meta = (key: "name" | "property", id: string, value: string) => {
+      let el = head.querySelector<HTMLMetaElement>(`meta[${key}="${id}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(key, id);
+        head.appendChild(el);
+      }
+      el.setAttribute("content", value);
     };
-    set('meta[name="description"]', "content", description);
-    set('meta[property="og:title"]', "content", title);
-    set('meta[property="og:description"]', "content", description);
-    set('meta[property="og:url"]', "content", `${site.url}${path}`);
-    set('link[rel="canonical"]', "href", `${site.url}${path}`);
-  }, [title, description, path]);
+    const url = abs(m.path);
+    meta("name", "description", m.description);
+    meta("name", "robots", m.noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large");
+    meta("property", "og:title", m.title);
+    meta("property", "og:description", m.description);
+    meta("property", "og:url", url);
+    meta("property", "og:type", m.type ?? "website");
+    meta("property", "og:image", imageFor(m));
+    meta("property", "og:image:alt", imageAltFor(m));
+    meta("name", "twitter:title", m.title);
+    meta("name", "twitter:description", m.description);
+    meta("name", "twitter:image", imageFor(m));
+    head.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
+    const ld = head.querySelector<HTMLScriptElement>("script#ld-json");
+    if (ld) ld.textContent = JSON.stringify(jsonLd(m));
+  }, [m]);
 }

@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { backendReady, getSupabase } from "@/lib/supabase";
 import { CATEGORIES, rowToSpot, STAGES, type Stage } from "@/content/openCall";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import type { PageMeta } from "@/content/seo";
+
+const ADMIN_META: PageMeta = { path: "/open-call/admin", title: "Back office · The Open Call | Fera's Studio", description: "Staff only.", heading: "Back office", noindex: true };
 import { cn } from "@/lib/utils";
 
 /*
@@ -61,14 +64,7 @@ const waLink = (phone: string, name: string) =>
 /* ------------------------------------------------------------------ */
 
 const OpenCallAdmin = () => {
-  usePageMeta("Back office · The Open Call | Fera's Studio", "Staff only.", "/open-call/admin");
-  useEffect(() => {
-    const m = document.createElement("meta");
-    m.name = "robots";
-    m.content = "noindex, nofollow";
-    document.head.appendChild(m);
-    return () => m.remove();
-  }, []);
+  usePageMeta(ADMIN_META);
 
   const [sb, setSb] = useState<SupabaseClient | null>(null);
   const [session, setSession] = useState<Session | null>(null);

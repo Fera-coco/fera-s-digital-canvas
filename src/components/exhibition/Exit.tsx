@@ -76,7 +76,6 @@ const Exit = () => {
           <p>
             © {new Date().getFullYear()} {site.studio} · {site.person}
           </p>
-          <p className="label">Set in Instrument Serif, DM Sans &amp; Space Mono · Designed and built by Fera</p>
           <Link to="/" className="link-underline self-start md:self-auto">
             ← Back to the entrance
           </Link>

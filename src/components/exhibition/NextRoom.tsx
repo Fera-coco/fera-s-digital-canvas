@@ -31,7 +31,6 @@ const NextRoom = ({ from }: { from: RoomId }) => {
         <p>
           © {new Date().getFullYear()} {site.studio} · {site.person}
         </p>
-        <p className="label">Set in Instrument Serif, DM Sans &amp; Space Mono · Designed and built by Fera</p>
         <a href={`mailto:${site.email}`} className="link-underline">
           {site.email}
         </a>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import { PAGES } from "@/content/seo";
 import NextRoom from "@/components/exhibition/NextRoom";
 import { cn } from "@/lib/utils";
 
@@ -23,11 +24,7 @@ const ITEM = 52; // px height of one name in the reel
   Mobile: the exhibits hang one after another.
 */
 const CollectionPage = () => {
-  usePageMeta(
-    "The Collection: selected work | Fera's Studio",
-    "Selected exhibits from Fera's Studio: product design, UX/UI case studies, websites and web apps by Fera.",
-    "/collection",
-  );
+  usePageMeta(PAGES.collection);
 
   const [filter, setFilter] = useState<Filter>("all");
   const list = useMemo(() => exhibits.filter((e) => matches(e, filter)), [filter]);

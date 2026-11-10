@@ -1,4 +1,5 @@
-import { cloneElement, useRef, useState, type ReactNode } from "react";
+import { cloneElement, useEffect, useRef, useState, type ReactNode } from "react";
+import type { FormProgress } from "@/components/open-call/ApplyCompanion";
 import { applyByWhatsApp, APPLY_EMAIL, CATEGORIES, emptyApplication, submitApplication, type Application } from "@/content/openCall";
 import { cn } from "@/lib/utils";
 
@@ -23,16 +24,37 @@ const validate = (a: Application): Errors => {
   return e;
 };
 
-const order: (keyof Application)[] = ["contact_name", "email", "phone", "business_name", "country", "category", "about", "goal", "has_domain", "agreed_to_costs", "agreed_to_feature"];
+const order: (keyof Application)[] = [
+  "contact_name",
+  "email",
+  "phone",
+  "business_name",
+  "country",
+  "category",
+  "about",
+  "goal",
+  "has_domain",
+  "agreed_to_costs",
+  "agreed_to_feature",
+];
 
 /* The application, styled as a visitor's card from the exhibition. */
-const ApplyForm = () => {
+const ApplyForm = ({ onProgress }: { onProgress?: (p: FormProgress) => void }) => {
   const [a, setA] = useState<Application>(emptyApplication);
   const [errors, setErrors] = useState<Errors>({});
   const [phase, setPhase] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const [trap, setTrap] = useState(""); // honeypot: real people never see this field
   const formRef = useRef<HTMLFormElement>(null);
   const doneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const e = validate(a);
+    onProgress?.({
+      filled: order.filter((k) => !e[k]).length,
+      total: order.length,
+      phase,
+    });
+  }, [a, phase, onProgress]);
 
   const set = <K extends keyof Application>(k: K, v: Application[K]) => {
     setA((p) => ({ ...p, [k]: v }));
@@ -60,17 +82,20 @@ const ApplyForm = () => {
 
   if (phase === "sent") {
     return (
-      <div ref={doneRef} tabIndex={-1} role="status" className="ticket relative mt-10 max-w-3xl bg-paper p-8 outline-none md:p-12">
+      <div ref={doneRef} tabIndex={-1} role="status" className="ticket relative bg-paper p-8 outline-none md:p-12">
         <p className="label text-stone">Application received · The Open Call</p>
         <p className="display mt-4 text-[clamp(2.4rem,5vw,4rem)]">
           Thank you, <em className="italic">{a.contact_name.trim().split(" ")[0]}</em>.
         </p>
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-ink/85">
-          {a.business_name.trim()}'s application is now with Fera's Studio. Applying doesn't reserve a spot: Fera will
-          review it and reply by email or WhatsApp. The counter above only changes when a business is confirmed.
+          {a.business_name.trim()}'s application is now with Fera's Studio. Applying doesn't reserve a spot: Fera will review it and reply
+          by email or WhatsApp. The counter above only changes when a business is confirmed.
         </p>
         <span aria-hidden className="absolute right-6 top-6 md:right-10 md:top-10">
-          <span className="oc-reveal oc-stamp is-seen block rounded-md border-2 border-coral px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-coral-ink" style={{ "--stamp-rot": "-10deg" } as React.CSSProperties}>
+          <span
+            className="oc-reveal oc-stamp is-seen block rounded-md border-2 border-coral px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-coral-ink"
+            style={{ "--stamp-rot": "-10deg" } as React.CSSProperties}
+          >
             Received
           </span>
         </span>
@@ -79,7 +104,7 @@ const ApplyForm = () => {
   }
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} noValidate className="frame relative mt-10 max-w-4xl bg-paper p-6 md:p-10">
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="frame relative bg-paper p-6 md:p-10">
       <p className="label text-stone">Application card · all fields marked * are required</p>
 
       {/* honeypot */}
@@ -92,26 +117,67 @@ const ApplyForm = () => {
 
       <Group title="About you" no="i.">
         <Field label="Your name *" name="contact_name" error={errors.contact_name}>
-          <input name="contact_name" autoComplete="name" value={a.contact_name} onChange={(e) => set("contact_name", e.target.value)} maxLength={120} />
+          <input
+            name="contact_name"
+            autoComplete="name"
+            value={a.contact_name}
+            onChange={(e) => set("contact_name", e.target.value)}
+            maxLength={120}
+          />
         </Field>
         <Field label="Email *" name="email" error={errors.email}>
-          <input name="email" type="email" autoComplete="email" inputMode="email" value={a.email} onChange={(e) => set("email", e.target.value)} maxLength={200} />
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            value={a.email}
+            onChange={(e) => set("email", e.target.value)}
+            maxLength={200}
+          />
         </Field>
         <Field label="Phone or WhatsApp number *" name="phone" error={errors.phone} hint="Include your country code, e.g. +234 or +229.">
-          <input name="phone" type="tel" autoComplete="tel" inputMode="tel" value={a.phone} onChange={(e) => set("phone", e.target.value)} maxLength={30} />
+          <input
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            value={a.phone}
+            onChange={(e) => set("phone", e.target.value)}
+            maxLength={30}
+          />
         </Field>
       </Group>
 
       <Group title="About your business" no="ii.">
         <Field label="Business name *" name="business_name" error={errors.business_name}>
-          <input name="business_name" autoComplete="organization" value={a.business_name} onChange={(e) => set("business_name", e.target.value)} maxLength={120} />
+          <input
+            name="business_name"
+            autoComplete="organization"
+            value={a.business_name}
+            onChange={(e) => set("business_name", e.target.value)}
+            maxLength={120}
+          />
         </Field>
         <fieldset className="sm:col-span-2" aria-describedby={errors.country ? "err-country" : undefined}>
           <legend className="label mb-3 text-stone">Where is your business based? *</legend>
           <div className="flex flex-wrap gap-3">
             {(["Nigeria", "Benin Republic"] as const).map((c) => (
-              <label key={c} className={cn("cursor-pointer rounded-full border-2 px-5 py-2.5 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2", a.country === c ? "border-ink bg-ink text-cream" : "border-ink/25 hover:border-ink")}>
-                <input type="radio" name="country" value={c} checked={a.country === c} onChange={() => set("country", c)} className="sr-only" />
+              <label
+                key={c}
+                className={cn(
+                  "cursor-pointer rounded-full border-2 px-5 py-2.5 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
+                  a.country === c ? "border-ink bg-ink text-cream" : "border-ink/25 hover:border-ink",
+                )}
+              >
+                <input
+                  type="radio"
+                  name="country"
+                  value={c}
+                  checked={a.country === c}
+                  onChange={() => set("country", c)}
+                  className="sr-only"
+                />
                 Business in {c}
               </label>
             ))}
@@ -127,7 +193,13 @@ const ApplyForm = () => {
           </select>
         </Field>
         <Field label="Existing website or social media link" name="links" hint="Optional. Instagram, TikTok, Facebook or an old site.">
-          <input name="links" value={a.links} onChange={(e) => set("links", e.target.value)} maxLength={500} placeholder="instagram.com/yourbusiness" />
+          <input
+            name="links"
+            value={a.links}
+            onChange={(e) => set("links", e.target.value)}
+            maxLength={500}
+            placeholder="instagram.com/yourbusiness"
+          />
         </Field>
         <Field label="What does your business do? *" name="about" error={errors.about} wide>
           <textarea name="about" rows={3} value={a.about} onChange={(e) => set("about", e.target.value)} maxLength={1500} />
@@ -135,15 +207,34 @@ const ApplyForm = () => {
       </Group>
 
       <Group title="Your website" no="iii.">
-        <Field label="What would you like your website to achieve? *" name="goal" error={errors.goal} wide hint="For example: show my products, take enquiries, look more professional.">
+        <Field
+          label="What would you like your website to achieve? *"
+          name="goal"
+          error={errors.goal}
+          wide
+          hint="For example: show my products, take enquiries, look more professional."
+        >
           <textarea name="goal" rows={3} value={a.goal} onChange={(e) => set("goal", e.target.value)} maxLength={1500} />
         </Field>
         <fieldset className="sm:col-span-2" aria-describedby={errors.has_domain ? "err-has_domain" : undefined}>
           <legend className="label mb-3 text-stone">Do you already have a domain (like yourbusiness.com)? *</legend>
           <div className="flex flex-wrap gap-2">
             {(["Yes", "No", "Not sure"] as const).map((d) => (
-              <label key={d} className={cn("cursor-pointer rounded-full border-2 px-4 py-2 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2", a.has_domain === d ? "border-ink bg-ink text-cream" : "border-ink/25 hover:border-ink")}>
-                <input type="radio" name="has_domain" value={d} checked={a.has_domain === d} onChange={() => set("has_domain", d)} className="sr-only" />
+              <label
+                key={d}
+                className={cn(
+                  "cursor-pointer rounded-full border-2 px-4 py-2 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
+                  a.has_domain === d ? "border-ink bg-ink text-cream" : "border-ink/25 hover:border-ink",
+                )}
+              >
+                <input
+                  type="radio"
+                  name="has_domain"
+                  value={d}
+                  checked={a.has_domain === d}
+                  onChange={() => set("has_domain", d)}
+                  className="sr-only"
+                />
                 {d}
               </label>
             ))}
@@ -153,7 +244,12 @@ const ApplyForm = () => {
       </Group>
 
       <div className="mt-8 border-t border-ink/10 pt-6">
-        <label className={cn("flex cursor-pointer items-start gap-3 rounded-sm p-3", errors.agreed_to_costs ? "bg-coral-soft/50" : "bg-butter-soft")}>
+        <label
+          className={cn(
+            "flex cursor-pointer items-start gap-3 rounded-sm p-3",
+            errors.agreed_to_costs ? "bg-coral-soft/50" : "bg-butter-soft",
+          )}
+        >
           <input
             type="checkbox"
             name="agreed_to_costs"
@@ -164,12 +260,17 @@ const ApplyForm = () => {
             className="mt-1 h-5 w-5 shrink-0 accent-ink"
           />
           <span className="leading-relaxed">
-            I understand that website design and development are free, while domain registration, hosting and any agreed
-            third-party costs are my responsibility. *
+            I understand that website design and development are free, while domain registration, hosting and any agreed third-party costs
+            are my responsibility. *
           </span>
         </label>
         {errors.agreed_to_costs && <ErrorText id="err-agreed_to_costs">{errors.agreed_to_costs}</ErrorText>}
-        <label className={cn("mt-3 flex cursor-pointer items-start gap-3 rounded-sm p-3", errors.agreed_to_feature ? "bg-coral-soft/50" : "bg-butter-soft")}>
+        <label
+          className={cn(
+            "mt-3 flex cursor-pointer items-start gap-3 rounded-sm p-3",
+            errors.agreed_to_feature ? "bg-coral-soft/50" : "bg-butter-soft",
+          )}
+        >
           <input
             type="checkbox"
             name="agreed_to_feature"
@@ -180,8 +281,8 @@ const ApplyForm = () => {
             className="mt-1 h-5 w-5 shrink-0 accent-ink"
           />
           <span className="leading-relaxed">
-            I agree that Fera's Studio can feature the finished website in its portfolio and on this page, including my
-            business name, screenshots and link. Confidential materials won't be shown. *
+            I agree that Fera's Studio can feature the finished website in its portfolio and on this page, including my business name,
+            screenshots and link. Confidential materials won't be shown. *
           </span>
         </label>
         {errors.agreed_to_feature && <ErrorText id="err-agreed_to_feature">{errors.agreed_to_feature}</ErrorText>}
@@ -189,14 +290,25 @@ const ApplyForm = () => {
 
       {phase === "failed" && (
         <div role="alert" className="mt-6 rounded-sm border-l-4 border-coral bg-coral-soft/40 p-4 text-sm leading-relaxed">
-          <strong className="font-semibold">Your application didn't go through.</strong> Please check your connection and try
-          again, or apply by <a href={applyByWhatsApp} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">WhatsApp</a> or{" "}
-          <a href={`mailto:${APPLY_EMAIL}`} className="underline underline-offset-2">email</a> instead.
+          <strong className="font-semibold">Your application didn't go through.</strong> Please check your connection and try again, or
+          apply by{" "}
+          <a href={applyByWhatsApp} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+            WhatsApp
+          </a>{" "}
+          or{" "}
+          <a href={`mailto:${APPLY_EMAIL}`} className="underline underline-offset-2">
+            email
+          </a>{" "}
+          instead.
         </div>
       )}
 
       <div className="mt-8 flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={phase === "sending"} className="btn-ink px-8 py-4 text-base disabled:cursor-wait disabled:opacity-70">
+        <button
+          type="submit"
+          disabled={phase === "sending"}
+          className="btn-ink px-8 py-4 text-base disabled:cursor-wait disabled:opacity-70"
+        >
           {phase === "sending" ? "Sending your application…" : "Submit application"} <span aria-hidden>→</span>
         </button>
         <a href={applyByWhatsApp} target="_blank" rel="noopener noreferrer" className="link-underline text-sm text-stone">
@@ -218,7 +330,21 @@ const Group = ({ title, no, children }: { title: string; no: string; children: R
   </section>
 );
 
-const Field = ({ label, name, error, hint, wide, children }: { label: string; name: string; error?: string; hint?: string; wide?: boolean; children: React.ReactElement<Record<string, unknown>> }) => {
+const Field = ({
+  label,
+  name,
+  error,
+  hint,
+  wide,
+  children,
+}: {
+  label: string;
+  name: string;
+  error?: string;
+  hint?: string;
+  wide?: boolean;
+  children: React.ReactElement<Record<string, unknown>>;
+}) => {
   const id = `f-${name}`;
   const desc = [hint && `${id}-hint`, error && `err-${name}`].filter(Boolean).join(" ") || undefined;
   const control = cloneElement(children, {

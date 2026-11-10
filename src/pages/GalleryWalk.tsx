@@ -7,6 +7,7 @@ import { commissions } from "@/content/services";
 import { mailto, site } from "@/content/site";
 import { getVisitor, loadVisitor } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import { PAGES } from "@/content/seo";
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -83,11 +84,7 @@ const roomAt = (x: number) => ROOMS.findIndex((r) => x >= r.from && x < r.to);
 /* ------------------------------------------------------------------ */
 
 const GalleryWalk = () => {
-  usePageMeta(
-    "The gallery walk | Fera's Studio",
-    "Walk through Fera's Studio: an interactive gallery of UX/UI design, product design and web development work.",
-    "/visit",
-  );
+  usePageMeta(PAGES.visit);
   const navigate = useNavigate();
   const visitor = useMemo(() => getVisitor(loadVisitor()), []);
 

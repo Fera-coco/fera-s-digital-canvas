@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-exhibition";
+import type { PageMeta } from "@/content/seo";
+
+const NOT_FOUND: PageMeta = { path: "/", title: "Room not found | Fera's Studio", description: "This room isn't part of the exhibition.", heading: "Room not found", noindex: true };
 
 const NotFound = () => {
-  usePageMeta("Room not found | Fera's Studio", "This room isn't part of the exhibition.", "/");
+  usePageMeta(NOT_FOUND);
   return (
     <main id="main" className="gallery-x flex min-h-[100svh] flex-col justify-center pt-[var(--header-h)]">
       <p className="label text-stone">Error 404 · Gallery closed</p>
