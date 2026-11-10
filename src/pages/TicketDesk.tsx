@@ -69,6 +69,14 @@ const TicketDesk = () => {
               Start a project
             </Link>
           </div>
+          <Link
+            to="/open-call"
+            className="rise mt-8 inline-flex items-center gap-3 rounded-full border border-ink/20 py-1.5 pl-1.5 pr-4 text-sm transition-colors hover:border-ink"
+            style={{ "--delay": "320ms" } as React.CSSProperties}
+          >
+            <span className="rounded-full bg-blush px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-widest">Now on</span>
+            The Open Call: five free websites for businesses →
+          </Link>
         </div>
 
         {/* Visitors + ticket */}

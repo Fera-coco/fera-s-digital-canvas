@@ -25,3 +25,10 @@ npm install
 npm run dev
 npm run build
 ```
+
+## The Open Call (`/open-call`)
+Availability and the five project cards live in `public/open-call.json`. Edit it on GitHub and commit; Vercel redeploys automatically.
+- A spot only counts as taken at stage `Confirmed` or later (`Discovery`, `Design`, `Development`, `Review`, `Ready to launch`, `Launched`).
+- Keep `shareDetails: false` until the business agrees to be shown; until then only the stage appears.
+- Add a short `note` for progress updates and an `image` (put it in `public/open-call/`).
+- Applications close automatically when all five spots are taken, or set `applicationsOpen` to `false`.
