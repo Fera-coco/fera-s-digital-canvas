@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Light only, always: opt out of browser and OS forced dark modes */
+:root {
+  color-scheme: only light;
+}
+html,
+body {
+  background-color: #F7F4EC;
+  color: #282624;
+}
+
+
 /*
   Fera's Studio: The Digital Exhibition
   Warm cream walls carry the experience. Pastels appear only where they
