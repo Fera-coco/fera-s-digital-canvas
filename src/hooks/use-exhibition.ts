@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { abs, imageAltFor, imageFor, jsonLd, type PageMeta } from "@/content/seo";
+import { t } from "@/lib/i18n";
 
 /** Reveal anything marked data-reveal as it enters the viewport. */
 export function useReveal() {
@@ -45,7 +46,9 @@ export function useScrollManager() {
 /** Keep the document head in step with the room: title, description, canonical, social cards and structured data. */
 export function usePageMeta(m: PageMeta) {
   useEffect(() => {
-    document.title = m.title;
+    const title = t(m.title);
+    const description = t(m.description);
+    document.title = title;
     const head = document.head;
     const meta = (key: "name" | "property", id: string, value: string) => {
       let el = head.querySelector<HTMLMetaElement>(`meta[${key}="${id}"]`);
@@ -57,16 +60,16 @@ export function usePageMeta(m: PageMeta) {
       el.setAttribute("content", value);
     };
     const url = abs(m.path);
-    meta("name", "description", m.description);
+    meta("name", "description", description);
     meta("name", "robots", m.noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large");
-    meta("property", "og:title", m.title);
-    meta("property", "og:description", m.description);
+    meta("property", "og:title", title);
+    meta("property", "og:description", description);
     meta("property", "og:url", url);
     meta("property", "og:type", m.type ?? "website");
     meta("property", "og:image", imageFor(m));
     meta("property", "og:image:alt", imageAltFor(m));
-    meta("name", "twitter:title", m.title);
-    meta("name", "twitter:description", m.description);
+    meta("name", "twitter:title", title);
+    meta("name", "twitter:description", description);
     meta("name", "twitter:image", imageFor(m));
     head.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
     const ld = head.querySelector<HTMLScriptElement>("script#ld-json");

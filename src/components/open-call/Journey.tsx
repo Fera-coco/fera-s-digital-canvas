@@ -3,6 +3,7 @@ import Visitor from "@/components/gallery/Visitor";
 import { useSeen } from "@/hooks/use-seen";
 import type { VisitorType } from "@/content/visitors";
 import { cn } from "@/lib/utils";
+import { t } from "@/lib/i18n";
 
 export interface JourneyStep {
   title: string; // heading in the panel
@@ -114,7 +115,7 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
             )}
             style={{ animationDelay: walking ? `${WALK_MS - 200}ms` : "0ms" }}
           >
-            {step.bubble}
+            {t(step.bubble)}
           </span>
           <Visitor v={guide} walking={walking} facing={facing} className="h-32 w-auto" />
         </div>
@@ -145,7 +146,7 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
                 >
                   {pad(i + 1)}
                 </span>
-                <span className="leading-snug">{s.label}</span>
+                <span className="leading-snug">{t(s.label)}</span>
               </button>
             </li>
           );
@@ -161,27 +162,27 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
       >
         <div className="md:col-span-8" aria-live="polite">
           <p className="label text-stone">
-            Stop {pad(at + 1)} of {pad(steps.length)}
+            {t("Stop")} {pad(at + 1)} {t("of")} {pad(steps.length)}
           </p>
           <p key={at} className="oc-reveal oc-rise is-seen display mt-2 text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.05]">
-            {step.title}
+            {t(step.title)}
           </p>
           <p
             key={`d${at}`}
             className="oc-reveal oc-rise is-seen mt-3 max-w-xl leading-relaxed text-ink/85"
             style={{ animationDelay: "120ms" }}
           >
-            {step.detail}
+            {t(step.detail)}
           </p>
         </div>
         <div className="flex items-center gap-2 md:col-span-4 md:justify-end">
-          <button type="button" onClick={() => go(at - 1)} disabled={at === 0} className="journey-btn" aria-label="Previous stop">
+          <button type="button" onClick={() => go(at - 1)} disabled={at === 0} className="journey-btn" aria-label={t("Previous stop")}>
             ←
           </button>
           <button type="button" onClick={toggle} className="journey-btn min-w-[9.5rem] px-4" aria-pressed={playing}>
-            {playing ? "Pause the walk" : at >= last ? "Walk it again" : "Walk me through"}
+            {playing ? t("Pause the walk") : at >= last ? t("Walk it again") : t("Walk me through")}
           </button>
-          <button type="button" onClick={() => go(at + 1)} disabled={at === last} className="journey-btn" aria-label="Next stop">
+          <button type="button" onClick={() => go(at + 1)} disabled={at === last} className="journey-btn" aria-label={t("Next stop")}>
             →
           </button>
         </div>

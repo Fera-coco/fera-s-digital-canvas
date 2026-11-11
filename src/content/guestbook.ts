@@ -22,8 +22,8 @@ export const validateSignature = (name: string, note: string) => {
   const n = name.trim();
   const t = note.trim();
   if (!n) return "Add your name to sign.";
-  if (n.length > NAME_MAX) return `Keep your name under ${NAME_MAX} characters.`;
-  if (t.length > NOTE_MAX) return `Keep your note under ${NOTE_MAX} characters.`;
+  if (n.length > NAME_MAX) return "Keep your name under 40 characters.";
+  if (t.length > NOTE_MAX) return "Keep your note under 140 characters.";
   if (LINK.test(n) || LINK.test(t)) return "Links can't go in the visitors' book.";
   return null;
 };
