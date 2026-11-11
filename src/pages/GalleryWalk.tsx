@@ -813,6 +813,33 @@ const Desk = ({ x }: { x: number }) => (
 /*  Dialogs                                                            */
 /* ------------------------------------------------------------------ */
 
+/* Every look-closer card ends with the same way back to the walk, with the visitor's slip count. */
+const BackToWalk = ({ onClose }: { onClose: () => void }) => {
+  const v = getVisitor(loadVisitor());
+  const j = getJourney(v.id);
+  const done = loadProgress(v.id).filter((id) => j.route.includes(id)).length;
+  return (
+    <div className="mt-8 border-t border-dashed border-ink/20 pt-5">
+      <button
+        type="button"
+        onClick={onClose}
+        className="flex items-center gap-2 rounded-full bg-ink py-1.5 pl-1.5 pr-4 text-sm text-cream shadow-sm transition-transform duration-300 ease-gallery hover:-translate-y-0.5"
+      >
+        <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: v.top }}>
+          <Visitor v={v} className="h-7 w-auto" />
+        </span>
+        <span aria-hidden>←</span>
+        {t("Back to the gallery walk")}
+        {j.route.length > 0 && (
+          <span className="nums rounded-full bg-cream/15 px-2 py-0.5 font-mono text-[11px]">
+            🎟️ {done}/{j.route.length}
+          </span>
+        )}
+      </button>
+    </div>
+  );
+};
+
 const Dialog = ({ label, onClose, children, tone }: { label: string; onClose: () => void; children: React.ReactNode; tone?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
@@ -862,6 +889,7 @@ const Dialog = ({ label, onClose, children, tone }: { label: string; onClose: ()
           {t("Keep walking ×")}
         </button>
         {t(children)}
+        <BackToWalk onClose={onClose} />
       </div>
     </div>
   );
@@ -911,9 +939,6 @@ const SpotDialog = ({
           <Link to={`/work/${ex.slug}`} className="btn-ink">
             {t("Walk into the exhibit")} <span aria-hidden>→</span>
           </Link>
-          <button type="button" onClick={onClose} className="btn-line">
-            {t("Keep walking")}
-          </button>
         </div>
       </Dialog>
     );
@@ -940,9 +965,6 @@ const SpotDialog = ({
               <Link to="/curator" className="btn-ink">
                 {t("Read the curator's room")} <span aria-hidden>→</span>
               </Link>
-              <button type="button" onClick={onClose} className="btn-line">
-                {t("Keep walking")}
-              </button>
             </div>
           </div>
         </div>
