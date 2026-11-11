@@ -56,9 +56,9 @@ const Header = () => {
           dark ? "bg-ink/85 text-cream" : "bg-cream/85 text-ink",
         )}
       >
-        <div className="gallery-x grid h-full grid-cols-[1fr_auto] items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
+        <div className="gallery-x grid h-full grid-cols-[1fr_auto] items-center gap-3 max-sm:px-4 sm:gap-6 md:grid-cols-[1fr_auto_1fr]">
           <Link to="/" className="flex items-baseline gap-2 justify-self-start" aria-label={tf("{studio}, back to the entrance", { studio: site.studio })}>
-            <span className="display text-[1.65rem] leading-none">{t("Fera's Studio")}</span>
+            <span className="display text-[1.4rem] leading-none sm:text-[1.65rem]">{t("Fera's Studio")}</span>
           </Link>
 
           {/* Where you are */}
@@ -84,12 +84,12 @@ const Header = () => {
             )}
           </p>
 
-          <div className="flex items-center gap-2 justify-self-end sm:gap-3">
+          <div className="flex items-center gap-1.5 justify-self-end sm:gap-3">
             <Link
               to={OPEN_CALL_PATH}
               aria-current={pathname === OPEN_CALL_PATH ? "page" : undefined}
               className={cn(
-                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-3 pr-4 text-sm transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
+                "oc-nav group relative inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border py-2 pl-2.5 pr-3 text-[13px] sm:gap-2 sm:pl-3 sm:pr-4 sm:text-sm transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
                 pathname === OPEN_CALL_PATH
                   ? "border-ink bg-blush font-medium text-ink"
                   : dark
@@ -97,7 +97,7 @@ const Header = () => {
                     : "border-ink/70 text-ink",
               )}
             >
-              <span aria-hidden className="oc-nav-dot relative flex h-2 w-2">
+              <span aria-hidden className="oc-nav-dot relative flex h-2 w-2 max-[359px]:hidden">
                 <span className="absolute inset-0 rounded-full bg-coral" />
               </span>
               {t("Open Call")}
@@ -109,9 +109,7 @@ const Header = () => {
             >
               {t("Start a project")}
             </Link>
-            <span className="hidden sm:contents">
-              <LangSwitch dark={dark} />
-            </span>
+            <LangSwitch dark={dark} />
             <button
               ref={toggleRef}
               type="button"
@@ -119,7 +117,7 @@ const Header = () => {
               aria-controls="floor-plan"
               onClick={() => setOpen((o) => !o)}
               className={cn(
-                "group flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-4 pr-3 text-sm",
+                "group flex items-center gap-1 whitespace-nowrap rounded-full border py-2 pl-3 pr-2 text-[13px] sm:gap-2 sm:pl-4 sm:pr-3 sm:text-sm",
                 dark ? "border-cream/60" : "border-ink/70",
               )}
             >
@@ -134,7 +132,7 @@ const Header = () => {
               <span
                 aria-hidden
                 className={cn(
-                  "flex h-5 w-5 items-center justify-center text-lg leading-none transition-transform duration-500 ease-gallery",
+                  "flex h-5 w-5 items-center justify-center text-lg leading-none max-[359px]:hidden transition-transform duration-500 ease-gallery",
                   open ? "rotate-45" : "group-hover:rotate-90",
                 )}
               >
@@ -168,9 +166,6 @@ const Header = () => {
         />
         <nav className="gallery-x relative flex flex-1 flex-col justify-center py-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <div className="mb-3 sm:hidden">
-              <LangSwitch dark={false} />
-            </div>
             <p className="label text-stone">
               {t("Floor plan ·")} {t(rooms.length)} {t("rooms · choose where to go")}
             </p>
@@ -258,7 +253,7 @@ const LangSwitch = ({ dark }: { dark: boolean }) => {
       lang={next}
       aria-label={next === "fr" ? "Voir le site en français" : "View the site in English"}
       className={cn(
-        "inline-flex h-9 items-center gap-1 rounded-full border px-2.5 font-mono text-[11px] uppercase tracking-wider",
+        "inline-flex h-8 shrink-0 items-center gap-1 rounded-full border px-2 font-mono sm:h-9 sm:px-2.5 text-[11px] uppercase tracking-wider",
         dark ? "border-cream/60 text-cream" : "border-ink/70 text-ink",
       )}
     >
