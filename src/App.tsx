@@ -1,7 +1,9 @@
-import { lazy, Suspense } from "react";
+import { Fragment, lazy, Suspense, useEffect, useState } from "react";
+import { getLang, onLangChange } from "@/lib/i18n";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Header from "@/components/exhibition/Header";
 import RoomTransition from "@/components/exhibition/RoomTransition";
+import ReturnToWalk from "@/components/exhibition/ReturnToWalk";
 import { useReveal, useScrollManager } from "@/hooks/use-exhibition";
 import TicketDesk from "./pages/TicketDesk";
 import GalleryWalk from "./pages/GalleryWalk";
@@ -15,7 +17,7 @@ import OpenCallPage from "./pages/OpenCallPage";
 
 const OpenCallAdmin = lazy(() => import("./pages/OpenCallAdmin"));
 
-const Layout = () => {
+const Rooms = () => {
   useScrollManager();
   useReveal();
   return (
@@ -23,7 +25,19 @@ const Layout = () => {
       <Header />
       <RoomTransition />
       <Outlet />
+      <ReturnToWalk />
     </>
+  );
+};
+
+const Layout = () => {
+  const [lang, setLang] = useState(getLang());
+  useEffect(() => onLangChange(setLang), []);
+  // Switching language remounts the rooms so every string is re-read in the new language.
+  return (
+    <Fragment key={lang}>
+      <Rooms />
+    </Fragment>
   );
 };
 

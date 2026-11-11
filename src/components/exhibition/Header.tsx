@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { roomFor, rooms, site, WALK } from "@/content/site";
 import { OPEN_CALL_PATH } from "@/content/openCall";
 import { cn } from "@/lib/utils";
+import { applyLang, getLang, t, tf } from "@/lib/i18n";
 
 /*
   The gallery's signage.
@@ -46,7 +47,7 @@ const Header = () => {
         href="#main"
         className="sr-only z-[90] rounded-full bg-ink px-4 py-2 text-sm text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
-        Skip to content
+        {t("Skip to content")}
       </a>
 
       <header
@@ -56,23 +57,30 @@ const Header = () => {
         )}
       >
         <div className="gallery-x grid h-full grid-cols-[1fr_auto] items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
-          <Link to="/" className="flex items-baseline gap-2 justify-self-start" aria-label={`${site.studio}, back to the entrance`}>
-            <span className="display text-[1.65rem] leading-none">Fera's Studio</span>
+          <Link to="/" className="flex items-baseline gap-2 justify-self-start" aria-label={tf("{studio}, back to the entrance", { studio: site.studio })}>
+            <span className="display text-[1.65rem] leading-none">{t("Fera's Studio")}</span>
           </Link>
 
           {/* Where you are */}
           <p className={cn("label hidden items-center gap-2 md:flex", dark ? "text-cream/60" : "text-stone")} aria-live="polite">
-            <span className="inline-block h-2 w-2 rounded-full" style={{ background: pathname === WALK.path ? WALK.tone : pathname === OPEN_CALL_PATH ? "#F28B79" : current?.tone ?? "#282624" }} aria-hidden />
+            <span
+              className="inline-block h-2 w-2 rounded-full"
+              style={{
+                background: pathname === WALK.path ? WALK.tone : pathname === OPEN_CALL_PATH ? "#F28B79" : (current?.tone ?? "#282624"),
+              }}
+              aria-hidden
+            />
             {pathname === WALK.path ? (
-              <span className={dark ? "text-cream" : "text-ink"}>{WALK.label}</span>
+              <span className={dark ? "text-cream" : "text-ink"}>{t(WALK.label)}</span>
             ) : pathname === OPEN_CALL_PATH ? (
-              <span className={dark ? "text-cream" : "text-ink"}>Special exhibition · The Open Call</span>
+              <span className={dark ? "text-cream" : "text-ink"}>{t("Special exhibition · The Open Call")}</span>
             ) : current ? (
               <>
-                Room {current.no} <span aria-hidden>·</span> <span className={dark ? "text-cream" : "text-ink"}>{current.label}</span>
+                {t("Room")} {t(current.no)} <span aria-hidden>·</span>{" "}
+                <span className={dark ? "text-cream" : "text-ink"}>{t(current.label)}</span>
               </>
             ) : (
-              "Off the floor plan"
+              t("Off the floor plan")
             )}
           </p>
 
@@ -81,36 +89,46 @@ const Header = () => {
               to={OPEN_CALL_PATH}
               aria-current={pathname === OPEN_CALL_PATH ? "page" : undefined}
               className={cn(
-                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full py-2 pl-3 pr-4 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
-                pathname === OPEN_CALL_PATH ? "bg-blush ring-2 ring-ink" : "bg-blush",
+                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-3 pr-4 text-sm transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
+                pathname === OPEN_CALL_PATH
+                  ? "border-ink bg-blush font-medium text-ink"
+                  : dark
+                    ? "border-cream/60 text-cream"
+                    : "border-ink/70 text-ink",
               )}
             >
               <span aria-hidden className="oc-nav-dot relative flex h-2 w-2">
                 <span className="absolute inset-0 rounded-full bg-coral" />
               </span>
-              Open Call
-              <span className="sr-only">: five free websites</span>
+              {t("Open Call")}
+              <span className="sr-only">{t(": five free websites")}</span>
             </Link>
             <Link
               to="/contact"
               className="hidden whitespace-nowrap rounded-full bg-coral px-4 py-2 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5 xl:inline-flex"
             >
-              Start a project
+              {t("Start a project")}
             </Link>
+            <span className="hidden sm:contents">
+              <LangSwitch dark={dark} />
+            </span>
             <button
               ref={toggleRef}
               type="button"
               aria-expanded={open}
               aria-controls="floor-plan"
               onClick={() => setOpen((o) => !o)}
-              className={cn("group flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-4 pr-3 text-sm", dark ? "border-cream/60" : "border-ink/70")}
+              className={cn(
+                "group flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-4 pr-3 text-sm",
+                dark ? "border-cream/60" : "border-ink/70",
+              )}
             >
               {open ? (
-                "Close"
+                t("Close")
               ) : (
                 <>
-                  <span className="sm:hidden">Menu</span>
-                  <span className="hidden sm:inline">Floor plan</span>
+                  <span className="sm:hidden">{t("Menu")}</span>
+                  <span className="hidden sm:inline">{t("Floor plan")}</span>
                 </>
               )}
               <span
@@ -132,7 +150,7 @@ const Header = () => {
         id="floor-plan"
         role="dialog"
         aria-modal="true"
-        aria-label="Floor plan"
+        aria-label={t("Floor plan")}
         aria-hidden={!open}
         className={cn(
           "fixed inset-0 z-50 flex flex-col bg-cream pt-[var(--header-h)] transition-[clip-path,visibility] duration-700 ease-gallery",
@@ -143,17 +161,35 @@ const Header = () => {
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 transition-opacity duration-500"
-          style={{ background: accent ? `radial-gradient(60% 70% at 75% 55%, ${accent}66, transparent 70%)` : undefined, opacity: accent ? 1 : 0 }}
+          style={{
+            background: accent ? `radial-gradient(60% 70% at 75% 55%, ${accent}66, transparent 70%)` : undefined,
+            opacity: accent ? 1 : 0,
+          }}
         />
         <nav className="gallery-x relative flex flex-1 flex-col justify-center py-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <p className="label text-stone">Floor plan · {rooms.length} rooms · choose where to go</p>
+            <div className="mb-3 sm:hidden">
+              <LangSwitch dark={false} />
+            </div>
+            <p className="label text-stone">
+              {t("Floor plan ·")} {t(rooms.length)} {t("rooms · choose where to go")}
+            </p>
             <div className="flex flex-wrap gap-2">
-              <Link to={OPEN_CALL_PATH} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full border border-ink/70 px-4 py-2 text-sm font-medium">
-                Special exhibition: The Open Call
+              <Link
+                to={OPEN_CALL_PATH}
+                tabIndex={open ? 0 : -1}
+                onClick={() => setOpen(false)}
+                className="rounded-full border border-ink/70 px-4 py-2 text-sm font-medium"
+              >
+                {t("Special exhibition: The Open Call")}
               </Link>
-              <Link to={WALK.path} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="rounded-full bg-lavender px-4 py-2 text-sm font-medium">
-                Take the gallery walk →
+              <Link
+                to={WALK.path}
+                tabIndex={open ? 0 : -1}
+                onClick={() => setOpen(false)}
+                className="rounded-full bg-lavender px-4 py-2 text-sm font-medium"
+              >
+                {t("Take the gallery walk →")}
               </Link>
             </div>
           </div>
@@ -175,17 +211,17 @@ const Header = () => {
                     className="group grid grid-cols-[3rem_1fr] items-center gap-3 sm:grid-cols-[4.5rem_1fr_auto]"
                     style={{ transitionDelay: open ? `${120 + i * 50}ms` : "0ms" }}
                   >
-                    <span className="font-mono text-xs text-stone">{r.no}</span>
+                    <span className="font-mono text-xs text-stone">{t(r.no)}</span>
                     <span
                       className={cn(
                         "display text-[clamp(2.8rem,9vw,7.5rem)] transition-[transform,color] duration-500 ease-gallery group-hover:translate-x-3 group-focus-visible:translate-x-3",
                         here && "italic",
                       )}
                     >
-                      {r.label}
+                      {t(r.label)}
                     </span>
                     <span className="label hidden max-w-[16rem] text-right text-stone opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
-                      {here ? "You are here" : r.blurb}
+                      {here ? t("You are here") : t(r.blurb)}
                     </span>
                   </Link>
                 </li>
@@ -194,20 +230,42 @@ const Header = () => {
           </ol>
         </nav>
         <div className="gallery-x relative flex flex-col gap-3 border-t border-ink/15 py-5 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-stone">Open for freelance projects and collaborations.</p>
+          <p className="text-stone">{t("Open for freelance projects and collaborations.")}</p>
           <div className="flex flex-wrap items-center gap-5">
             <a href={`mailto:${site.email}`} tabIndex={open ? 0 : -1} className="link-underline">
-              {site.email}
+              {t(site.email)}
             </a>
             {site.socials.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1} className="link-underline">
-                {s.label} ↗
+                {t(s.label)} ↗
               </a>
             ))}
           </div>
         </div>
       </div>
     </>
+  );
+};
+
+/* EN / FR: one tap switches the whole site, and the choice is remembered. */
+const LangSwitch = ({ dark }: { dark: boolean }) => {
+  const lang = getLang();
+  const next = lang === "en" ? "fr" : "en";
+  return (
+    <button
+      type="button"
+      onClick={() => applyLang(next, true)}
+      lang={next}
+      aria-label={next === "fr" ? "Voir le site en français" : "View the site in English"}
+      className={cn(
+        "inline-flex h-9 items-center gap-1 rounded-full border px-2.5 font-mono text-[11px] uppercase tracking-wider",
+        dark ? "border-cream/60 text-cream" : "border-ink/70 text-ink",
+      )}
+    >
+      <span className={lang === "en" ? "font-bold" : "opacity-50"}>EN</span>
+      <span aria-hidden className="opacity-40">/</span>
+      <span className={lang === "fr" ? "font-bold" : "opacity-50"}>FR</span>
+    </button>
   );
 };
 

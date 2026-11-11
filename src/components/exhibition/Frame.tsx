@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Shot, Tone } from "@/content/exhibits";
 import { toneStyles } from "@/content/exhibits";
 import { cn } from "@/lib/utils";
+import { t } from "@/lib/i18n";
 
 interface FrameProps {
   shot: Shot;
@@ -23,7 +24,7 @@ const Frame = ({ shot, tone, matted, caption, className, imgClassName, priority,
       <div className={cn("frame", mat, matted && "p-3 sm:p-5")}>
         <img
           src={shot.src}
-          alt={shot.alt}
+          alt={t(shot.alt)}
           width={shot.width}
           height={shot.height}
           loading={priority ? "eager" : "lazy"}
@@ -33,7 +34,7 @@ const Frame = ({ shot, tone, matted, caption, className, imgClassName, priority,
           className={cn("bg-wall", imgClassName)}
         />
       </div>
-      {caption && <figcaption className="mt-3 max-w-prose text-sm leading-relaxed text-stone">{shot.caption}</figcaption>}
+      {caption && <figcaption className="mt-3 max-w-prose text-sm leading-relaxed text-stone">{t(shot.caption)}</figcaption>}
     </figure>
   );
 };

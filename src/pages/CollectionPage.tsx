@@ -5,6 +5,7 @@ import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
 import NextRoom from "@/components/exhibition/NextRoom";
 import { cn } from "@/lib/utils";
+import { t, tf } from "@/lib/i18n";
 
 type Filter = "all" | "design" | "build";
 
@@ -39,10 +40,7 @@ const CollectionPage = () => {
   const activeRef = useRef(0);
   activeRef.current = active;
 
-  const step = useCallback(
-    (dir: number) => setActive((a) => Math.min(list.length - 1, Math.max(0, a + dir))),
-    [list.length],
-  );
+  const step = useCallback((dir: number) => setActive((a) => Math.min(list.length - 1, Math.max(0, a + dir))), [list.length]);
 
   // wheel turns the reel (desktop stage only)
   useEffect(() => {
@@ -92,10 +90,10 @@ const CollectionPage = () => {
       <div
         ref={stageRef}
         className="relative hidden h-[100svh] overflow-hidden pt-[var(--header-h)] lg:block"
-        aria-label="The Collection"
+        aria-label={t("The Collection")}
         role="region"
       >
-        <h1 className="sr-only">The Collection</h1>
+        <h1 className="sr-only">{t("The Collection")}</h1>
 
         <div className="gallery-x relative grid h-full grid-cols-12 gap-8">
           {/* Reel of names */}
@@ -107,7 +105,7 @@ const CollectionPage = () => {
               style={{ background: tone.hex }}
             />
             <ol
-              aria-label="Exhibits"
+              aria-label={t("Exhibits")}
               className="absolute right-0 top-[44%] w-full transition-transform duration-700 ease-gallery"
               style={{ transform: `translateY(${-active * ITEM - ITEM / 2}px)` }}
             >
@@ -122,8 +120,10 @@ const CollectionPage = () => {
                       className="flex h-full w-full items-center justify-end gap-4 text-right transition-[opacity,color] duration-500"
                       style={{ opacity: i === active ? 1 : Math.max(0.12, 0.55 - d * 0.14) }}
                     >
-                      <span className="font-mono text-xs text-ink/70">{e.no}</span>
-                      <span className={cn("truncate font-serif text-[1.9rem] leading-none", i === active && "italic")}>{e.short ?? e.title}</span>
+                      <span className="font-mono text-xs text-ink/70">{t(e.no)}</span>
+                      <span className={cn("truncate font-serif text-[1.9rem] leading-none", i === active && "italic")}>
+                        {e.short ?? e.title}
+                      </span>
                     </button>
                   </li>
                 );
@@ -133,14 +133,14 @@ const CollectionPage = () => {
 
           {/* The wall: the active exhibit */}
           <div className="relative col-span-5 flex items-start pt-[6vh]">
-            <Link to={`/work/${ex.slug}`} className="group relative block w-full" aria-label={`Walk into exhibit ${ex.no}: ${ex.title}`}>
+            <Link to={`/work/${ex.slug}`} className="group relative block w-full" aria-label={tf("Walk into exhibit {no}: {title}", { no: ex.no, title: t(ex.title) })}>
               <div className={cn("frame p-4 transition-colors duration-500 xl:p-6", tone.bg)}>
                 <div className="relative aspect-[16/10] overflow-hidden bg-wall">
                   {list.map((e, i) => (
                     <img
                       key={e.slug}
                       src={e.cover.src}
-                      alt={i === active ? e.cover.alt : ""}
+                      alt={i === active ? t(e.cover.alt) : ""}
                       width={e.cover.width}
                       height={e.cover.height}
                       loading={i < 3 ? "eager" : "lazy"}
@@ -155,48 +155,63 @@ const CollectionPage = () => {
               </div>
               {ex.badge && (
                 <span className="absolute -left-6 -top-7 flex h-24 w-24 rotate-[-10deg] flex-col items-center justify-center rounded-full bg-ink text-center text-cream shadow-lg">
-                  <span className="font-serif text-2xl leading-none">{ex.badge.value}</span>
-                  <span className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.12em] text-peach">{ex.badge.label}</span>
+                  <span className="font-serif text-2xl leading-none">{t(ex.badge.value)}</span>
+                  <span className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.12em] text-peach">{t(ex.badge.label)}</span>
                 </span>
               )}
-              <span className="label absolute -bottom-7 left-0 text-stone">{ex.cover.caption}</span>
+              <span className="label absolute -bottom-7 left-0 text-stone">{t(ex.cover.caption)}</span>
             </Link>
           </div>
 
           {/* Wall label */}
           <div className="col-span-3 flex flex-col pt-[6vh]" aria-live="polite">
             <p className="label text-stone">
-              Exhibit {ex.no} of {String(exhibits.length).padStart(2, "0")}
+              {t("Exhibit")} {t(ex.no)} {t("of")} {String(exhibits.length).padStart(2, "0")}
               {ex.year ? ` · ${ex.year}` : ""}
             </p>
-            <h2 className={cn("display mt-3", ex.title.length > 18 ? "text-[2.4rem]" : "text-[3.4rem]")}>{ex.title}</h2>
-            <p className={cn("label mt-3", tone.ink)}>{ex.medium}</p>
-            <p className="mt-4 text-[0.98rem] leading-relaxed text-ink/85">{ex.summary}</p>
-            <ul className="mt-4 flex flex-wrap gap-2" aria-label="Status">
+            <h2 className={cn("display mt-3", ex.title.length > 18 ? "text-[2.4rem]" : "text-[3.4rem]")}>{t(ex.title)}</h2>
+            <p className={cn("label mt-3", tone.ink)}>{t(ex.medium)}</p>
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-ink/85">{t(ex.summary)}</p>
+            <ul className="mt-4 flex flex-wrap gap-2" aria-label={t("Status")}>
               {ex.statuses.map((s) => (
                 <li key={s} className={cn("rounded-full px-3 py-1 text-xs font-medium", tone.soft)}>
-                  {s}
+                  {t(s)}
                 </li>
               ))}
             </ul>
             <Link to={`/work/${ex.slug}`} className="btn-ink mt-6 self-start">
-              Walk into the exhibit <span aria-hidden>→</span>
+              {t("Walk into the exhibit")} <span aria-hidden>→</span>
             </Link>
             <div className="mt-auto flex items-center gap-2 pb-[22vh] text-stone">
-              <button type="button" onClick={() => step(-1)} disabled={active === 0} aria-label="Previous exhibit" className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/30 disabled:opacity-30">
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                disabled={active === 0}
+                aria-label={t("Previous exhibit")}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/30 disabled:opacity-30"
+              >
                 ↑
               </button>
-              <button type="button" onClick={() => step(1)} disabled={active === list.length - 1} aria-label="Next exhibit" className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/30 disabled:opacity-30">
+              <button
+                type="button"
+                onClick={() => step(1)}
+                disabled={active === list.length - 1}
+                aria-label={t("Next exhibit")}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/30 disabled:opacity-30"
+              >
                 ↓
               </button>
-              <span className="label ml-2">Scroll or use the arrow keys · keep scrolling to leave</span>
+              <span className="label ml-2">{t("Scroll or use the arrow keys · keep scrolling to leave")}</span>
             </div>
           </div>
         </div>
 
         {/* Room title, cropped by the floor */}
-        <p aria-hidden className="display pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 whitespace-nowrap text-[clamp(6rem,13vw,13rem)]">
-          The <em className="italic">Collection</em>
+        <p
+          aria-hidden
+          className="display pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 whitespace-nowrap text-[clamp(6rem,13vw,13rem)]"
+        >
+          {t("The")} <em className="italic">{t("Collection")}</em>
         </p>
 
         {/* Filter discs */}
@@ -208,7 +223,7 @@ const CollectionPage = () => {
               type="button"
               aria-pressed={on}
               onClick={() => setFilter(on ? "all" : f.id)}
-              title={f.note}
+              title={t(f.note)}
               className={cn(
                 "absolute bottom-0 flex h-44 w-44 translate-y-1/3 items-start justify-center rounded-full border border-ink pt-10 font-serif text-2xl transition-[transform,background-color] duration-500 ease-gallery hover:translate-y-[28%]",
                 i === 0 ? "-left-10 bg-butter" : "-right-10 bg-mint",
@@ -216,8 +231,8 @@ const CollectionPage = () => {
               )}
             >
               <span>
-                {f.label}
-                {on && <span className="block font-mono text-[0.6rem] uppercase tracking-widest">tap for all</span>}
+                {t(f.label)}
+                {on && <span className="block font-mono text-[0.6rem] uppercase tracking-widest">{t("tap for all")}</span>}
               </span>
             </button>
           );
@@ -227,53 +242,60 @@ const CollectionPage = () => {
       {/* ---------- Mobile and tablet: hung one after another ---------- */}
       <div className="pt-[var(--header-h)] lg:hidden">
         <header className="gallery-x pb-10 pt-10">
-          <p className="label text-stone">Room 01</p>
+          <p className="label text-stone">{t("Room 01")}</p>
           <h1 className="display mt-3 text-[clamp(3.4rem,15vw,6rem)]">
-            The <em className="italic">Collection</em>
+            {t("The")} <em className="italic">{t("Collection")}</em>
           </h1>
-          <div className="mt-6 flex gap-2" role="group" aria-label="Filter exhibits">
+          <div className="mt-6 flex gap-2" role="group" aria-label={t("Filter exhibits")}>
             {[{ id: "all" as Filter, label: "All" }, ...filters].map((f) => (
               <button
                 key={f.id}
                 type="button"
                 aria-pressed={filter === f.id}
                 onClick={() => setFilter(f.id)}
-                className={cn(
-                  "rounded-full border px-4 py-2 text-sm",
-                  filter === f.id ? "border-ink bg-ink text-cream" : "border-ink/30",
-                )}
+                className={cn("rounded-full border px-4 py-2 text-sm", filter === f.id ? "border-ink bg-ink text-cream" : "border-ink/30")}
               >
-                {f.label}
+                {t(f.label)}
               </button>
             ))}
           </div>
         </header>
         <ol className="gallery-x space-y-16 pb-20">
           {list.map((e) => {
-            const t = toneStyles[e.tone];
+            const ts = toneStyles[e.tone];
             return (
               <li key={e.slug} data-reveal>
                 <Link to={`/work/${e.slug}`} className="group block">
                   <div className="relative">
-                    <div className={cn("frame p-3", t.bg)}>
-                      <img src={e.cover.src} alt={e.cover.alt} width={e.cover.width} height={e.cover.height} loading="lazy" decoding="async" className="block w-full bg-wall" />
+                    <div className={cn("frame p-3", ts.bg)}>
+                      <img
+                        src={e.cover.src}
+                        alt={t(e.cover.alt)}
+                        width={e.cover.width}
+                        height={e.cover.height}
+                        loading="lazy"
+                        decoding="async"
+                        className="block w-full bg-wall"
+                      />
                     </div>
                     {e.badge && (
                       <span className="absolute -right-1 -top-5 flex h-20 w-20 rotate-[8deg] flex-col items-center justify-center rounded-full bg-ink text-center text-cream">
-                        <span className="font-serif text-xl leading-none">{e.badge.value}</span>
-                        <span className="mt-0.5 font-mono text-[0.45rem] uppercase tracking-[0.1em] text-peach">{e.badge.label}</span>
+                        <span className="font-serif text-xl leading-none">{t(e.badge.value)}</span>
+                        <span className="mt-0.5 font-mono text-[0.45rem] uppercase tracking-[0.1em] text-peach">{t(e.badge.label)}</span>
                       </span>
                     )}
                   </div>
                   <p className="label mt-5 flex items-center gap-3 text-stone">
-                    <span className={cn("inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-ink", t.bg)}>{e.no}</span>
-                    {e.statuses.join(" · ")}
+                    <span className={cn("inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-ink", ts.bg)}>
+                      {t(e.no)}
+                    </span>
+                    {e.statuses.map((x) => t(x)).join(" · ")}
                   </p>
-                  <h2 className="display mt-3 text-[2.6rem]">{e.title}</h2>
-                  <p className={cn("label mt-2", t.ink)}>{e.medium}</p>
-                  <p className="mt-3 leading-relaxed text-ink/85">{e.summary}</p>
+                  <h2 className="display mt-3 text-[2.6rem]">{t(e.title)}</h2>
+                  <p className={cn("label mt-2", ts.ink)}>{t(e.medium)}</p>
+                  <p className="mt-3 leading-relaxed text-ink/85">{t(e.summary)}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium">
-                    <span className="link-underline">Walk into the exhibit</span> <span aria-hidden>→</span>
+                    <span className="link-underline">{t("Walk into the exhibit")}</span> <span aria-hidden>→</span>
                   </span>
                 </Link>
               </li>

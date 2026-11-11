@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { nextRoom, site, type RoomId } from "@/content/site";
+import { t } from "@/lib/i18n";
 
 /* The doorway at the end of every room, plus a small colophon. */
 const NextRoom = ({ from }: { from: RoomId }) => {
@@ -10,11 +11,11 @@ const NextRoom = ({ from }: { from: RoomId }) => {
         <Link to={next.path} className="group block border-t border-ink/15 py-14 md:py-20">
           <p className="label flex items-center gap-3 text-stone">
             <span className="inline-block h-2 w-2 rounded-full" style={{ background: next.tone }} aria-hidden />
-            Next room · {next.no}
+            {t("Next room ·")} {t(next.no)}
           </p>
           <div className="mt-4 flex items-end justify-between gap-6">
             <p className="display text-[clamp(3.2rem,11vw,9.5rem)] transition-transform duration-700 ease-gallery group-hover:translate-x-3">
-              {next.label}
+              {t(next.label)}
             </p>
             <span
               aria-hidden
@@ -24,15 +25,15 @@ const NextRoom = ({ from }: { from: RoomId }) => {
               →
             </span>
           </div>
-          <p className="mt-3 max-w-md text-stone">{next.blurb}</p>
+          <p className="mt-3 max-w-md text-stone">{t(next.blurb)}</p>
         </Link>
       </div>
       <div className="gallery-x flex flex-col gap-3 border-t border-ink/15 py-6 text-sm text-stone md:flex-row md:items-center md:justify-between">
         <p>
-          © {new Date().getFullYear()} {site.studio} · {site.person}
+          © {new Date().getFullYear()} {t(site.studio)} · {t(site.person)}
         </p>
         <a href={`mailto:${site.email}`} className="link-underline">
-          {site.email}
+          {t(site.email)}
         </a>
       </div>
     </footer>

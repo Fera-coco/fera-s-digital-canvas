@@ -1,5 +1,6 @@
 import portrait from "@/assets/curator.webp";
 import { cn } from "@/lib/utils";
+import { t } from "@/lib/i18n";
 
 const approach = [
   {
@@ -44,23 +45,38 @@ const provenance = [
   { what: "Diploma, Electrical Engineering", where: "Engineering foundation", when: "Completed" },
 ];
 
-const materials = ["Figma", "HTML & CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Firebase", "Git & GitHub", "Vercel"];
+const materials = [
+  "Figma",
+  "HTML & CSS",
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Tailwind CSS",
+  "Supabase",
+  "Firebase",
+  "Git & GitHub",
+  "Vercel",
+];
 
 const Curator = () => (
-  <section aria-labelledby="curator-title" className="relative pb-24 pt-[calc(var(--header-h)+3rem)] md:pb-32 md:pt-[calc(var(--header-h)+5rem)]">
+  <section
+    aria-labelledby="curator-title"
+    className="relative pb-24 pt-[calc(var(--header-h)+3rem)] md:pb-32 md:pt-[calc(var(--header-h)+5rem)]"
+  >
     <div className="gallery-x">
       <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
         {/* Portrait */}
         <div className="lg:col-span-5" data-reveal>
-          <p className="label text-stone">Room 02</p>
+          <p className="label text-stone">{t("Room 02")}</p>
           <h1 id="curator-title" className="display mt-4 text-[clamp(3.4rem,9vw,7.5rem)]">
-            The <em className="italic">Curator</em>
+            {t("The")} <em className="italic">{t("Curator")}</em>
           </h1>
           <figure className="mt-10 max-w-[420px]">
             <div className="frame p-3 sm:p-4" style={{ transform: "rotate(-1.2deg)" }}>
               <img
                 src={portrait}
-                alt="Fera, smiling, in a black blazer, standing outdoors in front of a leafy garden"
+                alt={t("Fera, smiling, in a black blazer, standing outdoors in front of a leafy garden")}
                 width={720}
                 height={960}
                 loading="lazy"
@@ -69,8 +85,8 @@ const Curator = () => (
               />
             </div>
             <figcaption className="mt-6 border-l-2 border-coral pl-4">
-              <span className="block font-serif text-xl italic">Portrait of the curator</span>
-              <span className="label text-stone">Peace Oluwaferanmi Segun-Babs, called Fera</span>
+              <span className="block font-serif text-xl italic">{t("Portrait of the curator")}</span>
+              <span className="label text-stone">{t("Peace Oluwaferanmi Segun-Babs, called Fera")}</span>
             </figcaption>
           </figure>
         </div>
@@ -78,30 +94,30 @@ const Curator = () => (
         {/* Statement */}
         <div className="lg:col-span-7 lg:pt-36">
           <p className="font-serif text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.12]" data-reveal>
-            I design the way I build: with the whole thing in mind, from the first sketch to the{" "}
-            <em className="bg-lavender/70 px-1 italic">last pixel on a small phone</em>.
+            {t("I design the way I build: with the whole thing in mind, from the first sketch to the")}{" "}
+            <em className="bg-lavender/70 px-1 italic">{t("last pixel on a small phone")}</em>.
           </p>
           <div className="mt-10 grid gap-6 text-[1.05rem] leading-relaxed text-ink/85 md:grid-cols-2" data-reveal>
             <p>
-              I'm Peace Oluwaferanmi Segun-Babs, and most people call me Fera. I'm a UX/UI designer and front-end
-              developer with a B.Sc. in Computer Science from ESTAM University, after first training in Electrical
-              Engineering.
+              {t(
+                "I'm Peace Oluwaferanmi Segun-Babs, and most people call me Fera. I'm a UX/UI designer and front-end developer with a B.Sc. in Computer Science from ESTAM University, after first training in Electrical Engineering.",
+              )}
             </p>
             <p>
-              Fera's Studio is where the two halves meet. I research and design in Figma, then build what I've designed
-              with modern front-end tools. I'm drawn to work that feels personal and well made, rooted in the people
-              it's for.
+              {t(
+                "Fera's Studio is where the two halves meet. I research and design in Figma, then build what I've designed with modern front-end tools. I'm drawn to work that feels personal and well made, rooted in the people it's for.",
+              )}
             </p>
           </div>
 
-          <ol className="mt-14 grid gap-8 sm:grid-cols-3" aria-label="How I work">
+          <ol className="mt-14 grid gap-8 sm:grid-cols-3" aria-label={t("How I work")}>
             {approach.map((a, i) => (
               <li key={a.title} data-reveal style={{ "--delay": `${i * 90}ms` } as React.CSSProperties}>
                 <span className={cn("inline-flex h-10 w-10 items-center justify-center rounded-full font-serif text-lg italic", a.tone)}>
-                  {a.no}
+                  {t(a.no)}
                 </span>
-                <h3 className="mt-4 text-lg font-semibold leading-snug">{a.title}</h3>
-                <p className="mt-2 text-[0.95rem] leading-relaxed text-ink/80">{a.text}</p>
+                <h3 className="mt-4 text-lg font-semibold leading-snug">{t(a.title)}</h3>
+                <p className="mt-2 text-[0.95rem] leading-relaxed text-ink/80">{t(a.text)}</p>
               </li>
             ))}
           </ol>
@@ -111,25 +127,25 @@ const Curator = () => (
       {/* Provenance and materials, set like the back of a gallery catalogue */}
       <div className="mt-24 grid grid-cols-1 gap-14 border-t border-ink/15 pt-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-7" data-reveal>
-          <h3 className="label text-stone">Provenance</h3>
+          <h3 className="label text-stone">{t("Provenance")}</h3>
           <dl className="mt-6">
             {provenance.map((p) => (
               <div key={p.what} className="grid grid-cols-1 gap-1 border-b border-ink/10 py-4 sm:grid-cols-[1fr_auto] sm:gap-6">
                 <div>
-                  <dt className="font-medium">{p.what}</dt>
-                  <dd className="text-[0.95rem] text-stone">{p.where}</dd>
+                  <dt className="font-medium">{t(p.what)}</dt>
+                  <dd className="text-[0.95rem] text-stone">{t(p.where)}</dd>
                 </div>
-                <dd className="label text-stone sm:text-right">{p.when}</dd>
+                <dd className="label text-stone sm:text-right">{t(p.when)}</dd>
               </div>
             ))}
           </dl>
         </div>
         <div className="lg:col-span-4 lg:col-start-9" data-reveal>
-          <h3 className="label text-stone">Materials</h3>
+          <h3 className="label text-stone">{t("Materials")}</h3>
           <ul className="mt-6 flex flex-wrap gap-2">
             {materials.map((m) => (
               <li key={m} className="rounded-full border border-ink/20 bg-paper px-3.5 py-1.5 text-sm">
-                {m}
+                {t(m)}
               </li>
             ))}
           </ul>

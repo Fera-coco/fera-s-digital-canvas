@@ -1,6 +1,7 @@
 import Visitor from "@/components/gallery/Visitor";
 import type { VisitorType } from "@/content/visitors";
 import { cn } from "@/lib/utils";
+import { t, tf } from "@/lib/i18n";
 
 export type FormPhase = "idle" | "sending" | "sent" | "failed";
 export interface FormProgress {
@@ -36,7 +37,7 @@ const ApplyCompanion = ({ guide, progress }: { guide: VisitorType; progress: For
         aria-hidden
         className="oc-reveal oc-pop is-seen relative mx-auto mb-4 w-fit max-w-[16rem] rounded-2xl rounded-bl-sm border-2 border-ink bg-paper px-4 py-2.5 text-center font-serif text-xl italic leading-snug"
       >
-        {line(progress)}
+        {t(line(progress))}
       </p>
 
       <div aria-hidden className="relative mx-auto flex h-64 w-full max-w-[19rem] items-end justify-center gap-2">
@@ -77,10 +78,10 @@ const ApplyCompanion = ({ guide, progress }: { guide: VisitorType; progress: For
             <rect x="28" y="20" width="64" height="7" rx="3.5" fill="#282624" />
             <rect x="22" y="48" width="76" height="30" rx="3" fill="#FFFDF8" stroke="#282624" strokeWidth="2.5" />
             <text x="60" y="60" textAnchor="middle" fontFamily="Space Mono, monospace" fontSize="7.5" letterSpacing="0.6" fill="#282624">
-              APPLICATIONS
+              {t("APPLICATIONS")}
             </text>
             <text x="60" y="72" textAnchor="middle" fontFamily="Space Mono, monospace" fontSize="6.5" letterSpacing="0.6" fill="#8E3324">
-              THE OPEN CALL
+              {t("THE OPEN CALL")}
             </text>
             <circle cx="60" cy="98" r="9" fill="#F5ECA7" stroke="#282624" strokeWidth="2.5" />
             <path d="M60 93 v10 M55 98 h10" stroke="#282624" strokeWidth="2" strokeLinecap="round" />
@@ -105,8 +106,8 @@ const ApplyCompanion = ({ guide, progress }: { guide: VisitorType; progress: For
       {/* progress, readable by everyone */}
       <div className="mx-auto mt-5 max-w-[19rem]">
         <div className="flex items-baseline justify-between">
-          <p className="label text-stone">{posted ? "Card posted" : "Your card"}</p>
-          <p className="font-mono text-xs text-stone">{posted ? "Done" : `${filled} of ${total} done`}</p>
+          <p className="label text-stone">{posted ? t("Card posted") : t("Your card")}</p>
+          <p className="nums font-mono text-xs text-stone">{posted ? t("Done") : tf("{n} of {m} done", { n: filled, m: total })}</p>
         </div>
         <div className="mt-2 flex gap-1" aria-hidden>
           {Array.from({ length: total }).map((_, i) => (

@@ -24,6 +24,7 @@ import { getVisitor, loadVisitor, type VisitorType } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
 import { cn } from "@/lib/utils";
+import { t, tf } from "@/lib/i18n";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -135,12 +136,12 @@ const OpenCallPage = () => {
           <div className="lg:col-span-7">
             <p className="label rise flex flex-wrap items-center gap-x-3 gap-y-1 text-stone">
               <span className="oc-nav-dot relative inline-flex h-2 w-2 rounded-full bg-coral" aria-hidden />
-              Fera's Studio presents <span aria-hidden>·</span> A special open call
+              {t("Fera's Studio presents")} <span aria-hidden>·</span> {t("A special open call")}
             </p>
             <h1 id="oc-title" className="display mt-6 text-[clamp(3rem,7.2vw,7rem)]">
               {headline.map((h, k) => (
                 <span key={k} className="rise inline-block" style={{ "--delay": `${80 + k * 90}ms` } as React.CSSProperties}>
-                  {h.i ? <em className="italic">{h.w}</em> : h.w}
+                  {h.i ? <em className="italic">{t(h.w)}</em> : t(h.w)}
                   {k < headline.length - 1 ? " " : ""}
                 </span>
               ))}
@@ -149,18 +150,19 @@ const OpenCallPage = () => {
               className="rise mt-8 max-w-2xl text-lg leading-relaxed text-ink/85 md:text-xl"
               style={{ "--delay": "760ms" } as React.CSSProperties}
             >
-              We're opening five spots for businesses ready to build their online presence. Through this special Fera's Studio initiative,
-              five selected businesses will receive a professionally designed and developed website without paying development fees.
+              {t(
+                "We're opening five spots for businesses ready to build their online presence. Through this special Fera's Studio initiative, five selected businesses will receive a professionally designed and developed website without paying development fees.",
+              )}
             </p>
             <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ "--delay": "860ms" } as React.CSSProperties}>
               <a href="#apply" className="btn-ink group">
-                Apply for a spot{" "}
+                {t("Apply for a spot")}{" "}
                 <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">
                   ↓
                 </span>
               </a>
               <a href="#spots" className="btn-line">
-                See available spots
+                {t("See available spots")}
               </a>
             </div>
           </div>
@@ -177,31 +179,31 @@ const OpenCallPage = () => {
                 <div className="oc-sway" style={{ "--bob-delay": "2s" } as React.CSSProperties}>
                   <div className="relative">
                     <div className="ticket bg-paper p-7 md:p-9">
-                      <p className="label text-stone">Special exhibition · Nigeria &amp; Benin</p>
-                      <p className="display mt-3 text-[clamp(3rem,5vw,4.4rem)]">The Open Call</p>
-                      <p className="mt-2 text-sm text-stone">A Fera's Studio initiative for growing businesses.</p>
+                      <p className="label text-stone">{t("Special exhibition · Nigeria & Benin")}</p>
+                      <p className="display mt-3 text-[clamp(3rem,5vw,4.4rem)]">{t("The Open Call")}</p>
+                      <p className="mt-2 text-sm text-stone">{t("A Fera's Studio initiative for growing businesses.")}</p>
                       <div className="my-5 border-t-2 border-dashed border-ink/20" />
                       <dl className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <dt className="label text-stone">Admits</dt>
-                          <dd className="mt-1 font-serif text-3xl">Five</dd>
+                          <dt className="label text-stone">{t("Admits")}</dt>
+                          <dd className="mt-1 font-serif text-3xl">{t("Five")}</dd>
                         </div>
                         <div>
-                          <dt className="label text-stone">Dev fee</dt>
-                          <dd className="mt-1 font-serif text-3xl">Waived</dd>
+                          <dt className="label text-stone">{t("Dev fee")}</dt>
+                          <dd className="mt-1 font-serif text-3xl">{t("Waived")}</dd>
                         </div>
                         <div>
-                          <dt className="label text-stone">Status</dt>
-                          <dd className="mt-1 font-serif text-3xl">{sum ? (sum.open ? "Open" : "Closed") : "…"}</dd>
+                          <dt className="label text-stone">{t("Status")}</dt>
+                          <dd className="mt-1 font-serif text-3xl">{sum ? (sum.open ? t("Open") : t("Closed")) : "…"}</dd>
                         </div>
                       </dl>
                       <div className="mt-6 border-t-2 border-dashed border-ink/20 pt-5">
-                        <p className="label text-stone">
-                          {sum ? `${pad(sum.remaining)} of ${pad(TOTAL_SPOTS)} spots left` : "Checking the spots…"}
+                        <p className="nums label text-stone">
+                          {sum ? tf("{n} of {m} spots left", { n: pad(sum.remaining), m: pad(TOTAL_SPOTS) }) : t("Checking the spots…")}
                         </p>
                         <ol className="mt-3 flex gap-2" aria-hidden>
                           {(data?.spots ?? Array.from({ length: TOTAL_SPOTS }, () => null)).map((sp, k) => {
-                            const t = sp ? isTaken(sp.stage) : false;
+                            const isT = sp ? isTaken(sp.stage) : false;
                             return (
                               <Reveal
                                 as="li"
@@ -210,7 +212,7 @@ const OpenCallPage = () => {
                                 key={k}
                                 className={cn(
                                   "flex h-11 flex-1 items-center justify-center rounded-sm font-mono text-xs",
-                                  t ? "bg-ink text-cream" : "bg-mint/60 text-mint-ink",
+                                  isT ? "bg-ink text-cream" : "bg-mint/60 text-mint-ink",
                                 )}
                               >
                                 {pad(k + 1)}
@@ -228,7 +230,7 @@ const OpenCallPage = () => {
                         className="block rounded-md border-2 border-coral bg-cream px-3 py-1 font-mono text-xs uppercase tracking-widest text-coral-ink"
                         style={{ "--stamp-rot": "14deg" } as React.CSSProperties}
                       >
-                        Limited
+                        {t("Limited")}
                       </Reveal>
                     </span>
                   </div>
@@ -238,7 +240,7 @@ const OpenCallPage = () => {
               <Reveal kind="pop" delay={1900} className="absolute -bottom-6 -left-4 hidden sm:block lg:-left-8" aria-hidden>
                 <div className="relative">
                   <span className="absolute -top-12 right-6 whitespace-nowrap rounded-2xl rounded-br-sm border-2 border-ink bg-paper px-3 py-1.5 font-serif text-lg italic">
-                    Only five?!
+                    {t("Only five?!")}
                   </span>
                   <div className="oc-bob">
                     <Visitor v={guide} className="h-36 w-auto" />
@@ -256,8 +258,8 @@ const OpenCallPage = () => {
       {/* ---------- B. The five spots ---------- */}
       <section id="spots" aria-labelledby="spots-title" className="scroll-mt-[var(--header-h)] bg-wall/60 py-20 md:py-28">
         <div className="gallery-x">
-          <SectionHead no="01" id="spots-title" title="The five spots" />
-          <Availability state={state.status} data={data} />
+          <SectionHead no="01" id="spots-title" title={t("The five spots")} />
+          <Availability state={t(state.status)} data={data} />
         </div>
       </section>
 
@@ -267,20 +269,21 @@ const OpenCallPage = () => {
           <SectionHead
             no="02"
             id="incl-title"
-            title="What's included"
-            intro="The design and build are on us. Running the website is on you, so nobody is surprised later."
+            title={t("What's included")}
+            intro={t("The design and build are on us. Running the website is on you, so nobody is surprised later.")}
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <Reveal kind="left">
-              <OfferCard tone="bg-mint" mark="✓" label="On us" note="Development fee waived" items={onUs} />
+              <OfferCard tone="bg-mint" mark="✓" label={t("On us")} note={t("Development fee waived")} items={onUs} />
             </Reveal>
             <Reveal kind="right" delay={150}>
-              <OfferCard tone="bg-blush" mark="→" label="Your responsibility" note="Paid by the business" items={yours} />
+              <OfferCard tone="bg-blush" mark="→" label={t("Your responsibility")} note={t("Paid by the business")} items={yours} />
             </Reveal>
           </div>
           <Reveal as="p" delay={300} className="mt-6 max-w-3xl text-sm leading-relaxed text-stone">
-            The Open Call is for standard business websites, service websites and product catalogues. Complex ecommerce, extensive custom
-            integrations and inventory systems aren't automatically included, but can be discussed separately.
+            {t(
+              "The Open Call is for standard business websites, service websites and product catalogues. Complex ecommerce, extensive custom integrations and inventory systems aren't automatically included, but can be discussed separately.",
+            )}
           </Reveal>
         </div>
       </section>
@@ -289,8 +292,8 @@ const OpenCallPage = () => {
       <section aria-labelledby="who-title" className="py-20 md:py-28">
         <div className="gallery-x grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHead no="03" id="who-title" title="Who can apply?" />
-            <p className="sr-only">Businesses in Nigeria and businesses in Benin Republic.</p>
+            <SectionHead no="03" id="who-title" title={t("Who can apply?")} />
+            <p className="sr-only">{t("Businesses in Nigeria and businesses in Benin Republic.")}</p>
             <div className="mt-8 flex flex-wrap items-center gap-5" aria-hidden>
               <Reveal
                 kind="stamp"
@@ -298,8 +301,8 @@ const OpenCallPage = () => {
                 className="flex h-40 w-40 flex-col items-center justify-center rounded-full border-[3px] border-mint-ink bg-mint/50 text-center text-mint-ink"
                 style={{ "--stamp-rot": "-8deg" } as React.CSSProperties}
               >
-                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Businesses in</span>
-                <span className="font-serif text-3xl leading-none">Nigeria</span>
+                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">{t("Businesses in")}</span>
+                <span className="font-serif text-3xl leading-none">{t("Nigeria")}</span>
                 <span className="mt-1 font-mono text-[0.6rem]">★ ★ ★</span>
               </Reveal>
               <Reveal
@@ -308,14 +311,14 @@ const OpenCallPage = () => {
                 className="flex h-40 w-40 flex-col items-center justify-center rounded-full border-[3px] border-coral-ink bg-coral-soft/60 text-center text-coral-ink"
                 style={{ "--stamp-rot": "7deg" } as React.CSSProperties}
               >
-                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">Businesses in</span>
-                <span className="font-serif text-[1.65rem] leading-none">Benin Republic</span>
+                <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">{t("Businesses in")}</span>
+                <span className="font-serif text-[1.65rem] leading-none">{t("Benin Republic")}</span>
                 <span className="mt-1 font-mono text-[0.6rem]">★ ★ ★</span>
               </Reveal>
             </div>
           </div>
           <div className="lg:col-span-6 lg:col-start-7 lg:pt-6">
-            <p className="label text-stone">Ideal applicants</p>
+            <p className="label text-stone">{t("Ideal applicants")}</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {ideal.map((x, i) => (
                 <Reveal
@@ -328,13 +331,14 @@ const OpenCallPage = () => {
                     ["bg-butter", "bg-blush", "bg-lavender", "bg-mint", "bg-coral-soft", "bg-butter-soft"][i % 6],
                   )}
                 >
-                  {x}
+                  {t(x)}
                 </Reveal>
               ))}
             </ul>
             <Reveal as="p" delay={500} className="mt-6 leading-relaxed text-ink/85">
-              Applications are reviewed one by one. Fera's Studio selects businesses based on their needs, how well the project fits and the
-              scope of work required.
+              {t(
+                "Applications are reviewed one by one. Fera's Studio selects businesses based on their needs, how well the project fits and the scope of work required.",
+              )}
             </Reveal>
           </div>
         </div>
@@ -346,8 +350,8 @@ const OpenCallPage = () => {
           <SectionHead
             no="04"
             id="how-title"
-            title="How it works"
-            intro="Applying doesn't automatically guarantee a spot. A spot is only yours once Fera's Studio confirms it."
+            title={t("How it works")}
+            intro={t("Applying doesn't automatically guarantee a spot. A spot is only yours once Fera's Studio confirms it.")}
           />
           <Journey guide={guide} steps={steps} />
         </div>
@@ -359,8 +363,8 @@ const OpenCallPage = () => {
           <SectionHead
             no="05"
             id="five-title"
-            title="The making of the five"
-            intro="Follow each website from confirmation to launch. Every finished website joins the Fera's Studio portfolio."
+            title={t("The making of the five")}
+            intro={t("Follow each website from confirmation to launch. Every finished website joins the Fera's Studio portfolio.")}
           />
           {data ? (
             <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
@@ -369,7 +373,7 @@ const OpenCallPage = () => {
               ))}
             </ol>
           ) : (
-            <StatusNote state={state.status} />
+            <StatusNote state={t(state.status)} />
           )}
         </div>
       </section>
@@ -378,9 +382,9 @@ const OpenCallPage = () => {
       <section aria-labelledby="cond-title" className="bg-wall/60 py-20 md:py-28">
         <div className="gallery-x grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <SectionHead no="06" id="cond-title" title="The small print" />
+            <SectionHead no="06" id="cond-title" title={t("The small print")} />
             <Reveal as="p" delay={150} className="mt-4 text-stone">
-              Friendly, not legal. Read it before you apply.
+              {t("Friendly, not legal. Read it before you apply.")}
             </Reveal>
           </div>
           <ol className="grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:col-span-8">
@@ -393,7 +397,7 @@ const OpenCallPage = () => {
                 className="flex gap-4 border-b border-ink/10 pb-4"
               >
                 <span className="font-mono text-xs leading-6 text-stone">{pad(i + 1)}</span>
-                <span className="leading-relaxed">{c}</span>
+                <span className="leading-relaxed">{t(c)}</span>
               </Reveal>
             ))}
           </ol>
@@ -403,71 +407,75 @@ const OpenCallPage = () => {
       {/* ---------- H. Apply ---------- */}
       <section id="apply" aria-labelledby="apply-title" className="scroll-mt-[var(--header-h)] py-20 md:py-28">
         <div className="gallery-x">
-          <SectionHead no="07" id="apply-title" title="Apply for a spot" />
+          <SectionHead no="07" id="apply-title" title={t("Apply for a spot")} />
           {sum && !sum.open ? (
             <div className="mt-10 max-w-2xl bg-paper p-8">
-              <p className="display text-4xl">Applications are closed.</p>
+              <p className="display text-4xl">{t("Applications are closed.")}</p>
               <p className="mt-3 leading-relaxed text-ink/85">
-                All five spots have been taken. Follow the five websites above as they're built, or{" "}
+                {t("All five spots have been taken. Follow the five websites above as they're built, or")}{" "}
                 <a href={`mailto:${APPLY_EMAIL}`} className="underline underline-offset-4">
-                  write to Fera's Studio
+                  {t("write to Fera's Studio")}
                 </a>{" "}
-                about a paid project.
+                {t("about a paid project.")}
               </p>
             </div>
           ) : backendReady ? (
             <>
               <Reveal as="p" delay={100} className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/85">
-                Fill in your application card below. It goes straight to Fera's Studio, and we'll reach you on the email or number you give
-                us.
+                {t(
+                  "Fill in your application card below. It goes straight to Fera's Studio, and we'll reach you on the email or number you give us.",
+                )}
               </Reveal>
               <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-start">
                 <Reveal kind="rise" delay={200} className="lg:col-span-8">
                   <ApplyForm onProgress={setProgress} />
                 </Reveal>
                 <div className="hidden self-stretch lg:col-span-4 lg:block">
-                    <Reveal kind="pop" delay={350} className="sticky top-[calc(var(--header-h)+3rem)]">
-                      <ApplyCompanion guide={guide} progress={progress} />
-                    </Reveal>
-                  </div>
+                  <Reveal kind="pop" delay={350} className="sticky top-[calc(var(--header-h)+3rem)]">
+                    <ApplyCompanion guide={guide} progress={progress} />
+                  </Reveal>
+                </div>
               </div>
             </>
           ) : (
             <>
               <Reveal as="p" delay={100} className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/85">
-                Pick whichever is easier. Both open a message with the questions already filled in, so you just add your answers and send.
+                {t(
+                  "Pick whichever is easier. Both open a message with the questions already filled in, so you just add your answers and send.",
+                )}
               </Reveal>
               <div className="mt-10 grid gap-6 md:grid-cols-2">
                 <Reveal kind="left" delay={150}>
                   <ApplyCard
                     tone="bg-lavender"
-                    label="Option 01"
-                    title="Apply by email"
+                    label={t("Option 01")}
+                    title={t("Apply by email")}
                     detail={APPLY_EMAIL}
                     href={applyByEmail}
-                    cta="Open an email draft"
-                    note="Opens your email app with the subject and questions filled in."
+                    cta={t("Open an email draft")}
+                    note={t("Opens your email app with the subject and questions filled in.")}
                     art={<Envelope />}
                   />
                 </Reveal>
                 <Reveal kind="right" delay={300}>
                   <ApplyCard
                     tone="bg-mint"
-                    label="Option 02"
-                    title="Apply on WhatsApp"
+                    label={t("Option 02")}
+                    title={t("Apply on WhatsApp")}
                     detail={WHATSAPP_DISPLAY}
                     href={applyByWhatsApp}
-                    cta="Open WhatsApp chat"
-                    note="Opens a WhatsApp chat with Fera and a ready-to-send message."
+                    cta={t("Open WhatsApp chat")}
+                    note={t("Opens a WhatsApp chat with Fera and a ready-to-send message.")}
                     external
                     art={<ChatBubble />}
                   />
                 </Reveal>
               </div>
               <Reveal as="p" delay={450} className="mt-6 max-w-3xl rounded-sm border-l-4 border-coral bg-paper p-4 text-sm leading-relaxed">
-                <strong className="font-semibold">Applications are subject to review and confirmation.</strong> Sending a message doesn't
-                reserve a spot. Fera's Studio will reply after reviewing your business, and the counter above changes only when a business
-                is confirmed.
+                <strong className="font-semibold">{t("Applications are subject to review and confirmation.")}</strong>{" "}
+                {t(
+                  "Sending a message doesn't reserve a spot. Fera's Studio will reply after reviewing your business, and the counter above changes only when a business is confirmed.",
+                )}
               </Reveal>
             </>
           )}
@@ -495,14 +503,14 @@ const Sparkle = ({ className, delay }: { className: string; delay: string }) => 
 const SectionHead = ({ no, id, title, intro }: { no: string; id: string; title: string; intro?: string }) => (
   <div>
     <Reveal as="p" kind="rise" className="label text-stone">
-      The Open Call · {no}
+      {t("The Open Call ·")} {t(no)}
     </Reveal>
     <Reveal as="h2" kind="rise" delay={80} id={id} className="display mt-3 text-[clamp(2.6rem,6vw,5rem)]">
-      {title}
+      {t(title)}
     </Reveal>
     {intro && (
       <Reveal as="p" kind="rise" delay={160} className="mt-4 max-w-2xl text-lg leading-relaxed text-ink/85">
-        {intro}
+        {t(intro)}
       </Reveal>
     )}
   </div>
@@ -511,11 +519,11 @@ const SectionHead = ({ no, id, title, intro }: { no: string; id: string; title: 
 const StatusNote = ({ state }: { state: "loading" | "error" | "ready" }) =>
   state === "error" ? (
     <p className="mt-10 max-w-xl bg-paper p-5 leading-relaxed">
-      Live availability couldn't be loaded right now. You can still apply below, and Fera's Studio will tell you if a spot is open.
+      {t("Live availability couldn't be loaded right now. You can still apply below, and Fera's Studio will tell you if a spot is open.")}
     </p>
   ) : (
     <p className="label mt-10 animate-pulse text-stone" role="status">
-      Checking the spots…
+      {t("Checking the spots…")}
     </p>
   );
 
@@ -550,11 +558,11 @@ const Availability = ({ state, data }: { state: "loading" | "error" | "ready"; d
           <div className="flex flex-wrap items-end justify-between gap-6">
             <p className="font-serif text-[clamp(2.6rem,7vw,5.5rem)] leading-none">
               <span className="sr-only" aria-live="polite">
-                {pad(remaining)} of {pad(TOTAL_SPOTS)} spots available
+                {pad(remaining)} {t("of")} {pad(TOTAL_SPOTS)} {t("spots available")}
               </span>
               <span aria-hidden>
-                <span className="inline-block min-w-[1.1em] italic tabular-nums">{pad(shown)}</span> of {pad(TOTAL_SPOTS)}{" "}
-                <span className="text-stone">spots available</span>
+                <span className="inline-block min-w-[1.1em] italic tabular-nums">{pad(shown)}</span> {t("of")} {pad(TOTAL_SPOTS)}{" "}
+                <span className="text-stone">{t("spots available")}</span>
               </span>
             </p>
             <Reveal
@@ -567,14 +575,14 @@ const Availability = ({ state, data }: { state: "loading" | "error" | "ready"; d
               )}
               style={{ "--stamp-rot": "0deg" } as React.CSSProperties}
             >
-              Applications {summarise(data).open ? "open" : "closed"}
+              {t("Applications")} {summarise(data).open ? t("open") : t("closed")}
             </Reveal>
           </div>
 
           {/* the rail the tickets hang from */}
           <div className="relative mt-12">
             <div aria-hidden className="absolute inset-x-0 top-0 h-[3px] rounded-full bg-ink/15" />
-            <ol className="grid grid-cols-2 gap-x-4 gap-y-12 pt-8 sm:grid-cols-3 lg:grid-cols-5" aria-label="The five spots">
+            <ol className="grid grid-cols-2 gap-x-4 gap-y-12 pt-8 sm:grid-cols-3 lg:grid-cols-5" aria-label={t("The five spots")}>
               {data.spots.map((s, i) => {
                 const taken = isTaken(s.stage);
                 return (
@@ -598,9 +606,11 @@ const Availability = ({ state, data }: { state: "loading" | "error" | "ready"; d
                             transform: `rotate(${[-1.5, 1, -0.5, 1.5, -1][i]}deg)`,
                           }}
                         >
-                          <span className={cn("label", taken ? "text-cream/60" : "text-stone")}>Spot</span>
-                          <span className="display text-[4.5rem]">{s.number}</span>
-                          <span className={cn("label", taken ? "text-cream/80" : "text-mint-ink")}>{taken ? "Taken" : "Available"}</span>
+                          <span className={cn("label", taken ? "text-cream/60" : "text-stone")}>{t("Spot")}</span>
+                          <span className="display text-[4.5rem]">{t(s.number)}</span>
+                          <span className={cn("label", taken ? "text-cream/80" : "text-mint-ink")}>
+                            {taken ? t("Taken") : t("Available")}
+                          </span>
                           {taken && (
                             <span aria-hidden className="absolute right-3 top-1/2 -translate-y-1/2">
                               <Reveal
@@ -614,7 +624,7 @@ const Availability = ({ state, data }: { state: "loading" | "error" | "ready"; d
                                   } as React.CSSProperties
                                 }
                               >
-                                Confirmed
+                                {t("Confirmed")}
                               </Reveal>
                             </span>
                           )}
@@ -635,8 +645,8 @@ const Availability = ({ state, data }: { state: "loading" | "error" | "ready"; d
 const OfferCard = ({ tone, mark, label, note, items }: { tone: string; mark: string; label: string; note: string; items: string[] }) => (
   <div className="frame h-full p-0">
     <div className={cn("flex items-baseline justify-between gap-3 px-6 py-4", tone)}>
-      <p className="display text-3xl">{label}</p>
-      <p className="label">{note}</p>
+      <p className="display text-3xl">{t(label)}</p>
+      <p className="label">{t(note)}</p>
     </div>
     <ul className="divide-y divide-ink/10 px-6 py-2">
       {items.map((x, i) => (
@@ -648,9 +658,9 @@ const OfferCard = ({ tone, mark, label, note, items }: { tone: string; mark: str
             aria-hidden
             className={cn("flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs", tone)}
           >
-            {mark}
+            {t(mark)}
           </Reveal>
-          {x}
+          {t(x)}
         </li>
       ))}
     </ul>
@@ -667,9 +677,11 @@ const ProjectCard = ({ s, i }: { s: Spot; i: number }) => {
   return (
     <Reveal as="li" kind="flip" delay={i * 140} className={cn("flex flex-col border-t-2 pt-4", taken ? "border-ink" : "border-ink/20")}>
       <p className="label flex items-center justify-between text-stone">
-        <span>Project {s.number}</span>
+        <span>
+          {t("Project")} {t(s.number)}
+        </span>
         <span className={cn("rounded-full px-2 py-0.5 text-[0.65rem]", taken ? "bg-lavender text-ink" : "bg-mint-soft text-mint-ink")}>
-          {s.stage}
+          {t(s.stage)}
         </span>
       </p>
       <div
@@ -679,23 +691,23 @@ const ProjectCard = ({ s, i }: { s: Spot; i: number }) => {
         )}
       >
         {show && s.image ? (
-          <img src={s.image} alt={`Preview of the ${s.business} website`} loading="lazy" className="h-full w-full object-cover" />
+          <img src={s.image} alt={tf("Preview of the {name} website", { name: s.business ?? "" })} loading="lazy" className="h-full w-full object-cover" />
         ) : taken ? (
-          <span className="px-4 text-center font-serif text-xl italic text-stone">Preview coming soon</span>
+          <span className="px-4 text-center font-serif text-xl italic text-stone">{t("Preview coming soon")}</span>
         ) : (
           /* a little "reserved" tag swinging on a nail */
           <span className="flex flex-col items-center" aria-hidden>
             <span className="h-2 w-2 rounded-full bg-ink/40" />
             <span className="oc-sway flex flex-col items-center" style={{ "--bob-delay": `${i * 0.5}s` } as React.CSSProperties}>
               <span className="h-5 w-px bg-ink/30" />
-              <span className="rounded-sm bg-butter px-3 py-1.5 font-serif text-lg italic">Reserved for you?</span>
+              <span className="rounded-sm bg-butter px-3 py-1.5 font-serif text-lg italic">{t("Reserved for you?")}</span>
             </span>
           </span>
         )}
       </div>
-      <p className="mt-4 font-serif text-2xl leading-tight">{show ? s.business : taken ? "A confirmed business" : "Open spot"}</p>
+      <p className="mt-4 font-serif text-2xl leading-tight">{show ? t(s.business) : taken ? t("A confirmed business") : t("Open spot")}</p>
       <p className="mt-1 text-sm text-stone">
-        {show ? [s.category, s.country].filter(Boolean).join(" · ") : taken ? "Details shared once approved" : "Apply to claim it"}
+        {show ? [s.category, s.country].filter(Boolean).join(" · ") : taken ? t("Details shared once approved") : t("Apply to claim it")}
       </p>
       {taken && (
         <div className="mt-4" aria-label={`Progress: ${s.stage}`}>
@@ -706,10 +718,10 @@ const ProjectCard = ({ s, i }: { s: Spot; i: number }) => {
           </div>
         </div>
       )}
-      {show && s.note && <p className="mt-3 text-sm leading-relaxed text-ink/85">{s.note}</p>}
+      {show && s.note && <p className="mt-3 text-sm leading-relaxed text-ink/85">{t(s.note)}</p>}
       {show && s.url && (
         <a href={s.url} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm font-medium underline underline-offset-4">
-          Visit the website ↗
+          {t("Visit the website ↗")}
         </a>
       )}
     </Reveal>
@@ -773,18 +785,18 @@ const ApplyCard = ({
     )}
   >
     <div className="flex items-start justify-between gap-4">
-      <p className="label">{label}</p>
-      <span className="transition-transform duration-500 ease-gallery group-hover:-rotate-6 group-hover:scale-105">{art}</span>
+      <p className="label">{t(label)}</p>
+      <span className="transition-transform duration-500 ease-gallery group-hover:-rotate-6 group-hover:scale-105">{t(art)}</span>
     </div>
-    <p className="display mt-3 text-[clamp(2.4rem,4.4vw,3.6rem)]">{title}</p>
-    <p className="mt-2 font-mono text-sm">{detail}</p>
-    <p className="mt-4 text-sm leading-relaxed text-ink/80">{note}</p>
+    <p className="display mt-3 text-[clamp(2.4rem,4.4vw,3.6rem)]">{t(title)}</p>
+    <p className="mt-2 font-mono text-sm">{t(detail)}</p>
+    <p className="mt-4 text-sm leading-relaxed text-ink/80">{t(note)}</p>
     <span className="mt-8 inline-flex items-center gap-3 self-start rounded-full bg-ink px-6 py-3 text-sm font-medium text-cream">
-      {cta}{" "}
+      {t(cta)}{" "}
       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
         {external ? "↗" : "→"}
       </span>
-      {external && <span className="sr-only"> (opens in a new tab)</span>}
+      {external && <span className="sr-only"> {t("(opens in a new tab)")}</span>}
     </span>
   </a>
 );

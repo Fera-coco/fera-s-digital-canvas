@@ -4,6 +4,7 @@ import { getExhibit } from "@/content/exhibits";
 import { toneStyles } from "@/content/exhibits";
 import { roomFor, WALK } from "@/content/site";
 import { OPEN_CALL_PATH } from "@/content/openCall";
+import { t, tf } from "@/lib/i18n";
 
 /*
   Walking between rooms.
@@ -39,12 +40,12 @@ const RoomTransition = () => {
       label = WALK.label;
       color = WALK.tone;
     } else if (ex) {
-      no = `Exhibit ${ex.no}`;
+      no = tf("Exhibit {no}", { no: ex.no });
       label = ex.title;
       color = toneStyles[ex.tone].hex;
     } else {
       const room = roomFor(pathname);
-      no = room ? `Room ${room.no}` : "";
+      no = room ? tf("Room {no}", { no: room.no }) : "";
       label = room ? room.label : "Not found";
       color = room?.tone ?? "#EFEADD";
     }
@@ -57,10 +58,15 @@ const RoomTransition = () => {
   const dark = run.color === "#282624";
 
   return (
-    <div key={run.key} aria-hidden className="room-curtain pointer-events-none fixed inset-0 z-[80] flex items-end" style={{ background: run.color }}>
+    <div
+      key={run.key}
+      aria-hidden
+      className="room-curtain pointer-events-none fixed inset-0 z-[80] flex items-end"
+      style={{ background: run.color }}
+    >
       <div className={`gallery-x room-curtain-label pb-[8vh] ${dark ? "text-cream" : "text-ink"}`}>
-        <p className="label opacity-70">{run.no}</p>
-        <p className="display mt-3 text-[clamp(3rem,10vw,8.5rem)]">{run.label}</p>
+        <p className="label opacity-70">{t(run.no)}</p>
+        <p className="display mt-3 text-[clamp(3rem,10vw,8.5rem)]">{t(run.label)}</p>
       </div>
     </div>
   );
