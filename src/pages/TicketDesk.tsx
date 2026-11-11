@@ -48,6 +48,20 @@ const TicketDesk = () => {
 
   useEffect(() => setStamped(false), [picked]);
 
+  // While the slip is out, the page behind it stays put.
+  useEffect(() => {
+    if (!slip) return;
+    const html = document.documentElement;
+    const prev = html.style.overflow;
+    html.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSlip(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      html.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [slip]);
+
   return (
     <main id="main" className="relative min-h-[100svh] overflow-hidden pt-[var(--header-h)]">
       <div className="gallery-x grid min-h-[calc(100svh-var(--header-h))] grid-cols-1 gap-10 py-10 lg:grid-cols-12 lg:items-center lg:gap-12">
@@ -170,21 +184,22 @@ const TicketDesk = () => {
             aria-modal="true"
             aria-label={t("Your route slip")}
             onClick={(e) => e.stopPropagation()}
-            className="dialog-in w-full max-w-md"
+            className="dialog-in flex max-h-[calc(100svh-2rem)] w-full max-w-sm flex-col"
           >
-            <div className="rounded-t-md bg-ink px-5 pb-4 pt-5 text-cream">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/60">{t("Ticket booth")}</p>
-              <p className="mt-1 font-serif text-3xl leading-tight">{t("Admitted ✓ Here's your route slip.")}</p>
-              <p className="mt-1 text-sm text-cream/75">{t("Keep it with you. Each stop gets ticked off as you look closer.")}</p>
+            <div className="shrink-0 rounded-t-md bg-ink px-4 pb-3 pt-4 text-cream">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cream/60">{t("Ticket booth")}</p>
+              <p className="mt-0.5 font-serif text-2xl leading-tight">{t("Admitted ✓ Here's your route slip.")}</p>
+              <p className="mt-0.5 text-xs text-cream/75">{t("Keep it with you. Each stop gets ticked off as you look closer.")}</p>
               {/* the printer slot the slip comes out of */}
-              <div aria-hidden className="mt-4 h-2.5 rounded-full bg-black/70 shadow-[inset_0_2px_3px_rgba(0,0,0,.8)]" />
+              <div aria-hidden className="mt-3 h-2 rounded-full bg-black/70 shadow-[inset_0_2px_3px_rgba(0,0,0,.8)]" />
             </div>
-            <div className="overflow-hidden px-4">
+            {/* only the slip scrolls, never the page behind it */}
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3">
               <div className="slip-print">
-                <RouteSlip journey={j} visitor={v} done={new Set()} next={j.route[0]} />
+                <RouteSlip compact journey={j} visitor={v} done={new Set()} next={j.route[0]} />
               </div>
             </div>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <div className="mt-3 flex shrink-0 flex-wrap justify-center gap-3">
               <button type="button" autoFocus onClick={() => navigate("/visit")} className="btn bg-coral px-7 text-ink">
                 {t("Walk in")} <span aria-hidden>→</span>
               </button>

@@ -464,7 +464,7 @@ const GalleryWalk = () => {
               )}
             </div>
             {slipOpen && (
-              <div id="route-slip" className="pointer-events-auto dialog-in max-h-[calc(100svh-var(--header-h)-12rem)] w-[min(22rem,calc(100vw-2.5rem))] overflow-y-auto">
+              <div id="route-slip" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className="pointer-events-auto dialog-in max-h-[calc(100svh-var(--header-h)-12rem)] w-[min(22rem,calc(100vw-2.5rem))] overflow-y-auto overscroll-contain">
                 <RouteSlip
                   compact
                   journey={journey}

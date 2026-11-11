@@ -53,16 +53,16 @@ const RouteSlip = ({
               <>
                 <span
                   className={cn(
-                    "slip-box flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border-2 font-mono text-[11px]",
+                    "slip-box flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border-2 font-mono text-[11px]",
                     ticked ? "is-ticked border-ink bg-ink text-cream" : isNext ? "border-coral text-ink" : "border-ink/40 text-stone",
                   )}
                   aria-hidden
                 >
                   {ticked ? "✓" : i + 1}
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className={cn("block truncate", ticked && "text-stone line-through decoration-ink/40")}>{t(s.label)}</span>
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-stone">{t(s.room)}</span>
+                <span className={cn("min-w-0 flex-1", compact && "flex items-baseline gap-2")}>
+                  <span className={cn("block truncate", compact && "flex-1", ticked && "text-stone line-through decoration-ink/40")}>{t(s.label)}</span>
+                  <span className="block shrink-0 font-mono text-[10px] uppercase tracking-[0.14em] text-stone">{t(s.room)}</span>
                 </span>
                 {isNext && !ticked && <span className="shrink-0 rounded-full bg-coral px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider">{t("Next")}</span>}
                 <span className="sr-only">{ticked ? t("(done)") : ""}</span>
@@ -71,11 +71,11 @@ const RouteSlip = ({
             return (
               <li key={id} className="border-b border-dotted border-ink/15 last:border-0">
                 {onPick ? (
-                  <button type="button" onClick={() => onPick(id)} className="flex w-full items-center gap-3 py-2 text-left text-sm hover:bg-ink/[0.03]">
+                  <button type="button" onClick={() => onPick(id)} className="flex w-full items-center gap-3 py-1.5 text-left text-sm hover:bg-ink/[0.03]">
                     {row}
                   </button>
                 ) : (
-                  <div className={cn("flex items-center gap-3", compact ? "py-1.5 text-sm" : "py-2")}>{row}</div>
+                  <div className={cn("flex items-center gap-3", compact ? "py-1 text-sm" : "py-2")}>{row}</div>
                 )}
               </li>
             );
