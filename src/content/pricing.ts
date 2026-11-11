@@ -5,6 +5,8 @@
   and per: "month" for monthly services.
 */
 
+import { WHATSAPP_NUMBER } from "./openCall";
+
 export type Currency = "NGN" | "XOF";
 
 export interface PriceItem {
@@ -163,4 +165,12 @@ export const formatPrice = (item: PriceItem, c: Currency) => {
   const n = c === "NGN" ? item.ngn : item.xof;
   const amount = c === "NGN" ? `₦${n.toLocaleString("en-NG")}` : `CFA ${n.toLocaleString("en-NG")}`;
   return { lead: item.from ? "From" : "", amount, per: item.per ? "/ month" : "" };
+};
+
+export const whatsapp = (text: string) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+
+/** Lowest price in a group, for "from" summaries. */
+export const fromPrice = (g: PriceGroup, c: Currency) => {
+  const min = Math.min(...g.items.map((i) => (c === "NGN" ? i.ngn : i.xof)));
+  return c === "NGN" ? `₦${min.toLocaleString("en-NG")}` : `CFA ${min.toLocaleString("en-NG")}`;
 };

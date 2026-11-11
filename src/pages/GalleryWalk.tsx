@@ -4,6 +4,9 @@ import Visitor from "@/components/gallery/Visitor";
 import portrait from "@/assets/curator.webp";
 import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { commissions } from "@/content/services";
+import { fromPrice, priceGroups, whatsapp } from "@/content/pricing";
+import { CurrencySwitch, Price } from "@/components/exhibition/PriceList";
+import { useCurrency } from "@/hooks/use-currency";
 import { mailto, site } from "@/content/site";
 import { getVisitor, loadVisitor } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
@@ -31,7 +34,7 @@ const ROOMS: HallRoom[] = (() => {
   const a = 1000;
   const b = collectionEnd;
   const c = b + 1180;
-  const d = c + 1340;
+  const d = c + 1780; // four commission posters + the price board
   const e = d + 1000;
   return [
     { id: "lobby", no: "00", label: "Entrance hall", from: 0, to: a, tone: "#282624", wash: "#EFEADD" },
@@ -48,11 +51,14 @@ type Spot =
   | { id: string; kind: "exhibit"; x: number; label: string; ex: Exhibit }
   | { id: string; kind: "portrait" | "bio"; x: number; label: string }
   | { id: string; kind: "service"; x: number; label: string; i: number }
+  | { id: string; kind: "prices"; x: number; label: string }
   | { id: string; kind: "guestbook" | "exitdoor"; x: number; label: string };
 
 const curatorRoom = ROOMS[2];
 const studioRoom = ROOMS[3];
 const exitRoom = ROOMS[4];
+
+const PRICE_BOARD_X = 1440;
 
 const SPOTS: Spot[] = [
   { id: "welcome", kind: "welcome", x: 520, label: "Welcome sign" },
@@ -72,6 +78,7 @@ const SPOTS: Spot[] = [
     label: `Commission ${c.no}: ${c.title}`,
     i,
   })),
+  { id: "prices", kind: "prices", x: studioRoom.from + PRICE_BOARD_X, label: "The price list" },
   { id: "guestbook", kind: "guestbook", x: exitRoom.from + 400, label: "The guestbook" },
   { id: "exitdoor", kind: "exitdoor", x: exitRoom.from + 820, label: "Exit door" },
 ];
@@ -553,8 +560,9 @@ const Hall = () => (
       );
     })}
     <p className="absolute font-mono text-[13px] uppercase tracking-[0.18em] text-stone" style={{ left: studioRoom.from + 200, top: 470 }}>
-      Now taking commissions · look closer at a poster
+      Now taking commissions · look closer at a poster or the price list
     </p>
+    <PriceBoard />
 
     {/* ---- The Exit ---- */}
     <div className="absolute" style={{ left: exitRoom.from + 400 - 110, top: 360, width: 220 }}>
@@ -751,6 +759,14 @@ const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClo
     );
   }
 
+  if (spot.kind === "prices") {
+    return (
+      <Dialog label={spot.label} onClose={onClose} tone="#F5ECA7">
+        <PricesDialogBody />
+      </Dialog>
+    );
+  }
+
   if (spot.kind === "guestbook") {
     const copy = async () => {
       try {
@@ -827,6 +843,74 @@ const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClo
         </Link>
       </div>
     </Dialog>
+  );
+};
+
+/* The price board on the Studio wall: one "from" price per service area. */
+const PriceBoard = () => {
+  const [currency] = useCurrency();
+  return (
+    <div
+      className="absolute bg-ink p-6 text-cream shadow-[0_24px_40px_-22px_rgba(40,38,36,.7)]"
+      style={{ left: studioRoom.from + PRICE_BOARD_X - 170, top: 120, width: 340, transform: "rotate(0.6deg)" }}
+    >
+      <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-butter">Price list</p>
+      <p className="mt-1 font-serif text-[30px] leading-none">What it costs</p>
+      <ul className="mt-4 space-y-2.5 text-[15px]">
+        {priceGroups.map((g) => (
+          <li key={g.id} className="flex items-baseline gap-2">
+            <span>{g.verb}</span>
+            <span aria-hidden className="mb-1 flex-1 border-b border-dotted border-cream/30" />
+            <span className="tabular-nums text-cream/90">
+              <span className="text-[12px] text-cream/60">from </span>
+              {fromPrice(g, currency)}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/60">Look closer for every price</p>
+    </div>
+  );
+};
+
+const PricesDialogBody = () => {
+  const [currency, choose] = useCurrency();
+  return (
+    <>
+      <p className="label text-stone">Room 03 · The price list</p>
+      <h2 className="display mt-2 pr-28 text-4xl">What it costs</h2>
+      <p className="mt-3 max-w-xl leading-relaxed text-ink/85">Introductory guide prices for businesses in Nigeria and Benin. Your final quote depends on the scope.</p>
+      <div className="mt-4">
+        <CurrencySwitch currency={currency} onChoose={choose} />
+      </div>
+      <div className="mt-6 space-y-6">
+        {priceGroups.map((g) => (
+          <section key={g.id} aria-labelledby={`walk-price-${g.id}`}>
+            <h3 id={`walk-price-${g.id}`} className="flex items-center gap-2 font-medium">
+              <span aria-hidden className={cn("h-2.5 w-2.5 rounded-full", g.tone)} />
+              {g.verb}: {g.title}
+            </h3>
+            <ul className="mt-2 divide-y divide-ink/10 border-y border-ink/10">
+              {[...g.items, ...(g.extras?.items ?? [])].map((it) => (
+                <li key={`${g.id}-${it.name}`} className="flex items-baseline gap-3 py-2 text-sm">
+                  <span>{it.name}</span>
+                  <span aria-hidden className="mb-1 min-w-4 flex-1 border-b border-dotted border-ink/25" />
+                  <Price item={it} currency={currency} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <div className="mt-7 flex flex-wrap gap-3">
+        <a href={whatsapp("Hi Fera, I'd like a quote. Here's what my business needs:\n")} target="_blank" rel="noreferrer" className="btn-ink">
+          Ask on WhatsApp <span aria-hidden>↗</span>
+        </a>
+        <Link to="/studio#prices" className="btn-line">
+          See the full price list
+        </Link>
+      </div>
+    </>
   );
 };
 

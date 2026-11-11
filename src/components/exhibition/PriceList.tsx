@@ -1,31 +1,11 @@
-import { useEffect, useState } from "react";
-import { formatPrice, howItWorks, priceGroups, terms, type Currency, type PriceItem } from "@/content/pricing";
-import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY } from "@/content/openCall";
+import { useCurrency } from "@/hooks/use-currency";
+import { formatPrice, howItWorks, priceGroups, terms, whatsapp, type Currency, type PriceItem } from "@/content/pricing";
+import { WHATSAPP_DISPLAY } from "@/content/openCall";
 import { mailto, site } from "@/content/site";
 import { cn } from "@/lib/utils";
 
-const STORE = "feras-studio-currency";
 
-/* Visitors in Benin (or reading in French) see CFA first; everyone else sees naira. They can switch. */
-const initialCurrency = (): Currency => {
-  try {
-    const saved = localStorage.getItem(STORE);
-    if (saved === "NGN" || saved === "XOF") return saved;
-  } catch {
-    /* storage unavailable */
-  }
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (tz === "Africa/Porto-Novo" || navigator.language.toLowerCase().startsWith("fr")) return "XOF";
-  } catch {
-    /* ignore */
-  }
-  return "NGN";
-};
-
-const whatsapp = (text: string) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-
-const Price = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
+export const Price = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
   const p = formatPrice(item, currency);
   return (
     <span className="tabular-nums shrink-0 whitespace-nowrap text-right">
@@ -35,6 +15,27 @@ const Price = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
     </span>
   );
 };
+
+export const CurrencySwitch = ({ currency, onChoose, labelledBy }: { currency: Currency; onChoose: (c: Currency) => void; labelledBy?: string }) => (
+  <div role="group" aria-labelledby={labelledBy} aria-label={labelledBy ? undefined : "Show prices in"} className="inline-flex rounded-full border border-ink/70 bg-paper p-1">
+    {(
+      [
+        ["NGN", "₦ Naira"],
+        ["XOF", "CFA franc"],
+      ] as const
+    ).map(([c, label]) => (
+      <button
+        key={c}
+        type="button"
+        aria-pressed={currency === c}
+        onClick={() => onChoose(c)}
+        className={cn("rounded-full px-5 py-2 text-sm transition-colors duration-300", currency === c ? "bg-ink text-cream" : "text-ink hover:bg-ink/5")}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+);
 
 const Row = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
   const p = formatPrice(item, currency);
@@ -64,16 +65,7 @@ const Row = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
 };
 
 const PriceList = () => {
-  const [currency, setCurrency] = useState<Currency>("NGN");
-  useEffect(() => setCurrency(initialCurrency()), []);
-  const choose = (c: Currency) => {
-    setCurrency(c);
-    try {
-      localStorage.setItem(STORE, c);
-    } catch {
-      /* storage unavailable */
-    }
-  };
+  const [currency, choose] = useCurrency();
 
   return (
     <section id="prices" aria-labelledby="prices-title" className="scroll-mt-[calc(var(--header-h)+1rem)] bg-wall/60 py-20 md:py-28">
@@ -93,27 +85,7 @@ const PriceList = () => {
             <p id="currency-label" className="label mb-2 text-stone">
               Show prices in
             </p>
-            <div role="group" aria-labelledby="currency-label" className="inline-flex rounded-full border border-ink/70 bg-paper p-1">
-              {(
-                [
-                  ["NGN", "₦ Naira"],
-                  ["XOF", "CFA franc"],
-                ] as const
-              ).map(([c, label]) => (
-                <button
-                  key={c}
-                  type="button"
-                  aria-pressed={currency === c}
-                  onClick={() => choose(c)}
-                  className={cn(
-                    "rounded-full px-5 py-2 text-sm transition-colors duration-300",
-                    currency === c ? "bg-ink text-cream" : "text-ink hover:bg-ink/5",
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            <CurrencySwitch currency={currency} onChoose={choose} labelledBy="currency-label" />
           </div>
         </header>
 
