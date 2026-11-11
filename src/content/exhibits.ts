@@ -572,8 +572,8 @@ export const exhibits: Exhibit[] = [
     linkNote: "Not public yet. The live site will be linked here at launch.",
     cover: {
       src: "/exhibits/gracelink-hero.webp",
-      alt: "Gracelink Empire homepage: two illustrated hair textures labelled Curls and Sleek, with Shop Human Hair and Shop Ponytails buttons",
-      caption: "Homepage. Two illustrated textures, Curls and Sleek, lead straight into the main categories.",
+      alt: "Gracelink Empire homepage: straight human hair bundles on the left and curly ponytails on the right, with Shop Human Hair and Shop Ponytails buttons",
+      caption: "Homepage. Two product photos, straight bundles and curly ponytails, lead straight into the main categories.",
       width: 1520,
       height: 730,
       device: "desktop",
