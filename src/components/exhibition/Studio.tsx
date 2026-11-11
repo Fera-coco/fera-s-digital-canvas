@@ -17,6 +17,10 @@ const Studio = () => (
         <p className="max-w-md self-end text-lg leading-relaxed text-ink/85 lg:col-span-5">
           Fera's Studio takes commissions from small businesses, founders and teams who want digital work that looks
           considered and works properly. Here's what you can commission.
+          <a href="#prices" className="mt-4 flex w-fit items-center gap-2 text-base font-medium text-ink">
+            <span className="link-underline">See the price list</span>
+            <span aria-hidden>↓</span>
+          </a>
         </p>
       </header>
 

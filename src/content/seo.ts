@@ -56,10 +56,10 @@ export const PAGES = {
   },
   studio: {
     path: "/studio",
-    title: "Website design & development services | Fera's Studio",
+    title: "Services & prices: websites, SEO and social media | Fera's Studio",
     description:
-      "Commission Fera's Studio for website design and development, UX/UI and product design, redesigns, landing pages and ordering flows.",
-    heading: "The Studio: services",
+      "Fera's Studio services and prices in naira and CFA francs: websites, e-commerce, website audits and SEO, workflow automation, social media and Google Business for businesses in Nigeria and Benin.",
+    heading: "The Studio: services and prices",
     crumb: "The Studio",
   },
   contact: {
