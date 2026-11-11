@@ -891,6 +891,20 @@ export const fr: Record<string, string> = {
   " · {n} stops": " · {n} étapes",
   "EXIT": "SORTIE",
   "APPLICATIONS": "CANDIDATURES",
+  "Route slip · Fera's Studio": "Fiche de parcours · Fera's Studio",
+  "Issued to: {who}": "Délivrée à : {who}",
+  "Next": "Suivante",
+  "(done)": "(fait)",
+  "{n} of {m} stops": "{n} étape(s) sur {m}",
+  "Free roam": "Visite libre",
+  "Route complete": "Parcours terminé",
+  "Your route slip": "Votre fiche de parcours",
+  "Ticket booth": "Guichet",
+  "Admitted ✓ Here's your route slip.": "Admis ✓ Voici votre fiche de parcours.",
+  "Keep it with you. Each stop gets ticked off as you look closer.": "Gardez-la sur vous. Chaque étape est cochée quand vous la regardez de plus près.",
+  "Walk in": "Entrer",
+  "Your slip": "Ma fiche",
+  "Ticked off: {stop}": "Coché : {stop}",
 };
 
 /* Text built from parts (labels with numbers and names). */

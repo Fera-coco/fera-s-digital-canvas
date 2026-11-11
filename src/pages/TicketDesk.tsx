@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Visitor from "@/components/gallery/Visitor";
 import { exhibits } from "@/content/exhibits";
 import { getVisitor, loadVisitor, saveVisitor, visitors, type VisitorId } from "@/content/visitors";
-import { getJourney } from "@/content/journeys";
+import { getJourney, resetProgress } from "@/content/journeys";
+import RouteSlip from "@/components/exhibition/RouteSlip";
 import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
 import { cn } from "@/lib/utils";
@@ -35,11 +36,14 @@ const TicketDesk = () => {
     groupRef.current?.querySelectorAll<HTMLButtonElement>("[role=radio]")[n]?.focus();
   };
 
+  // Take the ticket: it's stamped "Admitted", then the booth hands over your route slip.
+  const [slip, setSlip] = useState(false);
   const enter = () => {
     saveVisitor(picked);
-    if (!document.documentElement.classList.contains("motion-ok")) return navigate("/visit");
+    resetProgress(picked);
+    if (!document.documentElement.classList.contains("motion-ok")) return setSlip(true);
     setStamped(true);
-    window.setTimeout(() => navigate("/visit"), 650);
+    window.setTimeout(() => setSlip(true), 750);
   };
 
   useEffect(() => setStamped(false), [picked]);
@@ -159,6 +163,38 @@ const TicketDesk = () => {
           <p className="label mt-4 text-stone">{t("Walk with ← → or A / D, scroll, or the on-screen arrows · press E to look closer")}</p>
         </div>
       </div>
+      {slip && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-ink/45 p-4 backdrop-blur-sm" onClick={() => setSlip(false)}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("Your route slip")}
+            onClick={(e) => e.stopPropagation()}
+            className="dialog-in w-full max-w-md"
+          >
+            <div className="rounded-t-md bg-ink px-5 pb-4 pt-5 text-cream">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/60">{t("Ticket booth")}</p>
+              <p className="mt-1 font-serif text-3xl leading-tight">{t("Admitted ✓ Here's your route slip.")}</p>
+              <p className="mt-1 text-sm text-cream/75">{t("Keep it with you. Each stop gets ticked off as you look closer.")}</p>
+              {/* the printer slot the slip comes out of */}
+              <div aria-hidden className="mt-4 h-2.5 rounded-full bg-black/70 shadow-[inset_0_2px_3px_rgba(0,0,0,.8)]" />
+            </div>
+            <div className="overflow-hidden px-4">
+              <div className="slip-print">
+                <RouteSlip journey={j} visitor={v} done={new Set()} next={j.route[0]} />
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
+              <button type="button" autoFocus onClick={() => navigate("/visit")} className="btn bg-coral px-7 text-ink">
+                {t("Walk in")} <span aria-hidden>→</span>
+              </button>
+              <button type="button" onClick={() => setSlip(false)} className="btn border border-cream/60 text-cream">
+                {t("Change visitor")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 };

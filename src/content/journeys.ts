@@ -4,6 +4,8 @@
   "service-A"…"service-D", "prices", "guestbook", "exitdoor".
 */
 import type { VisitorId } from "./visitors";
+import { exhibits } from "./exhibits";
+import { commissions } from "./services";
 
 export interface Journey {
   id: VisitorId;
@@ -70,3 +72,44 @@ export const journeys: Record<VisitorId, Journey> = {
 };
 
 export const getJourney = (id: VisitorId | null | undefined) => journeys[id ?? "dreamer"] ?? journeys.dreamer;
+
+/* ---------- the route slip ---------- */
+
+
+/** What each stop is called on the slip, and which room it's in. */
+export const stopInfo = (id: string): { label: string; room: string } => {
+  const ex = exhibits.find((e) => e.slug === id);
+  if (ex) return { label: ex.title, room: "Room 01" };
+  if (id === "portrait") return { label: "Portrait of the curator", room: "Room 02" };
+  if (id === "bio") return { label: "The curator's note", room: "Room 02" };
+  if (id.startsWith("service-")) {
+    const c = commissions.find((x) => `service-${x.no}` === id);
+    return { label: c?.title ?? id, room: "Room 03" };
+  }
+  if (id === "prices") return { label: "The price list", room: "Room 03" };
+  if (id === "guestbook") return { label: "The visitors' book", room: "Room 04" };
+  return { label: "Exit door", room: "Room 04" };
+};
+
+const PROGRESS_KEY = "feras-studio-route";
+
+/** Ticked stops survive leaving the walk (to a case study, the price list…) and coming back. */
+export const loadProgress = (role: VisitorId): string[] => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "null");
+    return raw && raw.role === role && Array.isArray(raw.done) ? raw.done : [];
+  } catch {
+    return [];
+  }
+};
+
+export const saveProgress = (role: VisitorId, done: string[]) => {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify({ role, done }));
+  } catch {
+    /* storage unavailable */
+  }
+};
+
+/** A fresh ticket means a fresh slip. */
+export const resetProgress = (role: VisitorId) => saveProgress(role, []);

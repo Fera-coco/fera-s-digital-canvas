@@ -400,3 +400,20 @@ body {
 /* the next stop on a visitor's route */
 @keyframes route-pulse { 0% { box-shadow: 0 0 0 0 rgba(242, 139, 121, 0.7); } 100% { box-shadow: 0 0 0 14px rgba(242, 139, 121, 0); } }
 .motion-ok .route-pin-next { animation: route-pulse 1.6s ease-out infinite; }
+
+/* the route slip: perforated edges, printed out at the booth, ticked off on the walk */
+.route-slip {
+  --perf: radial-gradient(circle at 6px 0, transparent 4px, #000 4.5px) 0 0 / 12px 100% repeat-x;
+  -webkit-mask: radial-gradient(circle at 6px 0, transparent 4px, #000 4.5px) top / 12px 51% repeat-x, radial-gradient(circle at 6px 100%, transparent 4px, #000 4.5px) bottom / 12px 51% repeat-x;
+  mask: radial-gradient(circle at 6px 0, transparent 4px, #000 4.5px) top / 12px 51% repeat-x, radial-gradient(circle at 6px 100%, transparent 4px, #000 4.5px) bottom / 12px 51% repeat-x;
+  filter: drop-shadow(0 14px 22px rgba(40, 38, 36, 0.18));
+}
+@keyframes slip-print { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+.motion-ok .slip-print { animation: slip-print 1.4s cubic-bezier(0.25, 0.8, 0.3, 1) 0.15s both; }
+@keyframes slip-tick { 0% { transform: scale(0.4) rotate(-20deg); } 60% { transform: scale(1.25) rotate(6deg); } 100% { transform: scale(1) rotate(0); } }
+.motion-ok .slip-box.is-ticked { animation: slip-tick 0.45s cubic-bezier(0.3, 1.4, 0.5, 1); }
+@keyframes slip-stamp { 0% { transform: scale(2) rotate(-14deg); opacity: 0; } 100% { transform: scale(1) rotate(-6deg); opacity: 1; } }
+.slip-stamp { transform: rotate(-6deg); }
+.motion-ok .slip-stamp { animation: slip-stamp 0.4s cubic-bezier(0.3, 1.3, 0.5, 1) both; }
+@keyframes slip-bump { 0%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px) rotate(-2deg); } 60% { transform: translateY(0) rotate(1deg); } }
+.motion-ok .slip-bump { animation: slip-bump 0.6s ease 2; }

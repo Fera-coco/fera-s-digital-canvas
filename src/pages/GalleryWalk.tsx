@@ -4,7 +4,8 @@ import Visitor from "@/components/gallery/Visitor";
 import portrait from "@/assets/curator.webp";
 import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { commissions } from "@/content/services";
-import { getJourney, type Journey } from "@/content/journeys";
+import { getJourney, loadProgress, saveProgress, stopInfo, type Journey } from "@/content/journeys";
+import RouteSlip from "@/components/exhibition/RouteSlip";
 import GuestbookWall from "@/components/exhibition/GuestbookWall";
 import LeavingScene from "@/components/exhibition/LeavingScene";
 import { mailto, site } from "@/content/site";
@@ -97,7 +98,9 @@ const GalleryWalk = () => {
   const visitor = useMemo(() => getVisitor(loadVisitor()), []);
   const journey = useMemo(() => getJourney(visitor.id), [visitor]);
   const route = useMemo(() => journey.route.map((id) => SPOTS.find((sp) => sp.id === id)).filter((sp): sp is Spot => !!sp), [journey]);
-  const [visited, setVisited] = useState<Set<string>>(() => new Set());
+  const [visited, setVisited] = useState<Set<string>>(() => new Set(loadProgress(visitor.id)));
+  const [slipOpen, setSlipOpen] = useState(false);
+  const [ticked, setTicked] = useState<string | null>(null); // the stop just ticked off, for the little toast
 
   const stageRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
@@ -209,11 +212,22 @@ const GalleryWalk = () => {
   // The price card is a doorway, not a dialog: it takes visitors to the price list in the Studio.
   const lookCloser = useCallback(
     (s: Spot) => {
-      setVisited((v) => (v.has(s.id) ? v : new Set(v).add(s.id)));
+      setVisited((v) => {
+        if (v.has(s.id)) return v;
+        const nextSet = new Set(v).add(s.id);
+        saveProgress(visitor.id, [...nextSet]);
+        if (journey.route.includes(s.id)) setTicked(s.id);
+        return nextSet;
+      });
       return s.kind === "prices" ? navigate("/studio#prices") : setOpen(s);
     },
-    [navigate],
+    [navigate, visitor.id, journey.route],
   );
+  useEffect(() => {
+    if (!ticked) return;
+    const tm = window.setTimeout(() => setTicked(null), 2600);
+    return () => window.clearTimeout(tm);
+  }, [ticked]);
   const inspect = useCallback(() => {
     if (near) lookCloser(near);
   }, [near, lookCloser]);
@@ -409,30 +423,66 @@ const GalleryWalk = () => {
                 </span>
               </span>
             </div>
-            {route.length > 0 && (
+            <div className="pointer-events-auto flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  const to = nextStop ?? SPOTS.find((sp) => sp.id === "exitdoor");
-                  if (to) walkTo(to.x - 120);
-                }}
-                className="pointer-events-auto flex items-center gap-2 rounded-full bg-ink py-2 pl-3 pr-4 text-sm text-cream shadow-sm"
+                aria-expanded={slipOpen}
+                aria-controls="route-slip"
+                onClick={() => setSlipOpen((o) => !o)}
+                className={cn("flex items-center gap-2 rounded-full bg-paper/95 py-2 pl-3 pr-4 text-sm shadow-sm backdrop-blur", ticked && "slip-bump")}
               >
-                <span className="nums rounded-full bg-cream/15 px-2 py-0.5 font-mono text-[11px]">
-                  {t(doneCount)}/{t(route.length)}
-                </span>
-                {nextStop ? (
-                  <>
-                    {t("Next stop:")}{" "}
-                    <span className="max-w-[9rem] truncate sm:max-w-[14rem]">
-                      {nextStop.kind === "exhibit" ? t(nextStop.ex.title) : t(nextStop.label)}
-                    </span>{" "}
-                    →
-                  </>
-                ) : (
-                  <>{t("Route done ✓ Head for the exit →")}</>
+                <span aria-hidden>🎟️</span>
+                {t("Your slip")}
+                {route.length > 0 && (
+                  <span className="nums rounded-full bg-ink px-2 py-0.5 font-mono text-[11px] text-cream">
+                    {doneCount}/{route.length}
+                  </span>
                 )}
+                <span aria-hidden className={cn("transition-transform", slipOpen && "rotate-180")}>▾</span>
               </button>
+              {route.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const to = nextStop ?? SPOTS.find((sp) => sp.id === "exitdoor");
+                    if (to) walkTo(to.x - 120);
+                  }}
+                  className="flex items-center gap-2 rounded-full bg-ink py-2 pl-4 pr-4 text-sm text-cream shadow-sm"
+                >
+                  {nextStop ? (
+                    <>
+                      {t("Next stop:")}{" "}
+                      <span className="max-w-[9rem] truncate sm:max-w-[14rem]">
+                        {nextStop.kind === "exhibit" ? t(nextStop.ex.title) : t(stopInfo(nextStop.id).label)}
+                      </span>{" "}
+                      →
+                    </>
+                  ) : (
+                    <>{t("Route done ✓ Head for the exit →")}</>
+                  )}
+                </button>
+              )}
+            </div>
+            {slipOpen && (
+              <div id="route-slip" className="pointer-events-auto dialog-in max-h-[calc(100svh-var(--header-h)-12rem)] w-[min(22rem,calc(100vw-2.5rem))] overflow-y-auto">
+                <RouteSlip
+                  compact
+                  journey={journey}
+                  visitor={visitor}
+                  done={visited}
+                  next={nextStop?.id}
+                  onPick={(id) => {
+                    const sp = SPOTS.find((x) => x.id === id);
+                    if (sp) walkTo(sp.x - 120);
+                    setSlipOpen(false);
+                  }}
+                />
+              </div>
+            )}
+            {ticked && (
+              <p role="status" className="pointer-events-none dialog-in rounded-full bg-mint px-4 py-2 text-sm font-medium text-ink shadow-sm">
+                ✓ {tf("Ticked off: {stop}", { stop: t(stopInfo(ticked).label) })}
+              </p>
             )}
           </div>
           <div className="pointer-events-auto flex gap-2">
