@@ -905,6 +905,7 @@ export const fr: Record<string, string> = {
   "Walk in": "Entrer",
   "Your slip": "Ma fiche",
   "Ticked off: {stop}": "Coché : {stop}",
+  "Back to the gallery walk": "Retour à la visite de la galerie",
 };
 
 /* Text built from parts (labels with numbers and names). */

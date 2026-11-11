@@ -12,6 +12,7 @@ import {
   type Signature,
 } from "@/content/guestbook";
 import { cn } from "@/lib/utils";
+import { markStop } from "@/content/journeys";
 import { locale, t } from "@/lib/i18n";
 
 const slipTones = ["bg-butter-soft", "bg-lavender-soft", "bg-mint-soft", "bg-blush-soft", "bg-peach-soft", "bg-paper"];
@@ -62,6 +63,7 @@ const GuestbookWall = ({ dark = false, limit = 24, compact = false }: { dark?: b
       const s = await signGuestbook(name, note, me.id);
       setList((l) => [s, ...(l ?? [])]);
       setMine(s.id);
+      markStop(me.id, "guestbook");
       setPhase("signed");
       setName("");
       setNote("");

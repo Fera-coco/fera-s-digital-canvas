@@ -3,6 +3,7 @@ import { getLang, onLangChange } from "@/lib/i18n";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Header from "@/components/exhibition/Header";
 import RoomTransition from "@/components/exhibition/RoomTransition";
+import ReturnToWalk from "@/components/exhibition/ReturnToWalk";
 import { useReveal, useScrollManager } from "@/hooks/use-exhibition";
 import TicketDesk from "./pages/TicketDesk";
 import GalleryWalk from "./pages/GalleryWalk";
@@ -24,6 +25,7 @@ const Rooms = () => {
       <Header />
       <RoomTransition />
       <Outlet />
+      <ReturnToWalk />
     </>
   );
 };

@@ -3,9 +3,11 @@ import PriceList from "@/components/exhibition/PriceList";
 import NextRoom from "@/components/exhibition/NextRoom";
 import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
+import { useTickStops } from "@/hooks/use-tick";
 
 const StudioPage = () => {
   usePageMeta(PAGES.studio);
+  useTickStops(["service-A", "service-B", "service-C", "service-D", "prices"]);
   return (
     <main id="main" className="flex min-h-[100svh] flex-col">
       <Studio />

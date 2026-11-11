@@ -4,7 +4,7 @@ import Visitor from "@/components/gallery/Visitor";
 import portrait from "@/assets/curator.webp";
 import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { commissions } from "@/content/services";
-import { getJourney, loadProgress, saveProgress, stopInfo, type Journey } from "@/content/journeys";
+import { getJourney, loadProgress, loadWalkSpot, saveProgress, saveWalkSpot, stopInfo, type Journey } from "@/content/journeys";
 import RouteSlip from "@/components/exhibition/RouteSlip";
 import GuestbookWall from "@/components/exhibition/GuestbookWall";
 import LeavingScene from "@/components/exhibition/LeavingScene";
@@ -107,7 +107,9 @@ const GalleryWalk = () => {
   const meRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLSpanElement>(null);
 
-  const x = useRef(START);
+  // Coming back from a case study or the price list? Start where you left off.
+  const x = useRef(loadWalkSpot() ?? START);
+  const lastSaved = useRef(-1);
   const target = useRef<number | null>(null);
   const keys = useRef({ left: false, right: false });
   const hold = useRef(0); // -1 / 0 / 1 from on-screen buttons
@@ -196,6 +198,10 @@ const GalleryWalk = () => {
         if (!moving) target.current = null;
       } else if (now < wheelUntil.current) {
         moving = true;
+      }
+      if (!moving && lastSaved.current !== Math.round(x.current)) {
+        lastSaved.current = Math.round(x.current);
+        saveWalkSpot(x.current);
       }
       if (moving) {
         paint();
@@ -526,7 +532,7 @@ const GalleryWalk = () => {
               ref={dotRef}
               aria-hidden
               className="pointer-events-none absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-cream shadow"
-              style={{ background: visitor.top, left: `${(START / WORLD_W) * 100}%` }}
+              style={{ background: visitor.top, left: `${(x.current / WORLD_W) * 100}%` }}
             />
           </div>
 

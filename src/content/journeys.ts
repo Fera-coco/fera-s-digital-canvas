@@ -113,3 +113,33 @@ export const saveProgress = (role: VisitorId, done: string[]) => {
 
 /** A fresh ticket means a fresh slip. */
 export const resetProgress = (role: VisitorId) => saveProgress(role, []);
+
+export const TICK_EVENT = "feras-studio-ticked";
+
+/** Tick a stop off the slip from anywhere on the site (a case study, the price list…). */
+export const markStop = (role: VisitorId, id: string) => {
+  const route = journeys[role]?.route ?? [];
+  const done = loadProgress(role);
+  if (done.includes(id)) return false;
+  saveProgress(role, [...done, id]);
+  if (route.includes(id)) window.dispatchEvent(new CustomEvent<string>(TICK_EVENT, { detail: id }));
+  return true;
+};
+
+/* Where the visitor was standing in the walk, so "Back to the gallery walk" returns them there. */
+const WALK_KEY = "feras-studio-walk";
+export const saveWalkSpot = (x: number) => {
+  try {
+    sessionStorage.setItem(WALK_KEY, String(Math.round(x)));
+  } catch {
+    /* storage unavailable */
+  }
+};
+export const loadWalkSpot = (): number | null => {
+  try {
+    const v = sessionStorage.getItem(WALK_KEY);
+    return v ? Number(v) : null;
+  } catch {
+    return null;
+  }
+};

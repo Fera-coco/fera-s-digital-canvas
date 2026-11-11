@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTickStops } from "@/hooks/use-tick";
 import { Link, useParams } from "react-router-dom";
 import Frame from "@/components/exhibition/Frame";
 import NextRoom from "@/components/exhibition/NextRoom";
@@ -12,6 +13,8 @@ import { t } from "@/lib/i18n";
 const CaseStudy = () => {
   const { slug } = useParams();
   const ex = getExhibit(slug);
+  // Reading the full case study ticks this exhibit off the visitor's route slip.
+  useTickStops(ex ? [ex.slug] : []);
 
   usePageMeta(
     useMemo<PageMeta>(
