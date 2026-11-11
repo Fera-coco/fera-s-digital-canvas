@@ -88,6 +88,20 @@ body {
 
   .display {
     @apply font-serif font-normal leading-[0.92] tracking-[-0.015em];
+    text-wrap: balance;
+  }
+
+  /* Even headline breaks, no lonely last words in paragraphs */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p, li, dd, blockquote {
+    text-wrap: pretty;
+  }
+
+  /* Numbers that change (counters, progress, stats) keep a fixed width */
+  .nums {
+    font-variant-numeric: tabular-nums;
   }
 
   .gallery-x {

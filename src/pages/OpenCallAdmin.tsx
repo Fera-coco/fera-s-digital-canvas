@@ -290,7 +290,7 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
 const Stat = ({ k, v }: { k: string; v: string | number }) => (
   <div>
     <dt className="label text-stone">{k}</dt>
-    <dd className="font-serif text-3xl">{v}</dd>
+    <dd className="nums font-serif text-3xl">{v}</dd>
   </div>
 );
 
