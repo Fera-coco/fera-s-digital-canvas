@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import GuestbookWall from "@/components/exhibition/GuestbookWall";
+import LeavingScene from "@/components/exhibition/LeavingScene";
 import { mailto, site } from "@/content/site";
 
 const Exit = () => {
   const [copied, setCopied] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const navigate = useNavigate();
 
   const copy = async () => {
     try {
@@ -71,16 +75,33 @@ const Exit = () => {
           </div>
         </div>
 
+        {/* The visitors' book */}
+        <div id="visitors-book" className="scroll-mt-[calc(var(--header-h)+1rem)] border-t border-cream/15 pb-20 pt-14" data-reveal>
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="label text-cream/60">The visitors' book</p>
+              <h2 className="display mt-3 text-[clamp(2.4rem,5vw,4rem)]">Sign before you go</h2>
+            </div>
+            <p className="max-w-sm text-cream/70">Leave your name (and a little note, if you like) so Fera knows you stopped by.</p>
+          </div>
+          <GuestbookWall dark />
+        </div>
+
         {/* Colophon */}
         <div className="mt-auto flex flex-col gap-4 border-t border-cream/15 pt-6 text-sm text-cream/60 md:flex-row md:items-center md:justify-between">
           <p>
             © {new Date().getFullYear()} {site.studio} · {site.person}
           </p>
-          <Link to="/" className="link-underline self-start md:self-auto">
-            ← Back to the entrance
-          </Link>
+          <button
+            type="button"
+            onClick={() => setLeaving(true)}
+            className="inline-flex items-center gap-2 self-start rounded-full border border-cream/40 px-5 py-2.5 text-cream transition-colors hover:bg-cream hover:text-ink md:self-auto"
+          >
+            Leave the exhibition <span aria-hidden>🚪</span>
+          </button>
         </div>
       </div>
+      {leaving && <LeavingScene onStay={() => (setLeaving(false), navigate("/visit"))} />}
     </section>
   );
 };

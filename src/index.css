@@ -389,3 +389,14 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .oc-reveal.is-seen { animation-delay: 0ms !important; }
 }
+
+/* leaving the exhibition */
+.leave-walker { transition: left 2.2s cubic-bezier(0.45, 0, 0.3, 1), opacity 0.45s ease 0.05s; }
+.leave-door { transition: transform 0.9s cubic-bezier(0.6, 0, 0.3, 1.3); }
+@media (prefers-reduced-motion: reduce) {
+  .leave-walker, .leave-door { transition: none; }
+}
+
+/* the next stop on a visitor's route */
+@keyframes route-pulse { 0% { box-shadow: 0 0 0 0 rgba(242, 139, 121, 0.7); } 100% { box-shadow: 0 0 0 14px rgba(242, 139, 121, 0); } }
+.motion-ok .route-pin-next { animation: route-pulse 1.6s ease-out infinite; }

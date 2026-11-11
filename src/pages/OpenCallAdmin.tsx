@@ -185,7 +185,7 @@ const Login = ({ sb }: { sb: SupabaseClient }) => {
 /* ------------------------------------------------------------------ */
 
 const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
-  const [tab, setTab] = useState<"apps" | "spots">("apps");
+  const [tab, setTab] = useState<"apps" | "spots" | "book">("apps");
   const [apps, setApps] = useState<AppRow[] | null>(null);
   const [spots, setSpots] = useState<SpotRow[] | null>(null);
   const [open, setOpen] = useState(true);
@@ -252,6 +252,7 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
           [
             ["apps", "Applications"],
             ["spots", "The five spots"],
+            ["book", "Visitors' book"],
           ] as const
         ).map(([id, label]) => (
           <button
@@ -274,8 +275,10 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
 
       {tab === "apps" ? (
         <Applications sb={sb} apps={apps} spots={spots} onChange={load} flash={flash} />
-      ) : (
+      ) : tab === "spots" ? (
         <Spots sb={sb} spots={spots} onChange={load} flash={flash} />
+      ) : (
+        <VisitorsBook sb={sb} flash={flash} />
       )}
 
       {toast && (
@@ -283,6 +286,74 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
           {toast}
         </div>
       )}
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  Visitors' book: hide or delete signatures                          */
+/* ------------------------------------------------------------------ */
+
+type BookRow = { id: string; created_at: string; name: string; note: string | null; visitor: string; hidden: boolean };
+
+const VisitorsBook = ({ sb, flash }: { sb: SupabaseClient; flash: (m: string) => void }) => {
+  const [rows, setRows] = useState<BookRow[] | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const load = useCallback(async () => {
+    const { data, error } = await sb.from("guestbook").select("*").order("created_at", { ascending: false }).limit(300);
+    if (error) return setErr("Couldn't load the visitors' book. Has the guestbook table been created?");
+    setErr(null);
+    setRows(data as BookRow[]);
+  }, [sb]);
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const toggle = async (r: BookRow) => {
+    const { error } = await sb.from("guestbook").update({ hidden: !r.hidden }).eq("id", r.id);
+    if (error) return flash("That didn't save. Try again.");
+    flash(r.hidden ? `${r.name} is back on the wall.` : `${r.name} is hidden from the wall.`);
+    load();
+  };
+  const remove = async (r: BookRow) => {
+    if (!window.confirm(`Delete ${r.name}'s signature for good?`)) return;
+    const { error } = await sb.from("guestbook").delete().eq("id", r.id);
+    if (error) return flash("That didn't delete. Try again.");
+    flash("Signature deleted.");
+    load();
+  };
+
+  if (err) return <p role="alert" className="mt-8 text-coral-ink">{err}</p>;
+  if (!rows) return <p className="label mt-8 animate-pulse text-stone">Loading signatures…</p>;
+  if (rows.length === 0) return <p className="mt-8 text-stone">No signatures yet.</p>;
+
+  return (
+    <div className="mt-8">
+      <p className="text-sm text-stone">
+        Signatures show on the Exit wall straight away. Hide anything you don't want visitors to see. {rows.filter((r) => !r.hidden).length} showing ·{" "}
+        {rows.filter((r) => r.hidden).length} hidden.
+      </p>
+      <ul className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
+        {rows.map((r) => (
+          <li key={r.id} className={cn("flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between", r.hidden && "opacity-50")}>
+            <div className="min-w-0">
+              <p className="font-serif text-xl italic">
+                {r.name} {r.hidden && <span className="ml-2 rounded-full bg-ink/10 px-2 py-0.5 font-sans text-xs not-italic">Hidden</span>}
+              </p>
+              {r.note && <p className="mt-0.5 break-words text-sm text-ink/80">“{r.note}”</p>}
+              <p className="mt-1 font-mono text-[11px] text-stone">{new Date(r.created_at).toLocaleString("en-GB")}</p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button type="button" onClick={() => toggle(r)} className="rounded-full border border-ink/30 px-4 py-1.5 text-sm">
+                {r.hidden ? "Show" : "Hide"}
+              </button>
+              <button type="button" onClick={() => remove(r)} className="rounded-full border border-coral-ink/40 px-4 py-1.5 text-sm text-coral-ink">
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

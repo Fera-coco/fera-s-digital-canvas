@@ -1,11 +1,11 @@
-/* The visitors you can walk the exhibition as. All original characters. */
+/* Who you can visit as. Each role has its own character and its own route (see journeys.ts). All original characters. */
 
 export type VisitorId = "sketcher" | "builder" | "dreamer" | "client";
 
 export interface VisitorType {
   id: VisitorId;
   name: string;
-  line: string; // a one-line personality, shown at the ticket desk
+  line: string; // who this visitor is, shown at the ticket desk
   greeting: string; // shown on the ticket
   skin: string;
   hair: string;
@@ -16,21 +16,21 @@ export interface VisitorType {
 
 export const visitors: VisitorType[] = [
   {
-    id: "sketcher",
-    name: "The Sketcher",
-    line: "Notices every font choice. Brought a sketchbook.",
-    greeting: "Enjoy the details.",
-    skin: "#8D5524",
-    hair: "#1E1A18",
-    top: "#C5B8F1",
-    bottom: "#45378A",
+    id: "client",
+    name: "Business owner",
+    line: "Looking for a website or a digital lift for my business.",
+    greeting: "Let's find what your business needs.",
+    skin: "#E0AC69",
+    hair: "#3B2416",
+    top: "#F5ECA7",
+    bottom: "#625C55",
     accent: "#282624",
   },
   {
     id: "builder",
-    name: "The Builder",
-    line: "Opens dev tools on every website. Wants to see how it works.",
-    greeting: "Go on, inspect everything.",
+    name: "Recruiter",
+    line: "Hiring, and here to see the work and the person behind it.",
+    greeting: "Here's the work, and who made it.",
     skin: "#C68642",
     hair: "#2B1D14",
     top: "#B9E2D1",
@@ -38,26 +38,26 @@ export const visitors: VisitorType[] = [
     accent: "#F28B79",
   },
   {
+    id: "sketcher",
+    name: "Designer or developer",
+    line: "Here for the process, the details and how things were built.",
+    greeting: "Go on, look closely.",
+    skin: "#8D5524",
+    hair: "#1E1A18",
+    top: "#C5B8F1",
+    bottom: "#45378A",
+    accent: "#282624",
+  },
+  {
     id: "dreamer",
-    name: "The Dreamer",
-    line: "Here for the colours, the stories and the vibes.",
+    name: "Just looking",
+    line: "No agenda. Here for the colours, the stories and the walk.",
     greeting: "Take your time in here.",
     skin: "#5C3A21",
     hair: "#7A2E1F",
     top: "#F28B79",
     bottom: "#282624",
     accent: "#F5ECA7",
-  },
-  {
-    id: "client",
-    name: "The Client",
-    line: "Has a project in mind. Looking for the right designer.",
-    greeting: "The exit has a guestbook. Use it.",
-    skin: "#E0AC69",
-    hair: "#3B2416",
-    top: "#F5ECA7",
-    bottom: "#625C55",
-    accent: "#282624",
   },
 ];
 

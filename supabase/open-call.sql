@@ -132,3 +132,34 @@ grant execute on function public.is_open_call_admin() to anon, authenticated;
 --  insert into public.open_call_admins (user_id)
 --    select id from auth.users where email = 'YOUR-ADMIN-EMAIL';
 -- ------------------------------------------------------------------
+
+-- ------------------------------------------------------------------
+--  The visitors' book: visitors sign with a name and a short note.
+--  Signatures show straight away; admins can hide or delete them.
+-- ------------------------------------------------------------------
+create table if not exists public.guestbook (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(btrim(name)) between 1 and 40),
+  note text check (note is null or (char_length(note) <= 140 and note !~* '(https?://|www\.|\.[a-z]{2,}/)')),
+  visitor text not null default 'dreamer' check (visitor in ('sketcher', 'builder', 'dreamer', 'client')),
+  hidden boolean not null default false,
+  constraint guestbook_name_no_links check (name !~* '(https?://|www\.)')
+);
+create index if not exists guestbook_created_idx on public.guestbook (created_at desc);
+alter table public.guestbook enable row level security;
+
+drop policy if exists "anyone can sign" on public.guestbook;
+create policy "anyone can sign" on public.guestbook for insert to anon, authenticated with check (hidden = false);
+
+drop policy if exists "visible signatures are public" on public.guestbook;
+create policy "visible signatures are public" on public.guestbook for select to anon, authenticated using (hidden = false or public.is_open_call_admin());
+
+drop policy if exists "admins update signatures" on public.guestbook;
+create policy "admins update signatures" on public.guestbook for update to authenticated using (public.is_open_call_admin()) with check (public.is_open_call_admin());
+
+drop policy if exists "admins delete signatures" on public.guestbook;
+create policy "admins delete signatures" on public.guestbook for delete to authenticated using (public.is_open_call_admin());
+
+grant insert, select on public.guestbook to anon, authenticated;
+grant update, delete on public.guestbook to authenticated;

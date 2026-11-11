@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Visitor from "@/components/gallery/Visitor";
 import { exhibits } from "@/content/exhibits";
 import { getVisitor, loadVisitor, saveVisitor, visitors, type VisitorId } from "@/content/visitors";
+import { getJourney } from "@/content/journeys";
 import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
 import { cn } from "@/lib/utils";
@@ -15,10 +16,11 @@ import { cn } from "@/lib/utils";
 const TicketDesk = () => {
   usePageMeta(PAGES.home);
   const navigate = useNavigate();
-  const [picked, setPicked] = useState<VisitorId>(() => loadVisitor() ?? "sketcher");
+  const [picked, setPicked] = useState<VisitorId>(() => loadVisitor() ?? "client");
   const [stamped, setStamped] = useState(false);
   const groupRef = useRef<HTMLDivElement>(null);
   const v = getVisitor(picked);
+  const j = getJourney(picked);
 
   // arrow keys move between visitors, like a radio group
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -54,13 +56,13 @@ const TicketDesk = () => {
             Welcome in. <em className="italic">Who's visiting</em> today?
           </h1>
           <p className="rise mt-6 max-w-lg text-lg leading-relaxed text-ink/85" style={{ "--delay": "180ms" } as React.CSSProperties}>
-            Fera's Studio is the exhibition of Fera, a UX/UI designer and front-end developer. Pick a visitor, take
-            your ticket and walk the gallery: {exhibits.length} exhibits of design and development work, the curator's
-            room, the studio and a guestbook at the exit.
+            Fera's Studio is the exhibition of Fera, a UX/UI designer and front-end developer. Tell us who you are and
+            your ticket comes with your own route through the gallery: {exhibits.length} exhibits of design and
+            development work, the curator's room, the studio and a visitors' book at the exit.
           </p>
           <div className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm" style={{ "--delay": "260ms" } as React.CSSProperties}>
-            <Link to="/collection" className="link-underline font-medium">
-              In a hurry? Skip the walk and see the work →
+            <Link to={j.shortcut.to} className="link-underline font-medium">
+              {j.shortcut.label} →
             </Link>
             <Link to="/contact" className="link-underline text-stone">
               Start a project
@@ -81,7 +83,7 @@ const TicketDesk = () => {
           <div
             ref={groupRef}
             role="radiogroup"
-            aria-label="Choose your visitor"
+            aria-label="Who are you?"
             onKeyDown={onKeyDown}
             className="grid grid-cols-2 gap-3 sm:grid-cols-4"
           >
@@ -129,6 +131,10 @@ const TicketDesk = () => {
                 <span className="label block text-stone">Admit one · Fera's Studio</span>
                 <span className="block font-serif text-2xl leading-tight">{v.name}</span>
                 <span className="block text-sm text-stone">{v.greeting}</span>
+                <span className="mt-1 block text-xs font-medium text-ink">
+                  Your route: {j.routeTitle}
+                  {j.route.length > 0 ? ` · ${j.route.length} stops` : ""}
+                </span>
               </span>
               <span aria-hidden className="ticket-stamp absolute right-4 top-1/2 -translate-y-1/2 rotate-[-12deg] rounded-md border-2 border-coral px-2 py-1 font-mono text-xs uppercase tracking-widest text-coral-ink">
                 Admitted

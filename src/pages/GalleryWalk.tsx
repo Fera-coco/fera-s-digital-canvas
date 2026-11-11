@@ -4,9 +4,9 @@ import Visitor from "@/components/gallery/Visitor";
 import portrait from "@/assets/curator.webp";
 import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { commissions } from "@/content/services";
-import { fromPrice, priceGroups, whatsapp } from "@/content/pricing";
-import { CurrencySwitch, Price } from "@/components/exhibition/PriceList";
-import { useCurrency } from "@/hooks/use-currency";
+import { getJourney, type Journey } from "@/content/journeys";
+import GuestbookWall from "@/components/exhibition/GuestbookWall";
+import LeavingScene from "@/components/exhibition/LeavingScene";
 import { mailto, site } from "@/content/site";
 import { getVisitor, loadVisitor } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
@@ -94,6 +94,9 @@ const GalleryWalk = () => {
   usePageMeta(PAGES.visit);
   const navigate = useNavigate();
   const visitor = useMemo(() => getVisitor(loadVisitor()), []);
+  const journey = useMemo(() => getJourney(visitor.id), [visitor]);
+  const route = useMemo(() => journey.route.map((id) => SPOTS.find((sp) => sp.id === id)).filter((sp): sp is Spot => !!sp), [journey]);
+  const [visited, setVisited] = useState<Set<string>>(() => new Set());
 
   const stageRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
@@ -113,6 +116,7 @@ const GalleryWalk = () => {
   const [room, setRoom] = useState(0);
   const [open, setOpen] = useState<Spot | null>(null);
   const [guide, setGuide] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const [scale, setScale] = useState(1);
   const [top, setTop] = useState(0);
   const [hint, setHint] = useState(true);
@@ -201,12 +205,20 @@ const GalleryWalk = () => {
   }, [paint]);
 
   /* ---- keyboard ---- */
+  // The price card is a doorway, not a dialog: it takes visitors to the price list in the Studio.
+  const lookCloser = useCallback(
+    (s: Spot) => {
+      setVisited((v) => (v.has(s.id) ? v : new Set(v).add(s.id)));
+      return s.kind === "prices" ? navigate("/studio#prices") : setOpen(s);
+    },
+    [navigate],
+  );
   const inspect = useCallback(() => {
-    if (near) setOpen(near);
-  }, [near]);
+    if (near) lookCloser(near);
+  }, [near, lookCloser]);
 
   useEffect(() => {
-    const menuOpen = () => !!document.querySelector('#floor-plan[aria-hidden="false"]');
+    const menuOpen = () => !!document.querySelector('#floor-plan[aria-hidden="false"], [aria-label="Leaving the exhibition"]');
     const down = (e: KeyboardEvent) => {
       if (menuOpen() || openRef.current || e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key.toLowerCase();
@@ -305,6 +317,8 @@ const GalleryWalk = () => {
   };
 
   const current = ROOMS[room];
+  const nextStop = route.find((sp) => !visited.has(sp.id));
+  const doneCount = route.filter((sp) => visited.has(sp.id)).length;
 
   return (
     <main id="main" className="fixed inset-0 overflow-hidden bg-cream pt-[var(--header-h)]">
@@ -327,17 +341,35 @@ const GalleryWalk = () => {
         {/* world */}
         <div ref={worldRef} className="absolute left-0 will-change-transform" style={{ width: WORLD_W, height: WH, transformOrigin: "0 0", top }}>
           <Hall />
+          {/* this visitor's route: numbered pins above each stop */}
+          {route.map((sp, i) => {
+            const done = visited.has(sp.id);
+            const isNext = sp === nextStop;
+            return (
+              <span
+                key={sp.id}
+                aria-hidden
+                className={cn(
+                  "absolute flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full font-mono text-[13px] shadow-md transition-colors",
+                  done ? "bg-ink text-cream" : isNext ? "route-pin-next bg-coral text-ink" : "bg-paper text-ink ring-2 ring-coral",
+                )}
+                style={{ left: sp.x, top: 92 }}
+              >
+                {done ? "✓" : i + 1}
+              </span>
+            );
+          })}
           {/* the visitor */}
           <div ref={meRef} className="absolute left-0 will-change-transform" style={{ top: FEET - 220, width: 120, height: 220 }}>
             <Visitor v={visitor} walking={walking} facing={facing} className="h-full w-full" />
             {near && !walking && (
               <button
                 type="button"
-                onClick={() => setOpen(near)}
+                onClick={() => lookCloser(near)}
                 className="absolute -top-16 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-ink px-4 py-2 text-[15px] font-medium text-cream shadow-lg"
               >
                 <kbd className="hidden rounded bg-cream/20 px-1.5 font-mono text-xs md:inline">E</kbd>
-                Look closer
+                {near.kind === "prices" ? "See prices" : "Look closer"}
               </button>
             )}
           </div>
@@ -358,6 +390,7 @@ const GalleryWalk = () => {
       {/* ---------- HUD ---------- */}
       <div className="pointer-events-none fixed inset-x-0 top-[var(--header-h)] z-20">
         <div className="gallery-x flex items-start justify-between gap-3 pt-3">
+          <div className="flex flex-col items-start gap-2">
           <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-paper/90 py-1.5 pl-1.5 pr-4 shadow-sm backdrop-blur">
             <span className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: visitor.top }}>
               <Visitor v={visitor} className="h-8 w-auto" />
@@ -368,6 +401,28 @@ const GalleryWalk = () => {
                 {current.label}
               </span>
             </span>
+          </div>
+          {route.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                const to = nextStop ?? SPOTS.find((sp) => sp.id === "exitdoor");
+                if (to) walkTo(to.x - 120);
+              }}
+              className="pointer-events-auto flex items-center gap-2 rounded-full bg-ink py-2 pl-3 pr-4 text-sm text-cream shadow-sm"
+            >
+              <span className="nums rounded-full bg-cream/15 px-2 py-0.5 font-mono text-[11px]">
+                {doneCount}/{route.length}
+              </span>
+              {nextStop ? (
+                <>
+                  Next stop: <span className="max-w-[9rem] truncate sm:max-w-[14rem]">{nextStop.kind === "exhibit" ? nextStop.ex.title : nextStop.label}</span> →
+                </>
+              ) : (
+                <>Route done ✓ Head for the exit →</>
+              )}
+            </button>
+          )}
           </div>
           <div className="pointer-events-auto flex gap-2">
             <button type="button" onClick={() => setGuide(true)} className="rounded-full bg-paper/90 px-4 py-2 text-sm shadow-sm backdrop-blur">
@@ -412,10 +467,14 @@ const GalleryWalk = () => {
       </div>
 
       {/* ---------- Look closer ---------- */}
-      {open && <SpotDialog spot={open} onClose={close} onWalkAgain={() => {
+      {open && <SpotDialog spot={open} journey={journey} onClose={close} onWalkAgain={() => {
             close();
             walkTo(START);
-          }} onLeave={() => navigate("/")} />}
+          }} onLeave={() => {
+            close();
+            setLeaving(true);
+          }} />}
+      {leaving && <LeavingScene onStay={() => setLeaving(false)} />}
 
       {/* ---------- Floor guide (also the accessible list of everything) ---------- */}
       {guide && (
@@ -669,8 +728,19 @@ const Dialog = ({ label, onClose, children, tone }: { label: string; onClose: ()
   );
 };
 
-const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClose: () => void; onWalkAgain: () => void; onLeave: () => void }) => {
-  const [copied, setCopied] = useState(false);
+const SpotDialog = ({
+  spot,
+  journey,
+  onClose,
+  onWalkAgain,
+  onLeave,
+}: {
+  spot: Spot;
+  journey: Journey;
+  onClose: () => void;
+  onWalkAgain: () => void;
+  onLeave: () => void;
+}) => {
 
   if (spot.kind === "exhibit") {
     const ex = spot.ex;
@@ -759,68 +829,46 @@ const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClo
     );
   }
 
-  if (spot.kind === "prices") {
-    return (
-      <Dialog label={spot.label} onClose={onClose} tone="#F5ECA7">
-        <PricesDialogBody />
-      </Dialog>
-    );
-  }
-
   if (spot.kind === "guestbook") {
-    const copy = async () => {
-      try {
-        await navigator.clipboard.writeText(site.email);
-        setCopied(true);
-      } catch {
-        window.location.href = `mailto:${site.email}`;
-      }
-    };
     return (
       <Dialog label={spot.label} onClose={onClose} tone="#F28B79">
-        <p className="label text-stone">Room 04 · The guestbook</p>
-        <h2 className="display mt-2 pr-28 text-[clamp(2.4rem,5vw,3.6rem)]">
-          Leave a note. Let's make the <em className="italic">next exhibit</em> together.
-        </h2>
-        <p className="mt-4 leading-relaxed text-ink/85">Tell Fera about your website, product or idea. The studio is open for freelance projects and collaborations.</p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a href={mailto("Project enquiry via Fera's Studio", "Hi Fera,\n\nI'd love to talk about:\n")} className="btn bg-coral text-ink">
-            Write in the guestbook <span aria-hidden>↗</span>
-          </a>
-          <button type="button" onClick={copy} className="btn-line">
-            {copied ? "Email copied" : "Copy email address"}
-          </button>
-          {site.socials.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="btn-line">
-              {s.label} ↗
-            </a>
-          ))}
+        <p className="label text-stone">Room 04 · The visitors' book</p>
+        <h2 className="display mt-2 pr-28 text-[clamp(2.4rem,5vw,3.6rem)]">Sign before you go</h2>
+        <p className="mt-3 leading-relaxed text-ink/85">Leave your name, and a little note if you like, so Fera knows you stopped by.</p>
+        <div className="mt-6">
+          <GuestbookWall compact limit={8} />
         </div>
-        <p className="mt-4 font-serif text-2xl">{site.email}</p>
-        <span role="status" aria-live="polite" className="sr-only">
-          {copied ? "Email address copied" : ""}
-        </span>
+        <p className="mt-6 text-sm text-stone">
+          See every signature on <Link to="/contact#visitors-book" className="underline underline-offset-4">the Exit wall</Link>.
+        </p>
       </Dialog>
     );
   }
 
   if (spot.kind === "exitdoor") {
+    const f = journey.finale;
     return (
       <Dialog label={spot.label} onClose={onClose} tone="#282624">
-        <p className="label text-stone">The exit</p>
-        <h2 className="display mt-2 pr-28 text-4xl">Thanks for visiting Fera's Studio.</h2>
-        <p className="mt-3 leading-relaxed text-ink/85">Before you go: the guestbook is just behind you.</p>
+        <p className="label text-stone">The exit · {journey.routeTitle}</p>
+        <h2 className="display mt-2 pr-28 text-4xl">{f.title}</h2>
+        <p className="mt-3 leading-relaxed text-ink/85">{f.text}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link to="/contact" className="btn bg-coral text-ink">
-            Start a project
+          <Link to={f.primary.to} className="btn bg-coral text-ink">
+            {f.primary.label}
           </Link>
+          {f.secondary && (
+            <Link to={f.secondary.to} className="btn-line">
+              {f.secondary.label}
+            </Link>
+          )}
           <button type="button" onClick={onWalkAgain} className="btn-line">
             Walk the gallery again
           </button>
           <button type="button" onClick={onLeave} className="btn-line">
-            Back to the ticket desk
+            Leave the exhibition 🚪
           </button>
         </div>
+        <p className="mt-4 text-sm text-stone">Before you go: the visitors' book is just behind you.</p>
       </Dialog>
     );
   }
@@ -832,7 +880,11 @@ const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClo
       <h2 className="display mt-2 pr-28 text-4xl">Welcome to Fera's Studio.</h2>
       <p className="mt-3 leading-relaxed text-ink/85">
         Fera is a UX/UI designer and front-end developer. This floor holds {exhibits.length} exhibits of her work, the
-        curator's room, the studio's commissions and a guestbook by the exit. Walk right to begin.
+        curator's room, the studio's commissions and a visitors' book by the exit.
+      </p>
+      <p className="mt-3 rounded-sm bg-butter-soft p-4 leading-relaxed text-ink/90">
+        <strong className="font-medium">Your route: {journey.routeTitle}.</strong> {journey.intro}
+        {journey.route.length > 0 && " Follow the numbered pins, or tap “Next stop” at the top."}
       </p>
       <div className="mt-6 flex flex-wrap gap-3">
         <button type="button" onClick={onClose} className="btn-ink">
@@ -846,72 +898,17 @@ const SpotDialog = ({ spot, onClose, onWalkAgain, onLeave }: { spot: Spot; onClo
   );
 };
 
-/* The price board on the Studio wall: one "from" price per service area. */
-const PriceBoard = () => {
-  const [currency] = useCurrency();
-  return (
-    <div
-      className="absolute bg-ink p-6 text-cream shadow-[0_24px_40px_-22px_rgba(40,38,36,.7)]"
-      style={{ left: studioRoom.from + PRICE_BOARD_X - 170, top: 120, width: 340, transform: "rotate(0.6deg)" }}
-    >
-      <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-butter">Price list</p>
-      <p className="mt-1 font-serif text-[30px] leading-none">What it costs</p>
-      <ul className="mt-4 space-y-2.5 text-[15px]">
-        {priceGroups.map((g) => (
-          <li key={g.id} className="flex items-baseline gap-2">
-            <span>{g.verb}</span>
-            <span aria-hidden className="mb-1 flex-1 border-b border-dotted border-cream/30" />
-            <span className="tabular-nums text-cream/90">
-              <span className="text-[12px] text-cream/60">from </span>
-              {fromPrice(g, currency)}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/60">Look closer for every price</p>
-    </div>
-  );
-};
-
-const PricesDialogBody = () => {
-  const [currency, choose] = useCurrency();
-  return (
-    <>
-      <p className="label text-stone">Room 03 · The price list</p>
-      <h2 className="display mt-2 pr-28 text-4xl">What it costs</h2>
-      <p className="mt-3 max-w-xl leading-relaxed text-ink/85">Introductory guide prices for businesses in Nigeria and Benin. Your final quote depends on the scope.</p>
-      <div className="mt-4">
-        <CurrencySwitch currency={currency} onChoose={choose} />
-      </div>
-      <div className="mt-6 space-y-6">
-        {priceGroups.map((g) => (
-          <section key={g.id} aria-labelledby={`walk-price-${g.id}`}>
-            <h3 id={`walk-price-${g.id}`} className="flex items-center gap-2 font-medium">
-              <span aria-hidden className={cn("h-2.5 w-2.5 rounded-full", g.tone)} />
-              {g.verb}: {g.title}
-            </h3>
-            <ul className="mt-2 divide-y divide-ink/10 border-y border-ink/10">
-              {[...g.items, ...(g.extras?.items ?? [])].map((it) => (
-                <li key={`${g.id}-${it.name}`} className="flex items-baseline gap-3 py-2 text-sm">
-                  <span>{it.name}</span>
-                  <span aria-hidden className="mb-1 min-w-4 flex-1 border-b border-dotted border-ink/25" />
-                  <Price item={it} currency={currency} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
-      <div className="mt-7 flex flex-wrap gap-3">
-        <a href={whatsapp("Hi Fera, I'd like a quote. Here's what my business needs:\n")} target="_blank" rel="noreferrer" className="btn-ink">
-          Ask on WhatsApp <span aria-hidden>↗</span>
-        </a>
-        <Link to="/studio#prices" className="btn-line">
-          See the full price list
-        </Link>
-      </div>
-    </>
-  );
-};
+/* The price card on the Studio wall: no prices here, it points visitors to the Studio's price list. */
+const PriceBoard = () => (
+  <div
+    className="absolute bg-ink p-7 text-cream shadow-[0_24px_40px_-22px_rgba(40,38,36,.7)]"
+    style={{ left: studioRoom.from + PRICE_BOARD_X - 160, top: 140, width: 320, height: 280, transform: "rotate(0.6deg)" }}
+  >
+    <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-butter">The price list</p>
+    <p className="mt-3 font-serif text-[34px] leading-[1.02]">What it costs, in naira or CFA.</p>
+    <p className="mt-4 text-[15px] leading-relaxed text-cream/75">Every service and price is waiting in the Studio. Step closer to see them.</p>
+    <p className="absolute bottom-6 left-7 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/60">See prices →</p>
+  </div>
+);
 
 export default GalleryWalk;
