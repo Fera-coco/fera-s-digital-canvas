@@ -134,7 +134,7 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
                 className={cn(
                   "group flex h-full w-full items-start gap-3 rounded-sm p-3 text-left transition-colors duration-300 lg:flex-col lg:gap-0",
                   current ? "bg-paper shadow-[0_1px_0_rgba(40,38,36,0.12)]" : "hover:bg-paper/70",
-                  lit ? "text-ink" : "text-ink/50",
+                  lit ? "text-ink" : "text-stone",
                 )}
               >
                 <span

@@ -106,7 +106,7 @@ const ApplyCompanion = ({ guide, progress }: { guide: VisitorType; progress: For
       <div className="mx-auto mt-5 max-w-[19rem]">
         <div className="flex items-baseline justify-between">
           <p className="label text-stone">{posted ? "Card posted" : "Your card"}</p>
-          <p className="font-mono text-xs text-stone">{posted ? "Done" : `${filled} of ${total} done`}</p>
+          <p className="nums font-mono text-xs text-stone">{posted ? "Done" : `${filled} of ${total} done`}</p>
         </div>
         <div className="mt-2 flex gap-1" aria-hidden>
           {Array.from({ length: total }).map((_, i) => (

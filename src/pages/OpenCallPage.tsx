@@ -196,7 +196,7 @@ const OpenCallPage = () => {
                         </div>
                       </dl>
                       <div className="mt-6 border-t-2 border-dashed border-ink/20 pt-5">
-                        <p className="label text-stone">
+                        <p className="nums label text-stone">
                           {sum ? `${pad(sum.remaining)} of ${pad(TOTAL_SPOTS)} spots left` : "Checking the spots…"}
                         </p>
                         <ol className="mt-3 flex gap-2" aria-hidden>

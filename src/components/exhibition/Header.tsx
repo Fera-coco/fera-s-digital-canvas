@@ -81,8 +81,12 @@ const Header = () => {
               to={OPEN_CALL_PATH}
               aria-current={pathname === OPEN_CALL_PATH ? "page" : undefined}
               className={cn(
-                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full py-2 pl-3 pr-4 text-sm font-medium text-ink transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
-                pathname === OPEN_CALL_PATH ? "bg-blush ring-2 ring-ink" : "bg-blush",
+                "oc-nav group relative inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-3 pr-4 text-sm transition-transform duration-300 ease-gallery hover:-translate-y-0.5",
+                pathname === OPEN_CALL_PATH
+                  ? "border-ink bg-blush font-medium text-ink"
+                  : dark
+                    ? "border-cream/60 text-cream"
+                    : "border-ink/70 text-ink",
               )}
             >
               <span aria-hidden className="oc-nav-dot relative flex h-2 w-2">
