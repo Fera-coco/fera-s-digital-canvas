@@ -163,3 +163,33 @@ create policy "admins delete signatures" on public.guestbook for delete to authe
 
 grant insert, select on public.guestbook to anon, authenticated;
 grant update, delete on public.guestbook to authenticated;
+
+-- ------------------------------------------------------------------
+--  Anti-spam limits: stop anyone flooding the forms with a script.
+--  Visitors' book: at most 20 signatures in any 10 minutes, site-wide.
+--  Applications: at most 15 in any hour, site-wide.
+--  The server clock sets created_at, so it can't be faked.
+-- ------------------------------------------------------------------
+create or replace function public.guestbook_limit()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  new.created_at := now();
+  if (select count(*) from public.guestbook where created_at > now() - interval '10 minutes') >= 20 then
+    raise exception 'The visitors'' book is busy. Please try again shortly.';
+  end if;
+  return new;
+end $$;
+drop trigger if exists guestbook_limit on public.guestbook;
+create trigger guestbook_limit before insert on public.guestbook for each row execute function public.guestbook_limit();
+
+create or replace function public.applications_limit()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  new.created_at := now();
+  if (select count(*) from public.open_call_applications where created_at > now() - interval '1 hour') >= 15 then
+    raise exception 'Too many applications right now. Please try again later.';
+  end if;
+  return new;
+end $$;
+drop trigger if exists applications_limit on public.open_call_applications;
+create trigger applications_limit before insert on public.open_call_applications for each row execute function public.applications_limit();
