@@ -1,5 +1,8 @@
 /* French translations. Keys are the English text exactly as it appears in the code. */
 export const fr: Record<string, string> = {
+  "Swipe to see more": "Faites glisser pour voir la suite",
+  "Curious what Fera's Studio has made?": "Envie de voir ce que Fera's Studio a déjà réalisé ?",
+  "View the portfolio": "Voir le portfolio",
   "Back": "Retour",
   "Fields marked * are required.": "Les champs marqués d'un * sont obligatoires.",
   "Card {n} of {m}": "Carte {n} sur {m}",

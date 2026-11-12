@@ -25,14 +25,22 @@ const panelTones = [
   "bg-mint-soft",
 ];
 const pad = (n: number) => String(n).padStart(2, "0");
-const motionOk = () => typeof document !== "undefined" && document.documentElement.classList.contains("motion-ok");
+const motionOk = () =>
+  typeof document !== "undefined" &&
+  document.documentElement.classList.contains("motion-ok");
 
 /*
   "How it works" as a walk: the guide strolls from stop to stop at a gentle pace,
   says something at each one, and the panel below explains it.
   Visitors can take over at any time: click a stop, use the arrows, or pause.
 */
-const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] }) => {
+const Journey = ({
+  guide,
+  steps,
+}: {
+  guide: VisitorType;
+  steps: JourneyStep[];
+}) => {
   const last = steps.length - 1;
   const [ref, seen] = useSeen<HTMLDivElement>(0.35);
   const [at, setAt] = useState(0);
@@ -41,6 +49,18 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
   const [walking, setWalking] = useState(false);
   const [facing, setFacing] = useState<1 | -1>(1);
   const prev = useRef(0);
+  const listRef = useRef<HTMLOListElement>(null);
+  // on phones the stops are one sideways strip: keep the current stop in view
+  useEffect(() => {
+    const ol = listRef.current;
+    if (!ol || ol.scrollWidth <= ol.clientWidth) return;
+    const li = ol.children[at] as HTMLElement | undefined;
+    if (li)
+      ol.scrollTo({
+        left: li.offsetLeft - 20,
+        behavior: motionOk() ? "smooth" : "auto",
+      });
+  }, [at]);
   const started = useRef(false);
 
   // Start the guided walk the first time the section comes into view.
@@ -55,7 +75,10 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
   useEffect(() => {
     if (!playing || hold) return;
     if (at >= last) return setPlaying(false);
-    const t = window.setTimeout(() => setAt((a) => Math.min(a + 1, last)), STEP_MS);
+    const t = window.setTimeout(
+      () => setAt((a) => Math.min(a + 1, last)),
+      STEP_MS,
+    );
     return () => window.clearTimeout(t);
   }, [playing, hold, at, last]);
 
@@ -90,12 +113,17 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
       onMouseEnter={() => setHold(true)}
       onMouseLeave={() => setHold(false)}
       onFocus={() => setHold(true)}
-      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setHold(false)}
+      onBlur={(e) =>
+        !e.currentTarget.contains(e.relatedTarget as Node) && setHold(false)
+      }
     >
       {/* the walk (wide screens) */}
       <div aria-hidden className="relative hidden h-48 lg:block">
         <div className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-ink/10" />
-        <div className="oc-walk-line absolute bottom-0 left-0 h-[3px] rounded-full bg-ink" style={{ width: pos }} />
+        <div
+          className="oc-walk-line absolute bottom-0 left-0 h-[3px] rounded-full bg-ink"
+          style={{ width: pos }}
+        />
         {steps.map((_, i) => (
           <span
             key={i}
@@ -106,7 +134,10 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
             style={{ left: `${(i + 0.5) * (100 / steps.length)}%` }}
           />
         ))}
-        <div className="oc-walker absolute bottom-1 -translate-x-1/2" style={{ left: pos }}>
+        <div
+          className="oc-walker absolute bottom-1 -translate-x-1/2"
+          style={{ left: pos }}
+        >
           <span
             key={at}
             className={cn(
@@ -117,12 +148,20 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
           >
             {t(step.bubble)}
           </span>
-          <Visitor v={guide} walking={walking} facing={facing} className="h-32 w-auto" />
+          <Visitor
+            v={guide}
+            walking={walking}
+            facing={facing}
+            className="h-32 w-auto"
+          />
         </div>
       </div>
 
       {/* the stops: always clickable */}
-      <ol className="grid gap-2 sm:grid-cols-2 lg:mt-6 lg:grid-cols-7 lg:gap-3">
+      <ol
+        ref={listRef}
+        className="no-bar grid gap-2 sm:grid-cols-2 lg:mt-6 lg:grid-cols-7 lg:gap-3 max-sm:-mx-5 max-sm:flex max-sm:overflow-x-auto max-sm:px-5 [&>*]:max-sm:shrink-0"
+      >
         {steps.map((s, i) => {
           const lit = i <= at;
           const current = i === at;
@@ -133,15 +172,21 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
                 onClick={() => go(i)}
                 aria-current={current ? "step" : undefined}
                 className={cn(
-                  "group flex h-full w-full items-start gap-3 rounded-sm p-3 text-left transition-colors duration-300 lg:flex-col lg:gap-0",
-                  current ? "bg-paper shadow-[0_1px_0_rgba(40,38,36,0.12)]" : "hover:bg-paper/70",
+                  "group flex h-full w-full items-start gap-3 rounded-sm p-3 text-left max-sm:items-center max-sm:whitespace-nowrap transition-colors duration-300 lg:flex-col lg:gap-0",
+                  current
+                    ? "bg-paper shadow-[0_1px_0_rgba(40,38,36,0.12)]"
+                    : "hover:bg-paper/70",
                   lit ? "text-ink" : "text-stone",
                 )}
               >
                 <span
                   className={cn(
                     "oc-step-dot flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-mono text-xs lg:mb-3",
-                    current ? "scale-110 bg-coral text-ink" : lit ? "bg-ink text-cream" : "bg-ink/10 text-stone group-hover:bg-ink/20",
+                    current
+                      ? "scale-110 bg-coral text-ink"
+                      : lit
+                        ? "bg-ink text-cream"
+                        : "bg-ink/10 text-stone group-hover:bg-ink/20",
                   )}
                 >
                   {pad(i + 1)}
@@ -164,7 +209,10 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
           <p className="label text-stone">
             {t("Stop")} {pad(at + 1)} {t("of")} {pad(steps.length)}
           </p>
-          <p key={at} className="oc-reveal oc-rise is-seen display mt-2 text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.05]">
+          <p
+            key={at}
+            className="oc-reveal oc-rise is-seen display mt-2 text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.05]"
+          >
             {t(step.title)}
           </p>
           <p
@@ -176,20 +224,48 @@ const Journey = ({ guide, steps }: { guide: VisitorType; steps: JourneyStep[] })
           </p>
         </div>
         <div className="flex items-center gap-2 md:col-span-4 md:justify-end">
-          <button type="button" onClick={() => go(at - 1)} disabled={at === 0} className="journey-btn" aria-label={t("Previous stop")}>
+          <button
+            type="button"
+            onClick={() => go(at - 1)}
+            disabled={at === 0}
+            className="journey-btn"
+            aria-label={t("Previous stop")}
+          >
             ←
           </button>
-          <button type="button" onClick={toggle} className="journey-btn min-w-[9.5rem] px-4" aria-pressed={playing}>
-            {playing ? t("Pause the walk") : at >= last ? t("Walk it again") : t("Walk me through")}
+          <button
+            type="button"
+            onClick={toggle}
+            className="journey-btn min-w-[9.5rem] px-4"
+            aria-pressed={playing}
+          >
+            {playing
+              ? t("Pause the walk")
+              : at >= last
+                ? t("Walk it again")
+                : t("Walk me through")}
           </button>
-          <button type="button" onClick={() => go(at + 1)} disabled={at === last} className="journey-btn" aria-label={t("Next stop")}>
+          <button
+            type="button"
+            onClick={() => go(at + 1)}
+            disabled={at === last}
+            className="journey-btn"
+            aria-label={t("Next stop")}
+          >
             →
           </button>
         </div>
         {/* a slim timer so visitors can see the next stop is coming */}
-        <div aria-hidden className="h-[3px] overflow-hidden rounded-full bg-ink/10 md:col-span-12">
+        <div
+          aria-hidden
+          className="h-[3px] overflow-hidden rounded-full bg-ink/10 md:col-span-12"
+        >
           {playing && !hold && at < last && (
-            <div key={`t${at}`} className="oc-step-timer h-full bg-ink/60" style={{ animationDuration: `${STEP_MS}ms` }} />
+            <div
+              key={`t${at}`}
+              className="oc-step-timer h-full bg-ink/60"
+              style={{ animationDuration: `${STEP_MS}ms` }}
+            />
           )}
         </div>
       </div>
