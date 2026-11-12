@@ -127,6 +127,28 @@ const OpenCallPage = () => {
     total: 11,
     phase: "idle",
   });
+  const [allPrint, setAllPrint] = useState(false);
+
+  // On phones, a floating "Apply now" appears once the hero buttons have scrolled away,
+  // and hides again when the form itself is on screen.
+  const [fab, setFab] = useState(false);
+  useEffect(() => {
+    const hero = document.getElementById("oc-hero-cta");
+    const apply = document.getElementById("apply");
+    if (!hero || !apply || !("IntersectionObserver" in window)) return;
+    const seen = { hero: true, apply: false };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.target === hero) seen.hero = e.isIntersecting;
+        if (e.target === apply) seen.apply = e.isIntersecting;
+      });
+      setFab(!seen.hero && !seen.apply);
+    });
+    io.observe(hero);
+    io.observe(apply);
+    return () => io.disconnect();
+  }, []);
+  const applyOpen = !(sum && !sum.open);
 
   return (
     <main id="main" className="flex min-h-[100svh] flex-col overflow-x-clip">
@@ -154,7 +176,11 @@ const OpenCallPage = () => {
                 "We're opening five spots for businesses ready to build their online presence. Through this special Fera's Studio initiative, five selected businesses will receive a professionally designed and developed website without paying development fees.",
               )}
             </p>
-            <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ "--delay": "860ms" } as React.CSSProperties}>
+            <div
+              id="oc-hero-cta"
+              className="rise mt-10 flex flex-wrap items-center gap-3"
+              style={{ "--delay": "860ms" } as React.CSSProperties}
+            >
               <a href="#apply" className="btn-ink group">
                 {t("Apply for a spot")}{" "}
                 <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">
@@ -394,12 +420,24 @@ const OpenCallPage = () => {
                 kind="rise"
                 delay={(i % 2) * 80 + Math.floor(i / 2) * 60}
                 key={c}
-                className="flex gap-4 border-b border-ink/10 pb-4"
+                className={cn("gap-4 border-b border-ink/10 pb-4", i >= 4 && !allPrint ? "hidden sm:flex" : "flex")}
               >
                 <span className="font-mono text-xs leading-6 text-stone">{pad(i + 1)}</span>
                 <span className="leading-relaxed">{t(c)}</span>
               </Reveal>
             ))}
+            {conditions.length > 4 && (
+              <li className="sm:hidden">
+                <button
+                  type="button"
+                  onClick={() => setAllPrint((v) => !v)}
+                  aria-expanded={allPrint}
+                  className="link-underline text-sm"
+                >
+                  {allPrint ? t("Show less") : tf("Show all {n} points", { n: conditions.length })}
+                </button>
+              </li>
+            )}
           </ol>
         </div>
       </section>
@@ -483,6 +521,20 @@ const OpenCallPage = () => {
       </section>
 
       <NextRoom from="studio" />
+
+      {applyOpen && (
+        <a
+          href="#apply"
+          aria-hidden={!fab}
+          tabIndex={fab ? 0 : -1}
+          className={cn(
+            "btn-ink fixed bottom-5 left-1/2 z-40 -translate-x-1/2 px-7 py-3.5 text-base shadow-lg transition-all duration-300 md:hidden",
+            fab ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0",
+          )}
+        >
+          {t("Apply now")} <span aria-hidden>↓</span>
+        </a>
+      )}
     </main>
   );
 };

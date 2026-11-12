@@ -1,5 +1,11 @@
 /* French translations. Keys are the English text exactly as it appears in the code. */
 export const fr: Record<string, string> = {
+  "Back": "Retour",
+  "Fields marked * are required.": "Les champs marqués d'un * sont obligatoires.",
+  "Card {n} of {m}": "Carte {n} sur {m}",
+  "Apply now": "Postuler",
+  "Show all {n} points": "Voir les {n} points",
+  "Show less": "Voir moins",
   "Understand before drawing": "Comprendre avant de dessiner",
   "Sitemaps, task flows and wireframes come before colour. I want to know what someone came to do and what might stop them.": "Plans de site, parcours utilisateurs et wireframes passent avant la couleur. Je veux savoir ce que la personne est venue faire et ce qui pourrait l'en empêcher.",
   "Design and build in one hand": "Concevoir et développer d'une seule main",
