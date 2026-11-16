@@ -488,6 +488,8 @@ export const fr: Record<string, string> = {
   "Starter e‑commerce website": "Site e‑commerce de démarrage",
   "Product listings, cart, standard checkout arrangement and basic order notifications.": "Fiches produits, panier, paiement standard et notifications de commande de base.",
   "Website redesign": "Refonte de site web",
+  "Custom interactive website": "Site web interactif sur mesure",
+  "A fully custom design with an interactive 3D homepage and animations throughout, quoted according to the number of pages and features.": "Un design entièrement sur mesure, avec une page d'accueil 3D interactive et des animations sur tout le site, chiffré selon le nombre de pages et de fonctionnalités.",
   "A visual and structural refresh of an existing website, quoted according to its size and condition.": "Un rafraîchissement visuel et structurel d'un site existant, chiffré selon sa taille et son état.",
   "Website add-ons": "Options pour sites web",
   "Additional page": "Page supplémentaire",
