@@ -45,6 +45,7 @@ export const priceGroups: PriceGroup[] = [
       { name: "Product catalogue website", includes: "Up to 30 products, categories and WhatsApp enquiry links. No online payment checkout.", ngn: 220000, xof: 95000 },
       { name: "Starter e‑commerce website", includes: "Product listings, cart, standard checkout arrangement and basic order notifications.", ngn: 350000, xof: 155000 },
       { name: "Website redesign", includes: "A visual and structural refresh of an existing website, quoted according to its size and condition.", ngn: 120000, xof: 52000, from: true },
+      { name: "Custom interactive website", includes: "A fully custom design with an interactive 3D homepage and animations throughout, quoted according to the number of pages and features.", ngn: 400000, xof: 180000, from: true },
     ],
     extras: {
       title: "Website add-ons",
