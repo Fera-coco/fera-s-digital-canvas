@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import NextRoom from "@/components/exhibition/NextRoom";
 import Visitor from "@/components/gallery/Visitor";
 import Reveal from "@/components/open-call/Reveal";
-import ApplyForm from "@/components/open-call/ApplyForm";
-import ApplyCompanion, {
-  type FormProgress,
-} from "@/components/open-call/ApplyCompanion";
 import Journey, { type JourneyStep } from "@/components/open-call/Journey";
 import { backendReady } from "@/lib/supabase";
 import { useSeen } from "@/hooks/use-seen";
@@ -61,10 +57,10 @@ const steps: JourneyStep[] = [
   },
   {
     title: "Apply",
-    label: backendReady ? "Apply on this page." : "Apply by email or WhatsApp.",
+    label: backendReady ? "Apply online." : "Apply by email or WhatsApp.",
     bubble: "Filling in my card…",
     detail: backendReady
-      ? "Fill in the application card at the bottom of this page: who you are, what your business does and what the website should do."
+      ? "Fill in the short application on the apply page: who you are, what your business does and what the website should do."
       : "Send your application by email or WhatsApp. Both open a message with the questions already filled in.",
   },
   {
@@ -138,11 +134,6 @@ const OpenCallPage = () => {
   const sum = data ? summarise(data) : null;
   // the visitor picked at the ticket desk guides you through the process
   const guide = useMemo(() => getVisitor(loadVisitor() ?? "client"), []);
-  const [progress, setProgress] = useState<FormProgress>({
-    filled: 0,
-    total: 11,
-    phase: "idle",
-  });
   const [allPrint, setAllPrint] = useState(false);
 
   // On phones, a floating "Apply now" appears once the hero buttons have scrolled away,
@@ -213,15 +204,15 @@ const OpenCallPage = () => {
               className="rise mt-10 flex flex-wrap items-center gap-3"
               style={{ "--delay": "860ms" } as React.CSSProperties}
             >
-              <a href="#apply" className="btn-ink group">
+              <Link to="/apply" className="btn-ink group">
                 {t("Apply for a spot")}{" "}
                 <span
                   aria-hidden
-                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
                 >
-                  ↓
+                  →
                 </span>
-              </a>
+              </Link>
               <a href="#spots" className="btn-line">
                 {t("See available spots")}
               </a>
@@ -630,31 +621,19 @@ const OpenCallPage = () => {
               </p>
             </div>
           ) : backendReady ? (
-            <>
-              <Reveal
-                as="p"
-                delay={100}
-                className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/85"
-              >
-                {t(
-                  "Fill in your application card below. It goes straight to Fera's Studio, and we'll reach you on the email or number you give us.",
-                )}
-              </Reveal>
-              <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-start">
-                <Reveal kind="rise" delay={200} className="lg:col-span-8">
-                  <ApplyForm onProgress={setProgress} />
-                </Reveal>
-                <div className="hidden self-stretch lg:col-span-4 lg:block">
-                  <Reveal
-                    kind="pop"
-                    delay={350}
-                    className="sticky top-[calc(var(--header-h)+3rem)]"
-                  >
-                    <ApplyCompanion guide={guide} progress={progress} />
-                  </Reveal>
+            <Reveal kind="rise" delay={100} className="mt-10">
+              <div className="frame flex flex-col gap-6 bg-paper p-8 md:flex-row md:items-center md:justify-between md:p-10">
+                <div className="max-w-xl">
+                  <p className="display text-3xl md:text-4xl">{t("Ready to apply?")}</p>
+                  <p className="mt-3 text-lg leading-relaxed text-ink/85">
+                    {t("The application has its own page: three short cards, about three minutes.")}
+                  </p>
                 </div>
+                <Link to="/apply" className="btn-ink shrink-0 px-8 py-4 text-base">
+                  {t("Start your application")} <span aria-hidden>→</span>
+                </Link>
               </div>
-            </>
+            </Reveal>
           ) : (
             <>
               <Reveal
@@ -717,8 +696,8 @@ const OpenCallPage = () => {
       <NextRoom from="studio" />
 
       {applyOpen && (
-        <a
-          href="#apply"
+        <Link
+          to="/apply"
           aria-hidden={!fab}
           tabIndex={fab ? 0 : -1}
           className={cn(
@@ -728,8 +707,8 @@ const OpenCallPage = () => {
               : "pointer-events-none translate-y-6 opacity-0",
           )}
         >
-          {t("Apply now")} <span aria-hidden>↓</span>
-        </a>
+          {t("Apply now")} <span aria-hidden>→</span>
+        </Link>
       )}
     </main>
   );

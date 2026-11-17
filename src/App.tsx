@@ -14,6 +14,7 @@ import ContactPage from "./pages/ContactPage";
 import CaseStudy from "./pages/CaseStudy";
 import NotFound from "./pages/NotFound";
 import OpenCallPage from "./pages/OpenCallPage";
+import OpenCallApply from "./pages/OpenCallApply";
 
 const OpenCallAdmin = lazy(() => import("./pages/OpenCallAdmin"));
 
@@ -53,6 +54,7 @@ const App = () => (
         <Route path="/studio" element={<StudioPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/open-call" element={<OpenCallPage />} />
+        <Route path="/apply" element={<OpenCallApply />} />
         <Route
           path="/open-call/admin"
           element={

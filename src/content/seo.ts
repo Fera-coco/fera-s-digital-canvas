@@ -77,6 +77,14 @@ export const PAGES = {
     heading: "The Open Call: five businesses, five websites",
     crumb: "The Open Call",
   },
+  openCallApply: {
+    path: "/apply",
+    title: "Apply for a free website: The Open Call | Fera's Studio",
+    description:
+      "Apply for one of five free websites for businesses in Nigeria and Benin Republic. Three short steps, about three minutes.",
+    heading: "Apply for a free website",
+    crumb: "Apply",
+  },
 } satisfies Record<string, PageMeta>;
 
 export const exhibitMeta = (ex: Exhibit): PageMeta => ({
