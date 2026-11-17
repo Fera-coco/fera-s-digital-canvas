@@ -105,6 +105,17 @@ const PriceList = () => {
               {t("Show prices in")}
             </p>
             <CurrencySwitch currency={currency} onChoose={choose} labelledBy={t("currency-label")} />
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-stone">
+              {t("Outside Nigeria and Benin? Projects are quoted in US dollars on request.")}{" "}
+              <a
+                href={whatsapp(t("Hello Fera! I'm outside Nigeria and Benin and would like a quote in US dollars for:"))}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline text-ink"
+              >
+                {t("Ask for a USD quote ↗")}
+              </a>
+            </p>
           </div>
         </header>
 
