@@ -5,7 +5,7 @@
   and per: "month" for monthly services.
 */
 
-import { WHATSAPP_NUMBER } from "./openCall";
+import { WHATSAPP_NUMBER } from "./site";
 
 export type Currency = "NGN" | "XOF";
 

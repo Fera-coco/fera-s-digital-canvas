@@ -7,6 +7,7 @@
 */
 import { exhibits, type Exhibit } from "./exhibits";
 import { site } from "./site";
+import { priceGroups } from "./pricing";
 
 export interface PageMeta {
   path: string;
@@ -26,9 +27,9 @@ const DEFAULT_IMAGE_ALT = "Fera's Studio: a digital exhibition of design and dev
 export const PAGES = {
   home: {
     path: "/",
-    title: "Fera's Studio: UX/UI design & web development by Fera",
+    title: "Fera's Studio: website design for small businesses in Nigeria & Benin",
     description:
-      "Fera's Studio is the digital exhibition of Peace Oluwaferanmi Segun-Babs (Fera), a UX/UI designer and front-end developer in Nigeria designing and building websites, products and interfaces.",
+      "Fera's Studio designs and builds websites, online shops and SEO for small businesses in Nigeria and Benin Republic (Lagos, Cotonou and beyond), in English and French, with prices in naira and CFA.",
     heading: "Fera's Studio: a digital exhibition of design and development work",
   },
   visit: {
@@ -108,6 +109,49 @@ export const imageAltFor = (m: PageMeta) => m.imageAlt ?? DEFAULT_IMAGE_ALT;
 
 const PERSON_ID = `${site.url}/#person`;
 const WEBSITE_ID = `${site.url}/#website`;
+const STUDIO_ID = `${site.url}/#studio`;
+
+/** The studio as a local business, so search engines and AI assistants know what it offers and where. */
+const studioNode = () => ({
+  "@type": "ProfessionalService",
+  "@id": STUDIO_ID,
+  name: site.studio,
+  url: `${site.url}/`,
+  logo: abs("/apple-touch-icon.png"),
+  image: abs(DEFAULT_IMAGE),
+  description: PAGES.home.description,
+  email: site.email,
+  telephone: site.phone,
+  address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: site.country },
+  areaServed: [
+    { "@type": "Country", name: "Nigeria" },
+    { "@type": "Country", name: "Benin" },
+  ],
+  availableLanguage: ["English", "French"],
+  currenciesAccepted: "NGN, XOF",
+  priceRange: "₦20,000 – ₦400,000+",
+  founder: { "@id": PERSON_ID },
+  sameAs: site.studioProfiles,
+  knowsAbout: ["Website design", "Web development", "E-commerce websites", "SEO", "Google Business Profile", "UX/UI design", "Social media design"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Fera's Studio services and prices",
+    url: abs("/studio"),
+    itemListElement: priceGroups.map((g) => ({
+      "@type": "OfferCatalog",
+      name: g.title,
+      itemListElement: g.items.map((it) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: it.name, description: it.includes },
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          ...(it.from ? { minPrice: it.ngn } : { price: it.ngn }),
+          priceCurrency: "NGN",
+        },
+      })),
+    })),
+  },
+});
 
 export const jsonLd = (m: PageMeta) => {
   const url = abs(m.path);
@@ -117,9 +161,10 @@ export const jsonLd = (m: PageMeta) => {
       "@id": WEBSITE_ID,
       url: `${site.url}/`,
       name: site.studio,
-      inLanguage: "en",
-      publisher: { "@id": PERSON_ID },
+      inLanguage: ["en", "fr"],
+      publisher: { "@id": STUDIO_ID },
     },
+    studioNode(),
     {
       "@type": "Person",
       "@id": PERSON_ID,
@@ -128,7 +173,7 @@ export const jsonLd = (m: PageMeta) => {
       jobTitle: "UX/UI Designer & Front-End Developer",
       url: `${site.url}/curator`,
       email: `mailto:${site.email}`,
-      worksFor: { "@type": "Organization", name: site.studio, url: `${site.url}/` },
+      worksFor: { "@id": STUDIO_ID },
       knowsAbout: ["UX design", "UI design", "Product design", "Web development", "Front-end development", "React"],
       sameAs: site.socials.map((s) => s.href),
     },

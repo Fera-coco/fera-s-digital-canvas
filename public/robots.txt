@@ -1,5 +1,30 @@
+# Fera's Studio welcomes search engines and AI assistants.
 User-agent: *
 Allow: /
 Disallow: /open-call/admin
+
+# AI search and assistants (listed explicitly so they know they are welcome)
+User-agent: GPTBot
+Allow: /
+Disallow: /open-call/admin
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /open-call/admin
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /open-call/admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /open-call/admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /open-call/admin
+
+User-agent: Google-Extended
+Allow: /
 
 Sitemap: https://ferasportfolio.vercel.app/sitemap.xml
