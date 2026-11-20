@@ -178,7 +178,8 @@ export const summarise = (d: OpenCallData) => {
 /* ---------- Applying ---------- */
 
 export const APPLY_EMAIL = "ferrababs@gmail.com";
-export const WHATSAPP_NUMBER = "2348100350910";
+export { WHATSAPP_NUMBER } from "./site";
+import { WHATSAPP_NUMBER } from "./site";
 export const WHATSAPP_DISPLAY = "+234 810 035 0910";
 
 const emailSubject = "Application for The Open Call – Five Free Websites";

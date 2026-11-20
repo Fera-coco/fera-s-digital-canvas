@@ -1,3 +1,6 @@
+/** WhatsApp number in international format without +, used for wa.me links. */
+export const WHATSAPP_NUMBER = "2348100350910";
+
 export const site = {
   studio: "Fera's Studio",
   person: "Peace Oluwaferanmi Segun-Babs",
@@ -5,8 +8,17 @@ export const site = {
   role: "UX/UI designer & front-end developer",
   url: "https://ferasportfolio.vercel.app",
   email: "ferrababs@gmail.com",
+  phone: "+2348100350910",
+  city: "Cotonou",
+  country: "BJ",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/peace-segun-babs-961bbb365" },
+    { label: "TikTok", href: "https://www.tiktok.com/@feras.studio" },
+  ],
+  /** The studio's own profiles (used in search data so Google and AI assistants connect them to the site). */
+  studioProfiles: [
+    "https://www.tiktok.com/@feras.studio",
+    "https://www.linkedin.com/company/146996330/",
   ],
 } as const;
 
