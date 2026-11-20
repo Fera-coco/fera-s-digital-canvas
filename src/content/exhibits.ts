@@ -471,20 +471,20 @@ export const exhibits: Exhibit[] = [
     statuses: ["Completed", "Academic"],
     tone: "coral",
     summary:
-      "A bright, appetite-first website for a student-run parfait and smoothie brand in Cotonou, with a full menu, topping customisation and a delivery checkout.",
+      "A bright, animated website for a student-run parfait and smoothie brand in Cotonou: smoothies that change on their own, a parfait that builds as you scroll, topping customisation and a delivery checkout.",
     intro:
-      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, started by a student team as a school entrepreneurship project, with me as COO. I designed and built the website on my own, to introduce the brand, present the menu and let customers place an order.",
+      "SweetSips is a health-focused parfait and smoothie brand based in Cotonou, started by a student team as a school entrepreneurship project, with me as COO. I designed and built the website on my own, to introduce the brand, present the menu and let customers place an order. In 2026 I redesigned it with a new look and motion.",
     role: ["Sole web designer & developer", "COO of the student team"],
-    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui", "Vercel"],
+    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "Vercel"],
     links: [
       { label: "Visit the live site", href: "https://sweetsips-landing-page-project.vercel.app/" },
     ],
     cover: desk(
       "sweetsips-hero",
-      "SweetSips homepage: a full-bleed photo of fruit parfaits and smoothies with the headline 'Fresh Fruit Parfaits & Smoothies, Made with Love'",
-      "The homepage leads with the product itself.",
+      "SweetSips homepage: a mango smoothie on a warm yellow background with the headline 'Mango Burst' and an Add for 1,800 CFA button",
+      "The homepage cycles through the four smoothies on its own, changing colour with each one.",
     ),
-    secondary: phone("sweetsips-mobile", "SweetSips homepage on a phone", "Mobile entrance with thumb-reachable cart and chat buttons."),
+    secondary: phone("sweetsips-mobile", "SweetSips homepage on a phone", "The same moving hero on mobile, with the cart always in reach."),
     sections: [
       {
         kicker: "The brief",
@@ -494,16 +494,28 @@ export const exhibits: Exhibit[] = [
         ],
       },
       {
+        kicker: "The redesign",
+        title: "Let the food do the moving",
+        points: [
+          { title: "A hero that changes flavour", text: "The smoothies take turns on their own, and the background, price and Add button change with each one." },
+          { title: "Built layer by layer", text: "One scroll adds one layer: yogurt, granola, berries, tropical fruit, then the crown. The words and the photo always match." },
+          { title: "Motion with manners", text: "Visitors who turn off motion on their device get the finished picture, without the movement." },
+        ],
+        shots: [
+          desk("sweetsips-story", "SweetSips 'Built layer by layer' section on step 5 of 5, 'Crown it', with a full parfait in a tall glass", "Step five of the parfait story: the finished cup."),
+        ],
+      },
+      {
         kicker: "Ordering",
         title: "From menu to doorstep on one page",
         points: [
           { title: "A menu you can taste", text: "Parfaits and smoothies are shown with photography, a short description and a price in CFA." },
-          { title: "Build your own", text: "Parfaits can be customised with individual toppings, each priced so the total stays clear." },
+          { title: "Build your own", text: "Start from the yogurt base and tap toppings, each priced so the total stays clear." },
           { title: "Delivery choices", text: "Checkout offers regular or shared delivery, with the delivery fee shown before the order is placed." },
-          { title: "Always a way to ask", text: "Floating cart and chat buttons stay within reach on every screen size." },
         ],
         shots: [
-          desk("sweetsips-menu", "SweetSips menu section with parfait cards, prices in CFA and Add to Cart buttons", "The menu: consistent cards, clear prices and one action per item."),
+          desk("sweetsips-menu", "SweetSips menu section with Parfaits and Smoothies tabs, parfait cards and prices in CFA", "The menu: two tabs, clear prices and one action per item."),
+          desk("sweetsips-build", "SweetSips Build your own section with mango, strawberries and granola picked and a total of 2,500 CFA", "Build your own: tap toppings and watch the total."),
         ],
       },
     ],
