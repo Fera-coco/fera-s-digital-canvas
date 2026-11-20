@@ -4,6 +4,7 @@ import { exhibits, toneStyles, type Exhibit } from "@/content/exhibits";
 import { usePageMeta } from "@/hooks/use-exhibition";
 import { PAGES } from "@/content/seo";
 import NextRoom from "@/components/exhibition/NextRoom";
+import CurvedHall from "@/components/exhibition/CurvedHall";
 import { cn } from "@/lib/utils";
 import { t, tf } from "@/lib/i18n";
 
@@ -86,10 +87,12 @@ const CollectionPage = () => {
 
   return (
     <main id="main" className="flex min-h-[100svh] flex-col">
+      <h1 className="sr-only">{t("The Collection")}</h1>
+      <CurvedHall list={exhibits} />
       {/* ---------- Desktop: the reel ---------- */}
       <div
         ref={stageRef}
-        className="relative hidden h-[100svh] overflow-hidden pt-[var(--header-h)] lg:block"
+        className="hidden"
         aria-label={t("The Collection")}
         role="region"
       >
