@@ -8,6 +8,7 @@ import type { PageMeta } from "@/content/seo";
 
 const ADMIN_META: PageMeta = { path: "/open-call/admin", title: "Back office · The Open Call | Fera's Studio", description: "Staff only.", heading: "Back office", noindex: true };
 import { cn } from "@/lib/utils";
+import { markOwner } from "@/lib/track";
 
 /*
   The back office for The Open Call.
@@ -185,7 +186,7 @@ const Login = ({ sb }: { sb: SupabaseClient }) => {
 /* ------------------------------------------------------------------ */
 
 const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
-  const [tab, setTab] = useState<"apps" | "spots" | "book">("apps");
+  const [tab, setTab] = useState<"apps" | "spots" | "book" | "visits">("apps");
   const [apps, setApps] = useState<AppRow[] | null>(null);
   const [spots, setSpots] = useState<SpotRow[] | null>(null);
   const [open, setOpen] = useState(true);
@@ -213,6 +214,8 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
   useEffect(() => {
     load();
   }, [load]);
+  // Don't count your own browsing in Website visits.
+  useEffect(markOwner, []);
 
   const taken = useMemo(() => (spots ?? []).filter((s) => STAGES.indexOf(s.stage) >= STAGES.indexOf("Confirmed")).length, [spots]);
   const newCount = (apps ?? []).filter((a) => a.status === "New").length;
@@ -247,12 +250,13 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
         </div>
       </div>
 
-      <div role="tablist" aria-label="Back office sections" className="mt-6 flex gap-2">
+      <div role="tablist" aria-label="Back office sections" className="mt-6 flex flex-wrap gap-2">
         {(
           [
             ["apps", "Applications"],
             ["spots", "The five spots"],
             ["book", "Visitors' book"],
+            ["visits", "Website visits"],
           ] as const
         ).map(([id, label]) => (
           <button
@@ -277,8 +281,10 @@ const Dashboard = ({ sb, email }: { sb: SupabaseClient; email: string }) => {
         <Applications sb={sb} apps={apps} spots={spots} onChange={load} flash={flash} />
       ) : tab === "spots" ? (
         <Spots sb={sb} spots={spots} onChange={load} flash={flash} />
-      ) : (
+      ) : tab === "book" ? (
         <VisitorsBook sb={sb} flash={flash} />
+      ) : (
+        <Visits sb={sb} />
       )}
 
       {toast && (
@@ -355,6 +361,167 @@ const VisitorsBook = ({ sb, flash }: { sb: SupabaseClient; flash: (m: string) =>
         ))}
       </ul>
     </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/*  Website visits: totals from site_visit_stats()                     */
+/* ------------------------------------------------------------------ */
+
+type Tally = { name: string; n: number };
+type VisitStats = {
+  views: number;
+  sessions: number;
+  visitors: number;
+  new_visitors: number;
+  daily: { day: string; views: number; visitors: number }[];
+  pages: Tally[];
+  sources: Tally[];
+  countries: Tally[];
+  devices: Tally[];
+};
+
+const PAGE_NAMES: Record<string, string> = {
+  "/": "Ticket desk (home)",
+  "/visit": "Gallery walk",
+  "/collection": "The collection",
+  "/curator": "The curator",
+  "/studio": "The studio",
+  "/contact": "Contact",
+  "/open-call": "The Open Call",
+  "/apply": "Open Call form",
+};
+const pageName = (p: string) => PAGE_NAMES[p] ?? (p.startsWith("/work/") ? `Case study: ${p.slice(6).replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase())}` : p);
+const countryName = (cc: string) => {
+  if (cc === "??") return "Unknown";
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(cc) ?? cc;
+  } catch {
+    return cc;
+  }
+};
+const sourceName = (h: string) => {
+  if (h === "Direct") return "Direct or unknown";
+  const known: [RegExp, string][] = [
+    [/instagram/, "Instagram"],
+    [/tiktok/, "TikTok"],
+    [/linkedin|lnkd/, "LinkedIn"],
+    [/facebook|fb\./, "Facebook"],
+    [/whatsapp|wa\.me/, "WhatsApp"],
+    [/(^|\.)t\.co$|twitter|x\.com/, "X"],
+    [/google/, "Google"],
+    [/bing/, "Bing"],
+  ];
+  return known.find(([r]) => r.test(h))?.[1] ?? h;
+};
+const merge = (rows: Tally[], label: (s: string) => string) => {
+  const m = new Map<string, number>();
+  rows.forEach((r) => m.set(label(r.name), (m.get(label(r.name)) ?? 0) + r.n));
+  return [...m].map(([name, n]) => ({ name, n })).sort((a, b) => b.n - a.n);
+};
+
+const Visits = ({ sb }: { sb: SupabaseClient }) => {
+  const [days, setDays] = useState(30);
+  const [data, setData] = useState<VisitStats | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const load = useCallback(async () => {
+    setData(null);
+    const { data, error } = await sb.rpc("site_visit_stats", { p_days: days });
+    if (error) return setErr("Couldn't load visits. Has the site_visits part of open-call.sql been run in Supabase?");
+    setErr(null);
+    setData(data as VisitStats);
+  }, [sb, days]);
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const peak = Math.max(1, ...(data?.daily ?? []).map((d) => d.views));
+  const today = data?.daily.at(-1);
+
+  return (
+    <div className="mt-8">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-stone">Page views on your site. Your own visits are left out on this browser. No cookies and no personal details are stored.</p>
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Time range">
+          {[7, 30, 90].map((d) => (
+            <button
+              key={d}
+              type="button"
+              aria-pressed={days === d}
+              onClick={() => setDays(d)}
+              className={cn("whitespace-nowrap rounded-full px-4 py-1.5 text-sm", days === d ? "bg-ink text-cream" : "border border-ink/25")}
+            >
+              {d} days
+            </button>
+          ))}
+          <button type="button" onClick={load} className="rounded-full border border-ink/25 px-4 py-1.5 text-sm">
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {err ? (
+        <p role="alert" className="mt-6 text-coral-ink">{err}</p>
+      ) : !data ? (
+        <p className="label mt-8 animate-pulse text-stone">Counting visits…</p>
+      ) : (
+        <>
+          <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-ink/15 bg-paper p-6 sm:grid-cols-5">
+            <Stat k="Visitors" v={data.visitors} />
+            <Stat k="New visitors" v={data.new_visitors} />
+            <Stat k="Visits" v={data.sessions} />
+            <Stat k="Page views" v={data.views} />
+            <Stat k="Today" v={today?.views ?? 0} />
+          </dl>
+
+          <section className="mt-6 rounded-2xl border border-ink/15 bg-paper p-6">
+            <h3 className="label text-stone">Page views per day</h3>
+            <div className="mt-5 flex h-40 items-end gap-[3px]" aria-label="Page views per day">
+              {data.daily.map((d) => (
+                <div key={d.day} className="group relative flex h-full flex-1 items-end" title={`${new Date(d.day).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}: ${d.views} views, ${d.visitors} visitors`}>
+                  <div className={cn("w-full rounded-t-sm", d.views ? "bg-coral group-hover:bg-coral-ink" : "bg-ink/10")} style={{ height: d.views ? `${Math.max(4, (d.views / peak) * 100)}%` : "2px" }} />
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 flex justify-between font-mono text-[11px] text-stone">
+              <span>{new Date(data.daily[0]?.day).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</span>
+              <span>Today</span>
+            </div>
+          </section>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <TallyList title="Most viewed pages" rows={data.pages.map((r) => ({ name: pageName(r.name), n: r.n }))} tone="bg-lavender" />
+            <TallyList title="Where visits came from" rows={merge(data.sources, sourceName)} tone="bg-mint" />
+            <TallyList title="Countries (visitors)" rows={data.countries.map((r) => ({ name: countryName(r.name), n: r.n }))} tone="bg-butter" />
+            <TallyList title="Devices (visits)" rows={data.devices} tone="bg-blush" />
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+const TallyList = ({ title, rows, tone }: { title: string; rows: Tally[]; tone: string }) => {
+  const top = Math.max(1, ...rows.map((r) => r.n));
+  return (
+    <section className="rounded-2xl border border-ink/15 bg-paper p-6">
+      <h3 className="label text-stone">{title}</h3>
+      {rows.length === 0 ? (
+        <p className="mt-4 text-sm text-stone">Nothing yet.</p>
+      ) : (
+        <ul className="mt-4 space-y-2.5">
+          {rows.map((r) => (
+            <li key={r.name} className="relative overflow-hidden rounded-md">
+              <div className={cn("absolute inset-y-0 left-0 rounded-md", tone)} style={{ width: `${(r.n / top) * 100}%` }} />
+              <div className="relative flex justify-between gap-4 px-3 py-1.5 text-sm">
+                <span className="truncate">{r.name}</span>
+                <span className="nums font-medium">{r.n}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 };
 
