@@ -494,6 +494,33 @@ export const exhibits: Exhibit[] = [
         ],
       },
       {
+        kicker: "Where it started",
+        title: "A good menu in a template",
+        body: [
+          "The first version, from 2025, did its job: it showed the menu and took orders. But it looked like many other sites built from a template, the photos sat in boxes so the food never stood out, and a few things only pretended to work.",
+        ],
+        points: [
+          { title: "Generic look", text: "Default type and colours that could belong to any brand." },
+          { title: "Food in boxes", text: "Small card photos, nothing that made you hungry at first glance." },
+          { title: "A form that went nowhere", text: "The contact form showed a 'sent' message without sending anything." },
+          { title: "Placeholder links", text: "The footer's social buttons pointed to the Instagram and TikTok home pages." },
+        ],
+        shots: [
+          desk("sweetsips-before", "The 2025 SweetSips homepage: a coral-tinted photo banner with the headline 'Fresh Fruit Parfaits & Smoothies, Made with Love'", "Before: the 2025 homepage."),
+        ],
+      },
+      {
+        kicker: "Process",
+        title: "Keep what was real, rebuild the rest",
+        steps: [
+          "Audited the old site and kept every real price, topping, delivery fee and team name.",
+          "Set a new direction: a bold grotesque typeface and a fruit palette of berry, mango, leaf and cream.",
+          "Drew the drinks and fruit in code first. They looked like illustrations, not food, so I dropped them.",
+          "Made a matching set of product photos, same glass, light and angle, so every stage of the parfait lines up.",
+          "Built the motion around those photos, then tested on desktop and phone until each step felt clean.",
+        ],
+      },
+      {
         kicker: "The redesign",
         title: "Let the food do the moving",
         points: [
@@ -516,6 +543,14 @@ export const exhibits: Exhibit[] = [
         shots: [
           desk("sweetsips-menu", "SweetSips menu section with Parfaits and Smoothies tabs, parfait cards and prices in CFA", "The menu: two tabs, clear prices and one action per item."),
           desk("sweetsips-build", "SweetSips Build your own section with mango, strawberries and granola picked and a total of 2,500 CFA", "Build your own: tap toppings and watch the total."),
+        ],
+      },
+      {
+        kicker: "What I learned",
+        title: "Real beats clever",
+        body: [
+          "The animations that worked were the simple ones built on real photos. Drawn fruit and pieces dropped into a glass looked like a collage, however carefully placed. Moving between real photos, one clear step at a time, felt like food.",
+          "The other lesson was control: one scroll, one step. Letting people scroll freely through the parfait made the picture and the words drift apart.",
         ],
       },
     ],
