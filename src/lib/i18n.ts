@@ -49,6 +49,7 @@ export const initialLang = (): Lang => {
   } catch {
     /* storage unavailable */
   }
+  if (location.pathname.startsWith("/site-web-gratuit")) return "fr";
   try {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (tz === "Africa/Porto-Novo" || navigator.language.toLowerCase().startsWith("fr")) return "fr";

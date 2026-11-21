@@ -19,7 +19,59 @@ export interface PageMeta {
   type?: "website" | "article" | "profile";
   crumb?: string; // breadcrumb label
   noindex?: boolean;
+  lang?: "en" | "fr";
+  /** The same page in the other language (adds hreflang links). */
+  alternate?: string;
+  /** Plain text shown to search engines and AI assistants that don't run JavaScript. */
+  body?: string[];
+  faq?: { q: string; a: string }[];
 }
+
+const OPEN_CALL_FAQ_EN = [
+  {
+    q: "Is the website really free?",
+    a: "Yes. For the five businesses selected through The Open Call, Fera's Studio waives the website design and development fee. The business only pays for its own domain name and hosting.",
+  },
+  {
+    q: "Who can apply for a free website?",
+    a: "Small businesses in Nigeria and Benin Republic, for example in Lagos, Abuja, Ibadan, Port Harcourt, Cotonou, Porto-Novo or Abomey-Calavi. The website can be in English, French or both.",
+  },
+  {
+    q: "What kind of website do I get?",
+    a: "A standard business website, service website or product catalogue that works well on phones and computers, with your products or services, contact details and a WhatsApp button. Complex online shops, custom integrations and inventory systems may need a separate agreement.",
+  },
+  {
+    q: "How do I apply?",
+    a: "Fill in the short application on https://ferasportfolio.vercel.app/apply. It takes about three minutes, and you can also send it by email or WhatsApp. Each application is reviewed, and a spot is only yours once Fera's Studio confirms it.",
+  },
+  {
+    q: "What does Fera's Studio get in return?",
+    a: "The finished website is featured in the Fera's Studio portfolio with the business name, screenshots and link. Confidential materials are never shown.",
+  },
+];
+
+const OPEN_CALL_FAQ_FR = [
+  {
+    q: "Le site web est-il vraiment gratuit ?",
+    a: "Oui. Pour les cinq entreprises sélectionnées dans le cadre de The Open Call, Fera's Studio offre la conception et le développement du site. L'entreprise paie seulement son nom de domaine et son hébergement.",
+  },
+  {
+    q: "Qui peut demander un site web gratuit ?",
+    a: "Les petites entreprises au Bénin et au Nigeria, par exemple à Cotonou, Porto-Novo, Abomey-Calavi, Parakou, Lagos ou Abuja. Le site peut être en français, en anglais ou dans les deux langues.",
+  },
+  {
+    q: "Quel type de site vais-je recevoir ?",
+    a: "Un site vitrine, un site de services ou un catalogue de produits adapté au téléphone et à l'ordinateur, avec vos produits ou services, vos contacts et un bouton WhatsApp. Une boutique en ligne complexe, des intégrations sur mesure ou une gestion de stock peuvent faire l'objet d'un accord séparé.",
+  },
+  {
+    q: "Comment postuler ?",
+    a: "Remplissez le court formulaire sur https://ferasportfolio.vercel.app/apply, en trois minutes environ, ou envoyez votre demande par e-mail ou WhatsApp. Chaque candidature est étudiée, et une place n'est réservée qu'après confirmation de Fera's Studio.",
+  },
+  {
+    q: "Que reçoit Fera's Studio en échange ?",
+    a: "Le site terminé est présenté dans le portfolio de Fera's Studio avec le nom de l'entreprise, des captures d'écran et le lien. Les documents confidentiels ne sont jamais montrés.",
+  },
+];
 
 export const DEFAULT_IMAGE = "/og.png";
 const DEFAULT_IMAGE_ALT = "Fera's Studio: a digital exhibition of design and development work by Fera.";
@@ -72,15 +124,38 @@ export const PAGES = {
   },
   openCall: {
     path: "/open-call",
-    title: "The Open Call: five free websites for businesses in Nigeria & Benin Republic | Fera's Studio",
+    title: "Free website for small businesses in Nigeria & Benin | The Open Call by Fera's Studio",
     description:
-      "Five businesses in Nigeria and Benin Republic will get a professionally designed and developed website with no development fee. Apply online for The Open Call by Fera's Studio.",
-    heading: "The Open Call: five businesses, five websites",
+      "Get a free business website: Fera's Studio is designing and building websites for five small businesses in Nigeria and Benin Republic with no design or development fee. Apply online in three minutes.",
+    heading: "The Open Call: a free website for five small businesses in Nigeria and Benin",
     crumb: "The Open Call",
+    alternate: "/site-web-gratuit",
+    body: [
+      "The Open Call is a Fera's Studio initiative: five small businesses in Nigeria and Benin Republic get a professionally designed and developed website, free of design and development fees.",
+      "Each website is mobile friendly, built around the business, and can include products or services, prices, photos, contact details, a WhatsApp button and a Google-ready setup. The business pays only for its domain name and hosting.",
+      "Apply at https://ferasportfolio.vercel.app/apply or message Fera on WhatsApp.",
+    ],
+    faq: OPEN_CALL_FAQ_EN,
+  },
+  freeWebsiteFr: {
+    path: "/site-web-gratuit",
+    title: "Site web gratuit pour petites entreprises au Bénin et au Nigeria | Fera's Studio",
+    description:
+      "Obtenez un site web gratuit pour votre entreprise : Fera's Studio conçoit et développe le site de cinq petites entreprises au Bénin et au Nigeria, sans frais de conception ni de développement. Candidature en ligne en trois minutes.",
+    heading: "The Open Call : un site web gratuit pour cinq petites entreprises au Bénin et au Nigeria",
+    crumb: "Site web gratuit",
+    lang: "fr",
+    alternate: "/open-call",
+    body: [
+      "The Open Call est une initiative de Fera's Studio, basé à Cotonou : cinq petites entreprises au Bénin et au Nigeria reçoivent un site web professionnel, sans frais de conception ni de développement.",
+      "Chaque site est adapté au téléphone, pensé pour l'entreprise, et peut présenter vos produits ou services, vos prix, vos photos, vos contacts, un bouton WhatsApp et une configuration prête pour Google. L'entreprise paie seulement son nom de domaine et son hébergement.",
+      "Postulez sur https://ferasportfolio.vercel.app/apply ou écrivez à Fera sur WhatsApp.",
+    ],
+    faq: OPEN_CALL_FAQ_FR,
   },
   openCallApply: {
     path: "/apply",
-    title: "Apply for a free website: The Open Call | Fera's Studio",
+    title: "Apply for a free website (Nigeria & Benin): The Open Call | Fera's Studio",
     description:
       "Apply for one of five free websites for businesses in Nigeria and Benin Republic. Three short steps, about three minutes.",
     heading: "Apply for a free website",
@@ -184,7 +259,7 @@ export const jsonLd = (m: PageMeta) => {
       name: m.title,
       description: m.description,
       isPartOf: { "@id": WEBSITE_ID },
-      inLanguage: "en",
+      inLanguage: m.lang ?? "en",
       primaryImageOfPage: { "@type": "ImageObject", url: imageFor(m) },
       ...(m.type === "profile" ? { mainEntity: { "@id": PERSON_ID } } : { about: { "@id": PERSON_ID } }),
     },
@@ -196,6 +271,15 @@ export const jsonLd = (m: PageMeta) => {
     graph.push({
       "@type": "BreadcrumbList",
       itemListElement: trail.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.name, item: t.url })),
+    });
+  }
+
+  if (m.faq?.length) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      inLanguage: m.lang ?? "en",
+      mainEntity: m.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     });
   }
 

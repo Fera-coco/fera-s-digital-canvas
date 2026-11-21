@@ -57,6 +57,7 @@ const App = () => (
         <Route path="/studio" element={<StudioPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/open-call" element={<OpenCallPage />} />
+        <Route path="/site-web-gratuit" element={<OpenCallPage />} />
         <Route path="/apply" element={<OpenCallApply />} />
         <Route
           path="/open-call/admin"
