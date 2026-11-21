@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NextRoom from "@/components/exhibition/NextRoom";
 import Visitor from "@/components/gallery/Visitor";
 import Reveal from "@/components/open-call/Reveal";
@@ -128,7 +128,8 @@ const headline: { w: string; i?: boolean }[] = [
 /* ------------------------------------------------------------------ */
 
 const OpenCallPage = () => {
-  usePageMeta(PAGES.openCall);
+  const { pathname } = useLocation();
+  usePageMeta(pathname.startsWith("/site-web-gratuit") ? PAGES.freeWebsiteFr : PAGES.openCall);
   const state = useOpenCall();
   const data = state.status === "ready" ? state.data : null;
   const sum = data ? summarise(data) : null;

@@ -26,6 +26,14 @@ const headFor = (m: PageMeta) => {
     `<meta name="description" content="${esc(m.description)}" />`,
     `<meta name="robots" content="${m.noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"}" />`,
     `<link rel="canonical" href="${url}" />`,
+    ...(m.alternate
+      ? [
+          `<link rel="alternate" hreflang="${m.lang ?? "en"}" href="${url}" />`,
+          `<link rel="alternate" hreflang="${m.lang === "fr" ? "en" : "fr"}" href="${abs(m.alternate)}" />`,
+          `<link rel="alternate" hreflang="x-default" href="${abs(m.lang === "fr" ? m.alternate : m.path)}" />`,
+        ]
+      : []),
+    ...(m.lang === "fr" ? [`<meta property="og:locale" content="fr_FR" />`] : []),
     `<meta property="og:type" content="${m.type ?? "website"}" />`,
     `<meta property="og:title" content="${esc(m.title)}" />`,
     `<meta property="og:description" content="${esc(m.description)}" />`,
@@ -51,6 +59,8 @@ const noscriptFor = (m: PageMeta) => {
       <main style="font-family: Georgia, serif; padding: 2rem; max-width: 40rem">
         <h1>${esc(m.heading)}</h1>
         <p>${esc(m.description)}</p>
+        ${(m.body ?? []).map((b) => `<p>${esc(b)}</p>`).join("")}
+        ${m.faq?.length ? `<h2>${m.lang === "fr" ? "Questions fréquentes" : "Questions"}</h2>${m.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join("")}` : ""}
         <p>Fera's Studio needs JavaScript to open the full exhibition. You can reach Fera at <a href="mailto:${site.email}">${site.email}</a>.</p>
         <nav aria-label="Pages"><ul>${links}</ul></nav>
       </main>
@@ -60,6 +70,7 @@ const noscriptFor = (m: PageMeta) => {
 
 const render = (html: string, m: PageMeta) =>
   html
+    .replace(/<html lang="[a-z]+"/, `<html lang="${m.lang ?? "en"}"`)
     .replace(/<!--seo:start-->[\s\S]*?<!--seo:end-->/, headFor(m))
     .replace(/<!--noscript:start-->[\s\S]*?<!--noscript:end-->/, noscriptFor(m));
 
@@ -69,7 +80,7 @@ const sitemap = () => {
     .filter((p) => !p.noindex)
     .map((p) => {
       const priority =
-        p.path === "/" ? "1.0" : p.path === "/open-call" || p.path === "/collection" ? "0.9" : p.path.startsWith("/work/") ? "0.8" : "0.7";
+        p.path === "/" ? "1.0" : p.path === "/open-call" || p.path === "/site-web-gratuit" || p.path === "/collection" ? "0.9" : p.path.startsWith("/work/") ? "0.8" : "0.7";
       return `  <url><loc>${abs(p.path)}</loc><lastmod>${today}</lastmod><priority>${priority}</priority></url>`;
     })
     .join("\n");
