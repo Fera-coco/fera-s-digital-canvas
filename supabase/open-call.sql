@@ -193,3 +193,78 @@ begin
 end $$;
 drop trigger if exists applications_limit on public.open_call_applications;
 create trigger applications_limit before insert on public.open_call_applications for each row execute function public.applications_limit();
+
+-- ------------------------------------------------------------------
+--  Website visits: a private, cookie-free page counter for the back room.
+--  No names, emails or IP addresses are stored. Each browser gets a random
+--  id so returning visitors can be counted; the country comes from Vercel.
+--  Anyone can add a visit, nobody can read the rows, and only admins can
+--  see the totals through site_visit_stats().
+-- ------------------------------------------------------------------
+create table if not exists public.site_visits (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  path text not null check (char_length(path) between 1 and 200 and path like '/%'),
+  referrer text check (referrer is null or char_length(referrer) <= 100),
+  device text not null check (device in ('Mobile', 'Tablet', 'Desktop')),
+  country text check (country is null or country ~ '^[A-Z]{2}$'),
+  visitor_id text not null check (visitor_id ~ '^[a-z0-9]{8,32}$'),
+  session_id text not null check (session_id ~ '^[a-z0-9]{8,32}$'),
+  entry boolean not null default false,
+  new_visitor boolean not null default false
+);
+create index if not exists site_visits_created_idx on public.site_visits (created_at desc);
+alter table public.site_visits enable row level security;
+
+drop policy if exists "anyone can count a visit" on public.site_visits;
+create policy "anyone can count a visit" on public.site_visits for insert to anon, authenticated with check (true);
+grant insert on public.site_visits to anon, authenticated;
+revoke select, update, delete on public.site_visits from anon, authenticated;
+
+-- At most 400 page views in any 10 minutes, so a script can't flood the counter.
+create or replace function public.site_visits_limit()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  new.created_at := now();
+  if (select count(*) from public.site_visits where created_at > now() - interval '10 minutes') >= 400 then
+    return null; -- quietly drop it
+  end if;
+  return new;
+end $$;
+drop trigger if exists site_visits_limit on public.site_visits;
+create trigger site_visits_limit before insert on public.site_visits for each row execute function public.site_visits_limit();
+
+-- Totals for the back room (admins only). Days are counted in West Africa time.
+create or replace function public.site_visit_stats(p_days int default 30)
+returns json language plpgsql stable security definer set search_path = public as $$
+declare
+  n int := greatest(1, least(coalesce(p_days, 30), 365));
+  since timestamptz := date_trunc('day', now() at time zone 'Africa/Lagos') at time zone 'Africa/Lagos' - make_interval(days => n - 1);
+begin
+  if not public.is_open_call_admin() then
+    raise exception 'Not allowed';
+  end if;
+  return (
+    with v as (select * from public.site_visits where created_at >= since)
+    select json_build_object(
+      'views', (select count(*) from v),
+      'sessions', (select count(distinct session_id) from v),
+      'visitors', (select count(distinct visitor_id) from v),
+      'new_visitors', (select count(distinct visitor_id) from v where new_visitor),
+      'daily', (
+        select coalesce(json_agg(json_build_object('day', d.day::date, 'views', coalesce(c.views, 0), 'visitors', coalesce(c.visitors, 0)) order by d.day), '[]'::json)
+        from generate_series((since at time zone 'Africa/Lagos')::date, (now() at time zone 'Africa/Lagos')::date, interval '1 day') as d(day)
+        left join (
+          select (created_at at time zone 'Africa/Lagos')::date as day, count(*) as views, count(distinct visitor_id) as visitors
+          from v group by 1
+        ) c on c.day = d.day::date
+      ),
+      'pages', (select coalesce(json_agg(p), '[]'::json) from (select path as name, count(*) as n from v group by path order by n desc limit 12) p),
+      'sources', (select coalesce(json_agg(p), '[]'::json) from (select coalesce(referrer, 'Direct') as name, count(*) as n from v where entry group by 1 order by n desc limit 10) p),
+      'countries', (select coalesce(json_agg(p), '[]'::json) from (select coalesce(country, '??') as name, count(distinct visitor_id) as n from v group by 1 order by n desc limit 10) p),
+      'devices', (select coalesce(json_agg(p), '[]'::json) from (select device as name, count(*) as n from v where entry group by 1 order by n desc) p)
+    )
+  );
+end $$;
+revoke execute on function public.site_visit_stats(int) from public, anon;
+grant execute on function public.site_visit_stats(int) to authenticated;

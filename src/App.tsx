@@ -1,6 +1,7 @@
 import { Fragment, lazy, Suspense, useEffect, useState } from "react";
 import { getLang, onLangChange } from "@/lib/i18n";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { trackVisit } from "@/lib/track";
 import Header from "@/components/exhibition/Header";
 import RoomTransition from "@/components/exhibition/RoomTransition";
 import ReturnToWalk from "@/components/exhibition/ReturnToWalk";
@@ -19,6 +20,8 @@ import OpenCallApply from "./pages/OpenCallApply";
 const OpenCallAdmin = lazy(() => import("./pages/OpenCallAdmin"));
 
 const Rooms = () => {
+  const { pathname } = useLocation();
+  useEffect(() => trackVisit(pathname), [pathname]);
   useScrollManager();
   useReveal();
   return (
