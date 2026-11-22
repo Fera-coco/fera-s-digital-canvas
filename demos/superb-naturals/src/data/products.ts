@@ -1,7 +1,7 @@
 /*
   Every claim below is copied from Superb Naturals' own labels or WhatsApp catalogue.
   Prices, sizes and names come from her WhatsApp catalogue (22 Nov 2026).
-  The new men's and tool photos are crops of catalogue thumbnails; ask for originals.
+  Beard oil photo is still a crop of a catalogue thumbnail; ask for the original.
 */
 
 export const WHATSAPP = "2348020866239";
@@ -165,7 +165,7 @@ export const products: Product[] = [
     tagline: "A roller with three replaceable heads.",
     benefits: [],
     concerns: [],
-    images: ["dermal-roller"],
+    images: ["dermal-roller", "dermal-roller-beard"],
     tone: "mint",
   },
   {
