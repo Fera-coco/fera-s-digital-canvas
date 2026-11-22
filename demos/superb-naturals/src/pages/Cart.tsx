@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fromKey, img, naira, waLink } from "../data/products";
 import { WaIcon } from "../components/ui";
+import { BANK, ZONES, zoneById } from "../data/delivery";
 import { placeOrder, setQty, useStore } from "../lib/store";
 
 const total = (lines: { slug: string; qty: number }[]) => lines.reduce((t, l) => t + (fromKey(l.slug)?.price ?? 0) * l.qty, 0);
@@ -9,20 +10,23 @@ const total = (lines: { slug: string; qty: number }[]) => lines.reduce((t, l) =>
 export function Cart() {
   const s = useStore();
   const nav = useNavigate();
-  const [f, setF] = useState({ name: "", phone: "", area: "", address: "", note: "" });
+  const [f, setF] = useState({ name: "", phone: "", email: "", zone: "", area: "", address: "", note: "" });
   const [err, setErr] = useState<Record<string, string>>({});
   const sub = total(s.cart);
+  const z = zoneById(f.zone);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const x: Record<string, string> = {};
     if (f.name.trim().length < 2) x.name = "Please enter your name.";
     if (!/^(\+?234|0)[789][01]\d{8}$/.test(f.phone.replace(/[\s-]/g, ""))) x.phone = "Enter a Nigerian number, e.g. 0803 123 4567.";
+    if (f.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) x.email = "Check your email address, or leave it empty.";
+    if (!z) x.zone = "Choose where we're delivering to.";
     if (f.area.trim().length < 2) x.area = "Which city or area are you in?";
     if (f.address.trim().length < 8) x.address = "Please add your full delivery address.";
     setErr(x);
     if (Object.keys(x).length) return;
-    const ref = placeOrder({ name: f.name.trim(), phone: f.phone.trim(), area: f.area.trim(), address: f.address.trim(), note: f.note.trim() });
+    const ref = placeOrder({ name: f.name.trim(), phone: f.phone.trim(), email: f.email.trim(), zone: z!.label, fee: z!.fee, area: f.area.trim(), address: f.address.trim(), note: f.note.trim() });
     nav(`/order/${ref}`);
   };
 
@@ -39,7 +43,8 @@ export function Cart() {
       </section>
     );
 
-  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setF({ ...f, [k]: e.target.value });
+  const due = sub + (z?.fee ?? 0);
   return (
     <section className="mx-auto grid max-w-6xl gap-10 px-5 pt-10 md:grid-cols-[1fr_1.1fr]">
       <div>
@@ -69,8 +74,8 @@ export function Cart() {
         </ul>
         <dl className="mt-6 space-y-2 rounded-3xl bg-leaf-soft p-5">
           <div className="flex justify-between"><dt>Products</dt><dd className="font-bold">{naira(sub)}</dd></div>
-          <div className="flex justify-between"><dt>Delivery</dt><dd className="text-sm font-semibold text-leaf-deep">Confirmed on WhatsApp</dd></div>
-          <div className="flex justify-between border-t border-leaf/20 pt-2 font-display text-xl"><dt>To pay now</dt><dd className="font-semibold">{naira(sub)}</dd></div>
+          <div className="flex justify-between gap-4"><dt>Delivery{z ? ` · ${z.label}` : ""}</dt><dd className="text-right text-sm font-semibold text-leaf-deep">{!z ? "Choose your location" : z.fee !== null ? naira(z.fee) : "Quoted on WhatsApp"}</dd></div>
+          <div className="flex justify-between border-t border-leaf/20 pt-2 font-display text-xl"><dt>Total</dt><dd className="font-semibold">{naira(due)}{z && z.fee === null ? " + delivery" : ""}</dd></div>
         </dl>
       </div>
 
@@ -80,15 +85,26 @@ export function Cart() {
         <div className="mt-6 grid gap-4">
           <Field label="Full name" error={err.name}><input className="field" autoComplete="name" value={f.name} onChange={set("name")} /></Field>
           <Field label="WhatsApp number" error={err.phone}><input className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="0803 123 4567" value={f.phone} onChange={set("phone")} /></Field>
-          <Field label="City or area" error={err.area}><input className="field" placeholder="e.g. Ikeja, Lagos" value={f.area} onChange={set("area")} /></Field>
+          <Field label="Email (optional)" error={err.email}><input className="field" type="email" inputMode="email" autoComplete="email" placeholder="For a copy of your order" value={f.email} onChange={set("email")} /></Field>
+          <Field label="Delivery location" error={err.zone}>
+            <select className="field" value={f.zone} onChange={set("zone")}>
+              <option value="">Choose your location</option>
+              {ZONES.map((x) => (
+                <option key={x.id} value={x.id}>{x.label}{x.fee !== null ? ` · ${naira(x.fee)}` : ""}</option>
+              ))}
+            </select>
+            {z?.note && <span className="mt-1.5 block text-sm text-stone">{z.note}</span>}
+          </Field>
+          <Field label="City or town" error={err.area}><input className="field" placeholder="e.g. Ikeja" value={f.area} onChange={set("area")} /></Field>
           <Field label="Delivery address" error={err.address}><textarea className="field min-h-24" autoComplete="street-address" value={f.address} onChange={set("address")} /></Field>
           <Field label="Note (optional)"><input className="field" placeholder="Landmark, best time to call…" value={f.note} onChange={set("note")} /></Field>
         </div>
         <div className="mt-6 rounded-2xl bg-butter-soft p-4 text-sm">
           <p className="font-bold">🏦 You'll pay by bank transfer</p>
-          <p className="mt-1 text-stone">Next you'll see the account details and your order number. Send your proof of payment on WhatsApp to confirm.</p>
+          <p className="mt-1 text-stone">Next you'll see the account details and your order number. Send your proof of payment on WhatsApp to confirm. Orders are dispatched within 2–3 days after payment is confirmed.</p>
         </div>
-        <button type="submit" className="btn-leaf mt-6 w-full !py-4 text-base">Place order · {naira(sub)}</button>
+        <button type="submit" className="btn-leaf mt-6 w-full !py-4 text-base">Place order · {naira(due)}</button>
+        <p className="mt-3 text-center text-xs text-stone">By placing an order you agree to our <Link to="/refund-policy" className="font-semibold underline">refund policy</Link> and <Link to="/delivery" className="font-semibold underline">delivery policy</Link>.</p>
       </form>
     </section>
   );
@@ -109,6 +125,7 @@ export function OrderDone() {
   const s = useStore();
   const o = s.orders.find((x) => x.ref === ref);
   const [copied, setCopied] = useState(false);
+  const [copiedAcct, setCopiedAcct] = useState(false);
   if (!o)
     return (
       <section className="mx-auto max-w-xl px-5 py-24 text-center">
@@ -116,8 +133,9 @@ export function OrderDone() {
         <Link to="/shop" className="btn-leaf mt-6">Back to the shop</Link>
       </section>
     );
-  const amount = total(o.lines);
-  const summary = `Hello Superb Naturals 👋 I just placed order ${o.ref}.\n${o.lines.map((l) => `• ${l.qty} × ${fromKey(l.slug)?.label}`).join("\n")}\nTotal: ${naira(amount)} + delivery\nName: ${o.name}\nDeliver to: ${o.address}, ${o.area}\nHere is my proof of payment:`;
+  const products = total(o.lines);
+  const amount = products + (o.fee ?? 0);
+  const summary = `Hello Superb Naturals 👋 I just placed order ${o.ref}.\n${o.lines.map((l) => `• ${l.qty} × ${fromKey(l.slug)?.label}`).join("\n")}\nProducts: ${naira(products)}\nDelivery (${o.zone}): ${o.fee !== null ? naira(o.fee) : "please quote"}\nTotal: ${naira(amount)}${o.fee === null ? " + delivery" : ""}\nPaid to: ${BANK.bank} ${BANK.number}\nName: ${o.name}\nDeliver to: ${o.address}, ${o.area}\nHere is my proof of payment:`;
   return (
     <section className="mx-auto max-w-2xl px-5 pt-12 text-center">
       <p className="text-6xl">💚</p>
@@ -135,17 +153,29 @@ export function OrderDone() {
       <div className="mt-10 rounded-[2rem] bg-paper p-6 text-left shadow-card ring-1 ring-ink/5 md:p-8">
         <p className="label text-blush">Step 1 · Transfer</p>
         <p className="mt-2 font-display text-4xl font-semibold">{naira(amount)}</p>
-        <p className="text-sm text-stone">Delivery fee will be confirmed on WhatsApp.</p>
+        <p className="text-sm text-stone">{o.fee !== null ? `Products ${naira(products)} + delivery to ${o.zone} ${naira(o.fee)}` : `Products only. Delivery to ${o.zone} will be quoted on WhatsApp before you pay for it.`}</p>
         <dl className="mt-5 grid gap-2 rounded-2xl border-2 border-dashed border-leaf/30 bg-leaf-soft/50 p-4 text-sm">
-          <div className="flex justify-between gap-4"><dt className="text-stone">Bank</dt><dd className="font-bold">Added by Superb Naturals</dd></div>
-          <div className="flex justify-between gap-4"><dt className="text-stone">Account name</dt><dd className="font-bold">Added by Superb Naturals</dd></div>
-          <div className="flex justify-between gap-4"><dt className="text-stone">Account number</dt><dd className="font-bold">Added by Superb Naturals</dd></div>
+          <div className="flex justify-between gap-4"><dt className="text-stone">Bank</dt><dd className="font-bold">{BANK.bank}</dd></div>
+          <div className="flex justify-between gap-4"><dt className="text-stone">Account name</dt><dd className="font-bold">{BANK.name}</dd></div>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="text-stone">Account number</dt>
+            <dd className="flex items-center gap-2 font-display text-lg font-bold">
+              {BANK.number}
+              <button type="button" className="rounded-full bg-white px-2.5 py-1 font-sans text-xs font-bold text-leaf ring-1 ring-leaf/30" onClick={() => navigator.clipboard?.writeText(BANK.number).then(() => setCopiedAcct(true), () => {})}>
+                {copiedAcct ? "Copied ✓" : "Copy"}
+              </button>
+            </dd>
+          </div>
           <div className="flex justify-between gap-4"><dt className="text-stone">Narration</dt><dd className="font-bold">{o.ref}</dd></div>
         </dl>
         <p className="label mt-8 text-blush">Step 2 · Send your proof</p>
         <p className="mt-2 text-stone">Send a screenshot of your transfer on WhatsApp. Your order details are already written for you.</p>
         <a className="btn-leaf mt-5 w-full !py-4 text-base" href={waLink(summary)} target="_blank" rel="noopener noreferrer">
           <WaIcon /> Send proof on WhatsApp
+        </a>
+        <p className="mt-4 text-sm text-stone">Superb Naturals will confirm your payment on WhatsApp. Orders are dispatched within 2–3 days after payment is confirmed.</p>
+        <a className="btn-ghost mt-4 w-full !py-3.5" href={waLink(`Hello Superb Naturals 👋 I'd like an update on my order ${o.ref}.`)} target="_blank" rel="noopener noreferrer">
+          Track my order on WhatsApp
         </a>
       </div>
       <Link to="/shop" className="mt-8 inline-block font-bold text-leaf underline underline-offset-4">Keep shopping</Link>

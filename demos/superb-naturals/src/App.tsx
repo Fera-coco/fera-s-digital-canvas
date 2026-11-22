@@ -12,6 +12,7 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Routine from "./pages/Routine";
 import { Cart, OrderDone } from "./pages/Cart";
+import { Delivery, Refunds } from "./pages/Policies";
 import { waLink } from "./data/products";
 import Watermark from "./components/Watermark";
 
@@ -43,6 +44,8 @@ export default function App() {
           <Route path="/routine" element={<Routine />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order/:ref" element={<OrderDone />} />
+          <Route path="/delivery" element={<Delivery />} />
+          <Route path="/refund-policy" element={<Refunds />} />
           <Route path="*" element={<Landing />} />
         </Routes>
       </main>

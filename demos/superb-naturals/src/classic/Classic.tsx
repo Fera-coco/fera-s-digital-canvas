@@ -229,7 +229,7 @@ export function ClassicHome() {
       </section>
 
       <Range title="Hair Growth Solutions" text="Infused with raw herbs and over 10 active oils to promote faster and thicker hair growth, and stop itching and breakage." slugs={["hair-growth-oil", "hair-growth-butter", "medium-kit", "mini-kit"]} />
-      <Range title="Scalp & Dandruff Solutions" text="Cleans hair and scalp, exfoliates dead skin cells, and stops itching and dandruff." slugs={["shampoo-deep-conditioner", "anti-dandruff-shampoo", "scalp-massager"]} />
+      <Range title="Scalp & Dandruff Solutions" text="Cleans hair and scalp, exfoliates dead skin cells, and stops itching and dandruff." slugs={["shampoo-conditioner", "anti-dandruff-shampoo", "moisturizing-conditioner", "scalp-massager"]} />
       <Range title="Edge Care" text="Made for your edges: boosts edge growth and reduces itching and breakage." slugs={["essential-edge-oil", "hair-growth-oil", "dermal-roller"]} />
 
       <section className="mx-auto mt-16 max-w-6xl px-5">

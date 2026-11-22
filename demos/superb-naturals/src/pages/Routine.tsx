@@ -31,7 +31,7 @@ export default function Routine() {
 
   const done = step === 3 && concern && style && wash;
   const picks: Product[] = done
-    ? routine.filter((p) => p.slug === "shampoo-deep-conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
+    ? routine.filter((p) => p.slug === "shampoo-conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
     : [];
 
   const tips: string[] = [];

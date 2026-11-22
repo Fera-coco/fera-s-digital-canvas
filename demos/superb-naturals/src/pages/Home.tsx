@@ -15,11 +15,19 @@ const FAQ = [
   },
   {
     q: "How much is delivery?",
-    a: "It depends on where you are. Superb Naturals confirms your delivery fee on WhatsApp once your address is in.",
+    a: "It depends on where you are, from ₦3,000 in Asaba and Warri to ₦7,000 for the Northern States, Calabar, Uyo and Port Harcourt. You pick your location at checkout and the fee is added to your total. We also ship internationally, quoted on WhatsApp.",
   },
   {
     q: "Which products are right for me?",
     a: "Take the one-minute routine finder. It asks what your hair needs and builds a routine from the range.",
+  },
+  {
+    q: "How soon will my order arrive?",
+    a: "Orders are dispatched within 2–3 days after your payment is confirmed.",
+  },
+  {
+    q: "What if my order arrives damaged or wrong?",
+    a: "Report it within 24 hours of delivery with clear pictures or videos, and we'll arrange a replacement or a refund once it's verified. Read the full refund policy for details.",
   },
   {
     q: "Can I drink or swallow the oils?",
@@ -43,7 +51,7 @@ export default function Home() {
               Unlock your hair's <span className="italic text-blush">full</span> potential.
             </h1>
             <p className="mt-6 max-w-md text-[1.08rem] leading-relaxed text-stone">
-              Growth oil, edge oil, shampoo, deep conditioner and growth butter, made with raw herbs. Plus beard care for the men.
+              Growth oil, edge oil, shampoo, conditioner and growth butter, made with raw herbs. Plus beard care for the men.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/shop" className="btn-leaf !px-7 !py-3.5 text-base">Shop the range</Link>
@@ -106,7 +114,7 @@ export default function Home() {
           <Link to="/shop" className="btn-ghost">See all</Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {products.filter((p) => p.kind !== "Beard" && p.kind !== "Tool" && p.slug !== "anti-dandruff-shampoo").map((p) => (
+          {products.filter((p) => p.kind !== "Beard" && p.kind !== "Tool" && p.slug !== "anti-dandruff-shampoo" && p.slug !== "moisturizing-conditioner").map((p) => (
             <ProductCard key={p.slug} p={p} />
           ))}
         </div>
