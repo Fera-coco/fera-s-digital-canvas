@@ -1,0 +1,19 @@
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/manrope";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-cream text-ink font-sans antialiased; }
+  :focus-visible { outline: 2px solid #D2603A; outline-offset: 2px; }
+}
+@layer components {
+  .label { @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-stone; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition; }
+  .btn-primary { @apply btn bg-forest text-cream hover:bg-forest-deep; }
+  .btn-ghost { @apply btn border border-ink/15 bg-paper hover:border-ink/40; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-ink/[.12] bg-paper px-3 py-1.5 text-[13px] font-medium; }
+  .field { @apply w-full rounded-xl border border-ink/15 bg-paper px-3.5 py-2.5 text-[15px] outline-none focus:border-forest; }
+}
