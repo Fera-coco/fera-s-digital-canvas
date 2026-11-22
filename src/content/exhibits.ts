@@ -657,6 +657,133 @@ export const exhibits: Exhibit[] = [
       },
     ],
   },
+  {
+    slug: "brightdoor",
+    no: "07",
+    title: "Brightdoor Homes",
+    short: "Brightdoor",
+    discipline: "both",
+    medium: "Real estate website, design & development",
+    year: "2026",
+    statuses: ["Concept"],
+    tone: "peach",
+    summary:
+      "A Lagos property website that shows the full move-in cost of every rental and the title documents behind every sale, before anyone books an inspection.",
+    intro:
+      "Brightdoor Homes is a concept real estate website for Lagos that I designed and built on my own. I studied how people search for homes in Lagos and what goes wrong, then built the site around the two questions renters and buyers ask first: what will this really cost me, and are the papers real? The listings, prices and agents are samples.",
+    role: ["Research", "UX/UI design", "Front-end development"],
+    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "React Router", "Vercel"],
+    links: [
+      { label: "Explore the live concept", href: "/concepts/brightdoor/" },
+    ],
+    cover: {
+      src: "/exhibits/brightdoor-hero.webp",
+      alt: "Brightdoor homepage: an aerial photo of Lagos rooftops with the headline 'See the full price before you inspect.' and a rent or buy search box",
+      caption: "Homepage. The promise is in the headline, and the search sits right under it.",
+      width: 1520,
+      height: 730,
+      device: "desktop",
+    },
+    sections: [
+      {
+        kicker: "The problem",
+        title: "The rent is never the price",
+        body: [
+          "In Lagos, a flat listed at one figure usually costs far more to move into. Agency fees, legal fees, caution deposits and service charges are added later, often at the inspection. Buyers face a different worry: whether the title documents for a property are genuine.",
+          "Most property sites show the rent and leave the rest for a phone call. Brightdoor puts all of it on the page.",
+        ],
+      },
+      {
+        kicker: "Search",
+        title: "Every card shows the move-in total",
+        body: [
+          "Search results show the yearly rent and, under it, the full amount needed to move in, with a coloured bar that splits it into rent and fees. A map of Lagos sits beside the list, with each home's price pinned to its area.",
+        ],
+        shots: [
+          {
+            src: "/exhibits/brightdoor-search.webp",
+            alt: "Brightdoor search page: '10 homes to rent', filters for area, budget and beds, listing cards with move-in totals, and a map of Lagos with price pins",
+            caption: "Search. Filters across the top, cards with move-in totals, and price pins on a map of Lagos.",
+            width: 1520,
+            height: 730,
+            device: "desktop",
+          },
+        ],
+      },
+      {
+        kicker: "Design decisions",
+        title: "Built around money and trust",
+        points: [
+          {
+            title: "The total package",
+            text: "Each rental breaks the move-in cost into rent, service charge, agency fee, legal fee and caution, and says what you'll pay from year two.",
+          },
+          {
+            title: "Plan for it",
+            text: "A small savings planner works out how much to put aside each month, and how that changes when you split the cost with flatmates.",
+          },
+          {
+            title: "Title check",
+            text: "Sale listings show which documents have been seen and checked, which are still in progress, and an estimate of the costs on top of the price.",
+          },
+          {
+            title: "Free inspections",
+            text: "Visitors pick a day and time and leave a WhatsApp number. No inspection fee, and the agent's usual reply time is shown.",
+          },
+        ],
+        shots: [
+          {
+            src: "/exhibits/brightdoor-package.webp",
+            alt: "Brightdoor listing page for a room and parlour in Surulere, with a total package of ₦1,920,000 broken into rent, service charge, agency fee, legal fee and caution deposit, beside a booking card",
+            caption: "The total package on a rental, next to the inspection booking card.",
+            width: 1520,
+            height: 730,
+            device: "desktop",
+          },
+          {
+            src: "/exhibits/brightdoor-plan.webp",
+            alt: "Brightdoor 'Plan for it' card: save ₦320,000 a month and you're ready in 6 months, with a months slider and options to split with 2 or 3 people",
+            caption: "Plan for it: a slider for months and buttons for flatmates.",
+            width: 1520,
+            height: 730,
+            device: "desktop",
+          },
+          {
+            src: "/exhibits/brightdoor-title.webp",
+            alt: "Brightdoor title check for a house for sale: 3 of 4 documents seen, with C of O, survey plan and building approval checked and Governor's Consent in progress, beside a budget of fees on top of the price",
+            caption: "Title check on a sale, with the costs beyond the price.",
+            width: 1520,
+            height: 730,
+            device: "desktop",
+          },
+        ],
+      },
+      {
+        kicker: "For the agency",
+        title: "A simple desk for the people behind the listings",
+        body: [
+          "The owner dashboard collects enquiries and inspection requests in one list, each with a status the team can update. Agents can add a listing and see the move-in total build as they type in the fees. In the demo, everything is saved in the visitor's own browser.",
+        ],
+        shots: [
+          {
+            src: "/exhibits/brightdoor-dashboard.webp",
+            alt: "Brightdoor owner dashboard with counts for new enquiries, inspections booked, live listings and under offer, and a list of enquiries with statuses",
+            caption: "The owner dashboard. Names and numbers are sample data.",
+            width: 1520,
+            height: 730,
+            device: "desktop",
+          },
+        ],
+      },
+      {
+        kicker: "What I learned",
+        title: "Honest numbers are a design feature",
+        body: [
+          "The most useful parts of the site aren't visual tricks. They are numbers people usually have to ask for, shown clearly and early. Designing for trust meant deciding what to show before deciding how it looks.",
+        ],
+      },
+    ],
+  },
 ];
 
 /* Works in the studio: real, ongoing, not yet ready to hang. */

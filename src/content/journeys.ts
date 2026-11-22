@@ -21,7 +21,7 @@ export const journeys: Record<VisitorId, Journey> = {
     id: "client",
     routeTitle: "From idea to website",
     intro: "Your route shows real websites built for businesses, what you can commission, and what it costs.",
-    route: ["gracelink-empire", "sweetsips", "service-A", "service-C", "service-D", "prices", "guestbook"],
+    route: ["gracelink-empire", "sweetsips", "brightdoor", "service-A", "service-C", "service-D", "prices", "guestbook"],
     shortcut: { label: "In a hurry? See services and prices", to: "/studio" },
     finale: {
       title: "Ready to get your business online?",
@@ -47,7 +47,7 @@ export const journeys: Record<VisitorId, Journey> = {
     id: "sketcher",
     routeTitle: "Process and craft",
     intro: "Your route stops at every case study, from research and design to the build, then the curator's note on how Fera works.",
-    route: ["readsmartly", "we-go", "temu-product-comparison", "sweetsips", "gamerzverse", "gracelink-empire", "bio", "guestbook"],
+    route: ["readsmartly", "we-go", "temu-product-comparison", "sweetsips", "gamerzverse", "gracelink-empire", "brightdoor", "bio", "guestbook"],
     shortcut: { label: "In a hurry? Go straight to the case studies", to: "/collection" },
     finale: {
       title: "Want to dig into the details?",
