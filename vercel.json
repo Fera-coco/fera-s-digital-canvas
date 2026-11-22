@@ -3,11 +3,11 @@
   "rewrites": [
     {
       "source": "/concepts/brightdoor",
-      "destination": "/concepts/brightdoor/index.html"
+      "destination": "/concepts/brightdoor/"
     },
     {
       "source": "/concepts/brightdoor/:path*",
-      "destination": "/concepts/brightdoor/index.html"
+      "destination": "/concepts/brightdoor/"
     },
     {
       "source": "/((?!api/)(?!concepts/)(?!.*\\.).*)",
