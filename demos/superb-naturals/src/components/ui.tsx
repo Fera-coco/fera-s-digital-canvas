@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { img, naira, toneBg, waLink, type Product } from "../data/products";
 import { cartCount, toggleLove, useStore, addToCart } from "../lib/store";
+import { Heart } from "./icons";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -116,14 +117,14 @@ export function ProductCard({ p }: { p: Product }) {
   const loved = s.loved.includes(p.slug);
   const [added, setAdded] = useState(false);
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[1.75rem] bg-paper shadow-card ring-1 ring-ink/5">
+    <article className="group flex flex-col overflow-hidden rounded-2xl bg-paper ring-1 ring-ink/10">
       <div className={`relative aspect-[4/5] overflow-hidden ${toneBg[p.tone]}`}>
         <Link to={`/shop/${p.slug}`} aria-label={p.name}>
           <img src={img(p.images[0])} alt={p.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
         </Link>
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-bold text-leaf-deep">{p.kind}</span>
         <button onClick={() => toggleLove(p.slug)} aria-pressed={loved} aria-label={loved ? `Remove ${p.name} from favourites` : `Save ${p.name}`} className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-lg transition hover:scale-110">
-          {loved ? "💖" : "🤍"}
+          <Heart size={19} filled={loved} className={loved ? "text-blush" : "text-ink/70"} />
         </button>
       </div>
       <div className="flex flex-1 flex-col p-3.5 sm:p-5">
@@ -167,11 +168,11 @@ export const WaIcon = () => (
   </svg>
 );
 
-export function SectionTitle({ kicker, title, sub, center }: { kicker: string; title: string; sub?: string; center?: boolean }) {
+export function SectionTitle({ kicker, title, sub, center }: { kicker?: string; title: string; sub?: string; center?: boolean }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <p className="label text-blush">{kicker}</p>
-      <h2 className="mt-3 font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight md:text-5xl">{title}</h2>
+      {kicker && <p className="label mb-3 text-blush">{kicker}</p>}
+      <h2 className=" font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight md:text-5xl">{title}</h2>
       {sub && <p className="mt-4 text-[1.02rem] leading-relaxed text-stone">{sub}</p>}
     </div>
   );

@@ -4,17 +4,17 @@
 */
 
 export const WHATSAPP = "2348020866239";
-export const BASE = import.meta.env.BASE_URL;
+export const BASE: string = import.meta.env?.BASE_URL ?? "/";
 export const img = (name: string) => `${BASE}img/${name}.webp`;
 
 export type Concern = "growth" | "edges" | "dandruff" | "breakage" | "softness";
 
-export const CONCERNS: { id: Concern; label: string; emoji: string; blurb: string }[] = [
-  { id: "growth", label: "Growth & thickness", emoji: "🌱", blurb: "You want more length and fuller hair." },
-  { id: "edges", label: "Thin edges", emoji: "✨", blurb: "Your edges need some love." },
-  { id: "dandruff", label: "Dandruff & itching", emoji: "🍃", blurb: "Your scalp flakes or itches." },
-  { id: "breakage", label: "Breakage", emoji: "💪", blurb: "Your hair snaps or sheds a lot." },
-  { id: "softness", label: "Dry, hard hair", emoji: "🧴", blurb: "Your hair feels dry and hard to detangle." },
+export const CONCERNS: { id: Concern; label: string; blurb: string }[] = [
+  { id: "growth", label: "Growth & thickness", blurb: "You want more length and fuller hair." },
+  { id: "edges", label: "Thin edges", blurb: "Your edges need some love." },
+  { id: "dandruff", label: "Dandruff & itching", blurb: "Your scalp flakes or itches." },
+  { id: "breakage", label: "Breakage", blurb: "Your hair snaps or sheds a lot." },
+  { id: "softness", label: "Dry, hard hair", blurb: "Your hair feels dry and hard to detangle." },
 ];
 
 export interface Size {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { bySlug, img, keyOf, products, routine, toneBg, naira } from "../data/products";
 import { ProductCard } from "../components/ui";
+import { Check, Heart } from "../components/icons";
 import { addToCart, toggleLove, useStore } from "../lib/store";
 
 export default function Product() {
@@ -31,7 +32,7 @@ export default function Product() {
           <nav className="mb-4 text-sm text-stone" aria-label="Breadcrumb">
             <Link to="/shop" className="hover:text-ink">Shop</Link> / <span className="text-ink">{p.name}</span>
           </nav>
-          <div className={`overflow-hidden rounded-[2rem] ${toneBg[p.tone]}`}>
+          <div className={`overflow-hidden rounded-2xl ${toneBg[p.tone]}`}>
             <img src={img(pic)} alt={p.name} className="aspect-[4/5] w-full object-cover" />
           </div>
           {p.images.length > 1 && (
@@ -66,7 +67,7 @@ export default function Product() {
           <ul className="mt-7 space-y-3">
             {p.benefits.map((b) => (
               <li key={b} className="flex items-start gap-3 rounded-2xl bg-paper px-4 py-3 ring-1 ring-ink/5">
-                <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-leaf text-xs text-white">✓</span>
+                <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-leaf text-white"><Check size={14} strokeWidth={2.6} /></span>
                 <span className="font-medium">{b}</span>
               </li>
             ))}
@@ -94,7 +95,7 @@ export default function Product() {
               {added ? "Added to bag ✓" : `Add to bag · ${naira(unit * qty)}`}
             </button>
             <button onClick={() => toggleLove(p.slug)} aria-pressed={loved} className="btn-ghost !py-3.5">
-              {loved ? "💖 Saved" : "🤍 Save"}
+              <Heart size={17} filled={loved} className={loved ? "text-blush" : ""} /> {loved ? "Saved" : "Save"}
             </button>
           </div>
           <p className="mt-4 text-sm text-stone">Pay by bank transfer · Delivery fee confirmed on WhatsApp · For external use only</p>

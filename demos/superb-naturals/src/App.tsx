@@ -14,10 +14,12 @@ import Routine from "./pages/Routine";
 import { Cart, OrderDone } from "./pages/Cart";
 import { Delivery, Refunds } from "./pages/Policies";
 import { waLink } from "./data/products";
+import { useRouteMeta } from "./seo/usePageMeta";
 import Watermark from "./components/Watermark";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
+  useRouteMeta();
   useEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1));

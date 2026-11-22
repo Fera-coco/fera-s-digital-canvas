@@ -1,6 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 import { CONCERNS, products, type Concern } from "../data/products";
 import { ProductCard } from "../components/ui";
+import ConcernIcon from "../components/ConcernIcon";
+import { Heart } from "../components/icons";
 import { useStore } from "../lib/store";
 
 const KINDS = ["All", "Oil", "Wash", "Butter", "Kit", "Tool", "Beard"] as const;
@@ -23,14 +25,13 @@ export default function Shop() {
   const c = CONCERNS.find((x) => x.id === concern);
   return (
     <section className="mx-auto max-w-6xl px-5 pt-10">
-      <p className="label text-blush">Shop</p>
-      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">{c ? `For ${c.label.toLowerCase()}` : loved ? "Your favourites" : kind === "Beard" ? "For the men" : "All products"}</h1>
+      <h1 className="font-display text-5xl font-semibold tracking-tight">{c ? `For ${c.label.toLowerCase()}` : loved ? "Your favourites" : kind === "Beard" ? "For the men" : "All products"}</h1>
 
       <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by concern">
         <Chip on={!concern} onClick={() => setParam("concern", null)}>Everything</Chip>
         {CONCERNS.map((x) => (
           <Chip key={x.id} on={concern === x.id} onClick={() => setParam("concern", concern === x.id ? null : x.id)}>
-            {x.emoji} {x.label}
+            <span className="inline-flex items-center gap-1.5"><ConcernIcon id={x.id} size={17} /> {x.label}</span>
           </Chip>
         ))}
       </div>
@@ -42,7 +43,7 @@ export default function Shop() {
         ))}
         <span className="mx-1 h-5 w-px bg-ink/15" />
         <button onClick={() => setParam("saved", loved ? null : "1")} aria-pressed={loved} className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${loved ? "bg-blush text-white" : "text-stone hover:bg-ink/5"}`}>
-          💖 Saved ({s.loved.length})
+          <span className="inline-flex items-center gap-1.5"><Heart size={15} filled={loved} /> Saved ({s.loved.length})</span>
         </button>
       </div>
 

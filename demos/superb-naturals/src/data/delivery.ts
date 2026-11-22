@@ -29,7 +29,7 @@ export const DELIVERY_POLICY = [
   "International customers will receive shipping information and estimated delivery timelines before payment.",
 ];
 
-export const INTERNATIONAL = ["United Kingdom 🇬🇧", "United States 🇺🇸", "Canada 🇨🇦", "Europe 🇪🇺", "Other international destinations 🌍"];
+export const INTERNATIONAL = ["United Kingdom", "United States", "Canada", "Europe", "Other international destinations"];
 
 export const INTERNATIONAL_BASIS = ["Destination country and city.", "Weight and quantity of products.", "Available courier and shipping method."];
 

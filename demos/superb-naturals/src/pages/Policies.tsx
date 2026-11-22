@@ -6,10 +6,9 @@ import { WaIcon } from "../components/ui";
 export function Delivery() {
   return (
     <section className="mx-auto max-w-3xl px-5 pt-10">
-      <p className="label text-blush">Delivery 🇳🇬🌍</p>
-      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">We deliver nationwide and internationally</h1>
+      <h1 className="font-display text-5xl font-semibold tracking-tight">We deliver nationwide and internationally</h1>
 
-      <h2 className="mt-12 font-display text-3xl font-semibold">🇳🇬 Nigeria delivery rates</h2>
+      <h2 className="mt-12 font-display text-3xl font-semibold">Nigeria delivery rates</h2>
       <div className="mt-5 overflow-hidden rounded-3xl bg-paper ring-1 ring-ink/10">
         <table className="w-full text-left">
           <thead className="bg-leaf-soft text-sm">
@@ -30,7 +29,7 @@ export function Delivery() {
       </div>
       <p className="mt-3 text-sm text-stone">Somewhere else in Nigeria? Your fee is confirmed on WhatsApp.</p>
 
-      <h2 className="mt-12 font-display text-3xl font-semibold">🌍 International delivery</h2>
+      <h2 className="mt-12 font-display text-3xl font-semibold">International delivery</h2>
       <p className="mt-3 text-stone">We ship internationally to customers in:</p>
       <ul className="mt-3 flex flex-wrap gap-2">
         {INTERNATIONAL.map((c) => (
@@ -47,7 +46,7 @@ export function Delivery() {
         <WaIcon /> Get an international quote
       </a>
 
-      <h2 className="mt-12 font-display text-3xl font-semibold">📦 Delivery policy</h2>
+      <h2 className="mt-12 font-display text-3xl font-semibold">Delivery policy</h2>
       <ol className="mt-5 space-y-3">
         {DELIVERY_POLICY.map((x, i) => (
           <li key={x} className="flex gap-4 rounded-2xl bg-paper p-4 ring-1 ring-ink/5">
@@ -66,8 +65,7 @@ export function Delivery() {
 export function Refunds() {
   return (
     <section className="mx-auto max-w-3xl px-5 pt-10">
-      <p className="label text-blush">Refund & return policy</p>
-      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">Before you place an order</h1>
+      <h1 className="font-display text-5xl font-semibold tracking-tight">Refund & return policy</h1>
       <p className="mt-5 text-lg leading-relaxed text-stone">
         At Superb Naturals, customer satisfaction is important to us. We are committed to providing quality hair care products and excellent service. Please read our refund policy before placing an order.
       </p>
