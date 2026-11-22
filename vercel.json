@@ -18,6 +18,14 @@
       "destination": "/demos/superb-naturals/"
     },
     {
+      "source": "/demos/superb-naturals-classic",
+      "destination": "/demos/superb-naturals-classic/"
+    },
+    {
+      "source": "/demos/superb-naturals-classic/:path*",
+      "destination": "/demos/superb-naturals-classic/"
+    },
+    {
       "source": "/((?!api/)(?!concepts/)(?!demos/)(?!.*\\.).*)",
       "destination": "/"
     }

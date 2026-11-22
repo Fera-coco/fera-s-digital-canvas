@@ -7,7 +7,7 @@ export type Line = { slug: string; qty: number };
 export type Order = { ref: string; lines: Line[]; name: string; phone: string; address: string; area: string; note: string; at: string };
 type State = { cart: Line[]; loved: string[]; orders: Order[] };
 
-const KEY = "superb-naturals-demo-v1";
+const KEY = `superb-naturals-${import.meta.env.VITE_THEME ?? "bloom"}-v2`;
 const empty: State = { cart: [], loved: [], orders: [] };
 
 const read = (): State => {

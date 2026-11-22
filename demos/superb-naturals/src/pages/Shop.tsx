@@ -3,7 +3,7 @@ import { CONCERNS, products, type Concern } from "../data/products";
 import { ProductCard } from "../components/ui";
 import { useStore } from "../lib/store";
 
-const KINDS = ["All", "Oil", "Wash", "Butter", "Kit"] as const;
+const KINDS = ["All", "Oil", "Wash", "Butter", "Kit", "Tool", "Beard"] as const;
 
 export default function Shop() {
   const [q, setQ] = useSearchParams();
@@ -24,7 +24,7 @@ export default function Shop() {
   return (
     <section className="mx-auto max-w-6xl px-5 pt-10">
       <p className="label text-blush">Shop</p>
-      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">{c ? `For ${c.label.toLowerCase()}` : loved ? "Your favourites" : "All products"}</h1>
+      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">{c ? `For ${c.label.toLowerCase()}` : loved ? "Your favourites" : kind === "Beard" ? "For the men" : "All products"}</h1>
 
       <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by concern">
         <Chip on={!concern} onClick={() => setParam("concern", null)}>Everything</Chip>
@@ -37,7 +37,7 @@ export default function Shop() {
       <div className="mt-3 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by type">
         {KINDS.map((k) => (
           <button key={k} onClick={() => setParam("kind", k === "All" ? null : k)} aria-pressed={kind === k} className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${kind === k ? "bg-ink text-white" : "text-stone hover:bg-ink/5"}`}>
-            {k === "All" ? "All types" : k === "Oil" ? "Oils" : k === "Wash" ? "Shampoo & conditioner" : k === "Kit" ? "Kits" : "Butter"}
+            {({ All: "All types", Oil: "Oils", Wash: "Shampoo & conditioner", Butter: "Butter", Kit: "Kits", Tool: "Tools", Beard: "For men" } as const)[k]}
           </button>
         ))}
         <span className="mx-1 h-5 w-px bg-ink/15" />

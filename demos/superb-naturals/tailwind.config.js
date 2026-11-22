@@ -4,18 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: "#FBF6EE",
-        paper: "#FFFDF9",
-        ink: "#1A2A20",
-        stone: "#5F6B63",
-        leaf: { DEFAULT: "#1E6B3E", deep: "#124A2A", soft: "#DDEFD9" },
-        blush: { DEFAULT: "#E0457B", deep: "#B8245A", soft: "#FCE1EA" },
-        butter: { DEFAULT: "#F5C842", soft: "#FDF1C7" },
-        mint: { soft: "#D7F1EA" },
+        cream: "rgb(var(--cream) / <alpha-value>)",
+        paper: "rgb(var(--paper) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        stone: "rgb(var(--stone) / <alpha-value>)",
+        leaf: { DEFAULT: "rgb(var(--leaf) / <alpha-value>)", deep: "rgb(var(--leaf-deep) / <alpha-value>)", soft: "rgb(var(--leaf-soft) / <alpha-value>)" },
+        blush: { DEFAULT: "rgb(var(--blush) / <alpha-value>)", deep: "rgb(var(--blush-deep) / <alpha-value>)", soft: "rgb(var(--blush-soft) / <alpha-value>)" },
+        butter: { DEFAULT: "rgb(var(--butter) / <alpha-value>)", soft: "rgb(var(--butter-soft) / <alpha-value>)" },
+        mint: { soft: "rgb(var(--mint-soft) / <alpha-value>)" },
       },
       fontFamily: {
-        display: ['"Fraunces Variable"', "Georgia", "serif"],
-        sans: ['"Manrope Variable"', "system-ui", "sans-serif"],
+        display: ["var(--font-display)"],
+        sans: ["var(--font-sans)"],
       },
       boxShadow: { card: "0 1px 2px rgba(26,42,32,.06), 0 10px 30px -14px rgba(26,42,32,.25)" },
       keyframes: { floaty: { "0%,100%": { transform: "translateY(0) rotate(var(--r,0deg))" }, "50%": { transform: "translateY(-8px) rotate(var(--r,0deg))" } } },

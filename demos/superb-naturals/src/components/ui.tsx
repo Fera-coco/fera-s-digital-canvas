@@ -32,7 +32,7 @@ export function Header() {
   return (
     <>
       <div className="bg-leaf px-4 py-2 text-center text-[0.78rem] font-medium text-white">
-        Demo website by <a href="/" className="font-bold text-butter underline-offset-2 hover:underline">Fera's Studio</a>. Prices and bank details will be added by Superb Naturals.
+        Demo website by <a href="/" className="font-bold text-butter underline-offset-2 hover:underline">Fera's Studio</a>. Bank details will be added by Superb Naturals.
       </div>
       <header className="sticky top-0 z-40 border-b border-ink/10 bg-cream/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
@@ -82,6 +82,7 @@ export function Footer() {
             <li><Link to="/shop" className="hover:text-white">All products</Link></li>
             <li><Link to="/shop?concern=edges" className="hover:text-white">For edges</Link></li>
             <li><Link to="/shop?concern=dandruff" className="hover:text-white">For dandruff & itching</Link></li>
+            <li><Link to="/shop?kind=Beard" className="hover:text-white">For men</Link></li>
             <li><Link to="/routine" className="hover:text-white">Find my routine</Link></li>
           </ul>
         </div>
@@ -99,7 +100,12 @@ export function Footer() {
 }
 
 export function Price({ p, className = "" }: { p: Product; className?: string }) {
-  return p.price ? <span className={`font-display font-semibold ${className}`}>{naira(p.price)}</span> : <span className={`text-sm font-semibold text-stone ${className}`}>Price coming soon</span>;
+  return (
+    <span className={`font-display font-semibold ${className}`}>
+      {p.sizes && <span className="mr-1 font-sans text-xs font-bold text-stone">from</span>}
+      {naira(p.price)}
+    </span>
+  );
 }
 
 export function ProductCard({ p }: { p: Product }) {
@@ -119,10 +125,11 @@ export function ProductCard({ p }: { p: Product }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <Link to={`/shop/${p.slug}`} className="font-display text-xl font-semibold leading-tight hover:text-leaf">{p.name}</Link>
-        <p className="mt-1.5 text-sm text-stone">{p.benefits[0]}</p>
+        <p className="mt-1.5 text-sm text-stone">{p.benefits[0] ?? p.tagline}</p>
+        {(p.size || p.sizes) && <p className="mt-1 text-xs font-bold text-leaf">{p.size ?? p.sizes!.map((x) => x.label).join(" · ")}</p>}
         <div className="mt-auto flex items-center justify-between gap-3 pt-5">
           <Price p={p} className="text-lg" />
-          {p.price ? (
+          {!p.sizes ? (
             <button
               className="btn-leaf !px-4 !py-2.5"
               onClick={() => {
@@ -134,9 +141,9 @@ export function ProductCard({ p }: { p: Product }) {
               {added ? "Added ✓" : "Add to bag"}
             </button>
           ) : (
-            <a className="btn-ghost !px-4 !py-2.5" href={waLink(`Hello Superb Naturals 👋 How much is the ${p.name}?`)} target="_blank" rel="noopener noreferrer">
-              Ask price
-            </a>
+            <Link className="btn-ghost !px-4 !py-2.5" to={`/shop/${p.slug}`}>
+              Choose size
+            </Link>
           )}
         </div>
       </div>

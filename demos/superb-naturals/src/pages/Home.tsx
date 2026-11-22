@@ -43,7 +43,7 @@ export default function Home() {
               Unlock your hair's <span className="italic text-blush">full</span> potential.
             </h1>
             <p className="mt-6 max-w-md text-[1.08rem] leading-relaxed text-stone">
-              Growth oil, edge oil, a scalp-cleansing shampoo, conditioner and growth butter. Everything your hair needs, from wash day to edges.
+              Growth oil, edge oil, shampoo, deep conditioner and growth butter, made with raw herbs. Plus beard care for the men.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/shop" className="btn-leaf !px-7 !py-3.5 text-base">Shop the range</Link>
@@ -102,13 +102,35 @@ export default function Home() {
       {/* Products */}
       <section className="mx-auto max-w-6xl px-5 pt-20">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionTitle kicker="The range" title="Six products. One healthy-hair routine." />
+          <SectionTitle kicker="The range" title="Everything for healthy hair, from wash day to edges." />
           <Link to="/shop" className="btn-ghost">See all</Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {products.map((p) => (
+          {products.filter((p) => p.kind !== "Beard" && p.kind !== "Tool" && p.slug !== "anti-dandruff-shampoo").map((p) => (
             <ProductCard key={p.slug} p={p} />
           ))}
+        </div>
+      </section>
+
+      {/* Men + tools */}
+      <section className="mx-auto mt-10 max-w-6xl px-5">
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link to="/shop?kind=Beard" className="group flex items-center gap-5 rounded-[2rem] bg-ink p-4 pr-6 text-white">
+            <img src={img("beard-oil")} alt="Superb Naturals Beard Oil bottles" className="h-28 w-28 rounded-3xl object-cover" loading="lazy" />
+            <span>
+              <span className="label text-butter">For the men</span>
+              <span className="mt-1 block font-display text-2xl font-semibold">Beard oil & beard wash</span>
+              <span className="mt-1 block text-sm text-white/70 group-hover:text-white">From ₦5,000 →</span>
+            </span>
+          </Link>
+          <Link to="/shop?kind=Tool" className="group flex items-center gap-5 rounded-[2rem] bg-paper p-4 pr-6 ring-1 ring-ink/10">
+            <img src={img("scalp-massager")} alt="Superb Naturals scalp massager" className="h-28 w-28 rounded-3xl object-cover" loading="lazy" />
+            <span>
+              <span className="label text-blush">Tools</span>
+              <span className="mt-1 block font-display text-2xl font-semibold">Scalp massager & dermal roller</span>
+              <span className="mt-1 block text-sm text-stone group-hover:text-ink">From ₦4,000 →</span>
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -128,7 +150,7 @@ export default function Home() {
       {/* Wash day */}
       <section id="wash-day" className="mx-auto max-w-6xl scroll-mt-24 px-5 pt-24">
         <SectionTitle kicker="Wash day, step by step" title="Use them in this order" sub="A suggested routine with the full range. Start with a clean scalp and finish with your edges." center />
-        <ol className="mt-12 grid gap-4 md:grid-cols-5">
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
           {routine.map((p) => (
             <li key={p.slug}>
               <Link to={`/shop/${p.slug}`} className="group block h-full rounded-3xl bg-paper p-4 shadow-card ring-1 ring-ink/5 transition hover:-translate-y-1">
@@ -152,7 +174,7 @@ export default function Home() {
           <div>
             <p className="label text-blush-deep">Start here</p>
             <h2 className="mt-3 font-display text-4xl font-semibold md:text-5xl">The Mini Kit</h2>
-            <p className="mt-3 font-display text-3xl font-semibold text-blush-deep">{naira(kit.price!)}</p>
+            <p className="mt-3 font-display text-3xl font-semibold text-blush-deep">{naira(kit.price)}</p>
             <ul className="mt-6 space-y-2">
               {kit.benefits.map((b) => (
                 <li key={b} className="flex gap-2 font-medium">✅ {b}</li>

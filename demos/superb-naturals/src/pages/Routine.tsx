@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { CONCERNS, bySlug, img, routine, waLink, type Concern, type Product } from "../data/products";
+import { CONCERNS, img, keyOf, naira, routine, waLink, type Concern, type Product } from "../data/products";
 import { WaIcon } from "../components/ui";
 import { addToCart } from "../lib/store";
 
@@ -14,11 +14,11 @@ const WASH = ["Every week", "Every two weeks", "Once a month or less"];
 
 /* Which products to suggest for each main concern. Shampoo and conditioner are always in. */
 const PICKS: Record<Concern, string[]> = {
-  growth: ["hair-growth-oil", "3x-hair-growth-butter"],
+  growth: ["hair-growth-oil", "hair-growth-butter"],
   edges: ["essential-edge-oil", "hair-growth-oil"],
   dandruff: ["hair-growth-oil", "essential-edge-oil"],
-  breakage: ["3x-hair-growth-butter", "hair-growth-oil"],
-  softness: ["3x-hair-growth-butter"],
+  breakage: ["hair-growth-butter", "hair-growth-oil"],
+  softness: ["hair-growth-butter"],
 };
 
 export default function Routine() {
@@ -27,10 +27,11 @@ export default function Routine() {
   const [style, setStyle] = useState<Style | null>(null);
   const [wash, setWash] = useState<string | null>(null);
   const [kitAdded, setKitAdded] = useState(false);
+  const [allAdded, setAllAdded] = useState(false);
 
   const done = step === 3 && concern && style && wash;
   const picks: Product[] = done
-    ? routine.filter((p) => p.slug === "anti-dandruff-shampoo" || p.slug === "conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
+    ? routine.filter((p) => p.slug === "shampoo-deep-conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
     : [];
 
   const tips: string[] = [];
@@ -114,14 +115,34 @@ export default function Routine() {
             </div>
           )}
 
-          <div className="mt-8 grid gap-3 md:grid-cols-2">
+          <div className="mt-8 rounded-3xl bg-leaf-soft p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="label text-leaf-deep">Whole routine</p>
+                <p className="font-display text-3xl font-semibold">{naira(picks.reduce((t, p) => t + p.price, 0))}</p>
+                {picks.some((p) => p.sizes) && <p className="text-sm text-stone">With the 50ml Hair Growth Oil</p>}
+              </div>
+              <button
+                className="btn-leaf !px-7 !py-3.5 text-base"
+                onClick={() => {
+                  picks.forEach((p) => addToCart(keyOf(p.slug, p.sizes?.[0].label)));
+                  setAllAdded(true);
+                }}
+              >
+                {allAdded ? "Added to bag ✓" : "Add all to bag"}
+              </button>
+            </div>
+            {concern !== "dandruff" && <p className="mt-3 text-sm text-stone">Or get most of it in the <Link to="/shop/medium-kit" className="font-bold text-leaf underline">Medium Kit (₦26,000)</Link>.</p>}
+          </div>
+
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
             <a
-              className="btn-leaf !py-4 text-base"
+              className="btn-ghost !py-4 text-base"
               target="_blank"
               rel="noopener noreferrer"
-              href={waLink(`Hello Superb Naturals 👋 I took the routine finder (${c!.label}, ${s!.label}, washing ${wash!.toLowerCase()}). I'd like to order:\n${picks.map((p, k) => `${k + 1}. ${p.name}`).join("\n")}\nHow much is the full routine?`)}
+              href={waLink(`Hello Superb Naturals 👋 I took the routine finder (${c!.label}, ${s!.label}, washing ${wash!.toLowerCase()}). I'd like to order:\n${picks.map((p, k) => `${k + 1}. ${p.name}`).join("\n")}\nCan you help me get started?`)}
             >
-              <WaIcon /> Order this routine on WhatsApp
+              <WaIcon /> Ask about this routine on WhatsApp
             </a>
             <button
               className="btn-blush !py-4 text-base"
@@ -130,7 +151,7 @@ export default function Routine() {
                 setKitAdded(true);
               }}
             >
-              {kitAdded ? "Mini Kit added ✓" : `Or start with the Mini Kit (₦${bySlug("mini-kit")!.price!.toLocaleString("en-NG")})`}
+              {kitAdded ? "Mini Kit added ✓" : "Or start small: Mini Kit (₦15,000)"}
             </button>
           </div>
           <button className="mt-6 text-sm font-bold text-stone underline underline-offset-4" onClick={() => { setStep(0); setConcern(null); setStyle(null); setWash(null); setKitAdded(false); }}>

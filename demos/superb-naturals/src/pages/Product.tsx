@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { bySlug, img, products, routine, toneBg, waLink, naira } from "../data/products";
-import { Price, ProductCard, WaIcon } from "../components/ui";
+import { bySlug, img, keyOf, products, routine, toneBg, naira } from "../data/products";
+import { ProductCard } from "../components/ui";
 import { addToCart, toggleLove, useStore } from "../lib/store";
 
 export default function Product() {
@@ -11,6 +11,7 @@ export default function Product() {
   const [i, setI] = useState(0);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [size, setSize] = useState(0);
   if (!p)
     return (
       <section className="mx-auto max-w-xl px-5 py-24 text-center">
@@ -21,6 +22,8 @@ export default function Product() {
   const loved = s.loved.includes(p.slug);
   const pairs = products.filter((o) => o.slug !== p.slug && o.concerns.some((c) => p.concerns.includes(c))).slice(0, 3);
   const pic = p.images[Math.min(i, p.images.length - 1)];
+  const sz = p.sizes?.[size];
+  const unit = sz?.price ?? p.price;
   return (
     <>
       <section className="mx-auto grid max-w-6xl gap-10 px-5 pt-8 md:grid-cols-2 md:gap-14">
@@ -46,9 +49,19 @@ export default function Product() {
           <p className="label text-blush">{p.kind === "Kit" ? "Bundle" : p.stepLabel ? `Step ${p.step} · ${p.stepLabel}` : p.kind}</p>
           <h1 className="mt-3 font-display text-5xl font-semibold leading-[1.02] tracking-tight">{p.name}</h1>
           <p className="mt-3 text-lg text-stone">{p.tagline}</p>
-          <div className="mt-5">
-            <Price p={p} className="text-3xl" />
-          </div>
+          <p className="mt-5 font-display text-3xl font-semibold">
+            {naira(unit)} {(sz?.label ?? p.size) && <span className="font-sans text-base font-bold text-stone">· {sz?.label ?? p.size}</span>}
+          </p>
+          {p.sizes && (
+            <div className="mt-4 flex gap-2" role="radiogroup" aria-label="Size">
+              {p.sizes.map((x, k) => (
+                <button key={x.label} role="radio" aria-checked={size === k} onClick={() => setSize(k)} className={`rounded-2xl px-4 py-2.5 text-left transition ${size === k ? "bg-leaf text-white" : "bg-paper ring-1 ring-ink/15 hover:ring-ink/40"}`}>
+                  <span className="block font-bold">{x.label}</span>
+                  <span className={`block text-sm ${size === k ? "text-white/80" : "text-stone"}`}>{naira(x.price)}</span>
+                </button>
+              ))}
+            </div>
+          )}
 
           <ul className="mt-7 space-y-3">
             {p.benefits.map((b) => (
@@ -65,29 +78,21 @@ export default function Product() {
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            {p.price ? (
-              <>
-                <div className="flex items-center rounded-full bg-paper ring-1 ring-ink/15">
-                  <button className="h-12 w-12 text-xl" onClick={() => setQty(Math.max(1, qty - 1))} aria-label="One less">−</button>
-                  <span className="w-8 text-center font-bold" aria-live="polite">{qty}</span>
-                  <button className="h-12 w-12 text-xl" onClick={() => setQty(Math.min(20, qty + 1))} aria-label="One more">+</button>
-                </div>
-                <button
-                  className="btn-leaf !px-8 !py-3.5 text-base"
-                  onClick={() => {
-                    addToCart(p.slug, qty);
-                    setAdded(true);
-                    setTimeout(() => setAdded(false), 1500);
-                  }}
-                >
-                  {added ? "Added to bag ✓" : `Add to bag · ${naira(p.price * qty)}`}
-                </button>
-              </>
-            ) : (
-              <a className="btn-leaf !px-7 !py-3.5 text-base" href={waLink(`Hello Superb Naturals 👋 I'd like to order the ${p.name}. How much is it?`)} target="_blank" rel="noopener noreferrer">
-                <WaIcon /> Order on WhatsApp
-              </a>
-            )}
+            <div className="flex items-center rounded-full bg-paper ring-1 ring-ink/15">
+              <button className="h-12 w-12 text-xl" onClick={() => setQty(Math.max(1, qty - 1))} aria-label="One less">−</button>
+              <span className="w-8 text-center font-bold" aria-live="polite">{qty}</span>
+              <button className="h-12 w-12 text-xl" onClick={() => setQty(Math.min(20, qty + 1))} aria-label="One more">+</button>
+            </div>
+            <button
+              className="btn-leaf !px-8 !py-3.5 text-base"
+              onClick={() => {
+                addToCart(keyOf(p.slug, sz?.label), qty);
+                setAdded(true);
+                setTimeout(() => setAdded(false), 1500);
+              }}
+            >
+              {added ? "Added to bag ✓" : `Add to bag · ${naira(unit * qty)}`}
+            </button>
             <button onClick={() => toggleLove(p.slug)} aria-pressed={loved} className="btn-ghost !py-3.5">
               {loved ? "💖 Saved" : "🤍 Save"}
             </button>

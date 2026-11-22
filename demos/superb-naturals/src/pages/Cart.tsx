@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { bySlug, img, naira, waLink } from "../data/products";
+import { fromKey, img, naira, waLink } from "../data/products";
 import { WaIcon } from "../components/ui";
 import { placeOrder, setQty, useStore } from "../lib/store";
 
-const total = (lines: { slug: string; qty: number }[]) => lines.reduce((t, l) => t + (bySlug(l.slug)?.price ?? 0) * l.qty, 0);
+const total = (lines: { slug: string; qty: number }[]) => lines.reduce((t, l) => t + (fromKey(l.slug)?.price ?? 0) * l.qty, 0);
 
 export function Cart() {
   const s = useStore();
@@ -46,14 +46,15 @@ export function Cart() {
         <h1 className="font-display text-5xl font-semibold tracking-tight">Your bag</h1>
         <ul className="mt-8 space-y-3">
           {s.cart.map((l) => {
-            const p = bySlug(l.slug);
-            if (!p) return null;
+            const it = fromKey(l.slug);
+            if (!it) return null;
+            const { p } = it;
             return (
               <li key={l.slug} className="flex items-center gap-4 rounded-3xl bg-paper p-3 ring-1 ring-ink/5">
                 <img src={img(p.images[0])} alt="" className="h-20 w-20 rounded-2xl object-cover" />
                 <div className="flex-1">
                   <Link to={`/shop/${p.slug}`} className="font-display text-lg font-semibold">{p.name}</Link>
-                  <p className="text-sm text-stone">{naira(p.price!)} each</p>
+                  <p className="text-sm text-stone">{it.size ? `${it.size} · ` : ""}{naira(it.price)} each</p>
                   <div className="mt-2 flex items-center gap-1">
                     <button className="h-8 w-8 rounded-full bg-cream" onClick={() => setQty(l.slug, l.qty - 1)} aria-label={`One less ${p.name}`}>−</button>
                     <span className="w-7 text-center font-bold">{l.qty}</span>
@@ -61,7 +62,7 @@ export function Cart() {
                     <button className="ml-3 text-sm font-semibold text-stone underline" onClick={() => setQty(l.slug, 0)}>Remove</button>
                   </div>
                 </div>
-                <p className="pr-2 font-display text-lg font-semibold">{naira(p.price! * l.qty)}</p>
+                <p className="pr-2 font-display text-lg font-semibold">{naira(it.price * l.qty)}</p>
               </li>
             );
           })}
@@ -71,7 +72,6 @@ export function Cart() {
           <div className="flex justify-between"><dt>Delivery</dt><dd className="text-sm font-semibold text-leaf-deep">Confirmed on WhatsApp</dd></div>
           <div className="flex justify-between border-t border-leaf/20 pt-2 font-display text-xl"><dt>To pay now</dt><dd className="font-semibold">{naira(sub)}</dd></div>
         </dl>
-        <p className="mt-3 text-sm text-stone">Want something that isn't priced yet? <Link to="/shop" className="font-semibold text-leaf underline">Ask on its page</Link> and it can be added to your order on WhatsApp.</p>
       </div>
 
       <form onSubmit={submit} noValidate className="rounded-[2rem] bg-paper p-6 shadow-card ring-1 ring-ink/5 md:p-8">
@@ -117,7 +117,7 @@ export function OrderDone() {
       </section>
     );
   const amount = total(o.lines);
-  const summary = `Hello Superb Naturals 👋 I just placed order ${o.ref}.\n${o.lines.map((l) => `• ${l.qty} × ${bySlug(l.slug)?.name}`).join("\n")}\nTotal: ${naira(amount)} + delivery\nName: ${o.name}\nDeliver to: ${o.address}, ${o.area}\nHere is my proof of payment:`;
+  const summary = `Hello Superb Naturals 👋 I just placed order ${o.ref}.\n${o.lines.map((l) => `• ${l.qty} × ${fromKey(l.slug)?.label}`).join("\n")}\nTotal: ${naira(amount)} + delivery\nName: ${o.name}\nDeliver to: ${o.address}, ${o.area}\nHere is my proof of payment:`;
   return (
     <section className="mx-auto max-w-2xl px-5 pt-12 text-center">
       <p className="text-6xl">💚</p>
