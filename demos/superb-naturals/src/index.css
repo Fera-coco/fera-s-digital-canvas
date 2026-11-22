@@ -1,0 +1,41 @@
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/montserrat";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: 251 246 238; --paper: 255 253 249; --ink: 26 42 32; --stone: 95 107 99;
+  --leaf: 30 107 62; --leaf-deep: 18 74 42; --leaf-soft: 221 239 217;
+  --blush: 224 69 123; --blush-deep: 184 36 90; --blush-soft: 252 225 234;
+  --butter: 245 200 66; --butter-soft: 253 241 199; --mint-soft: 215 241 234;
+  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-sans: "Manrope Variable", system-ui, sans-serif;
+}
+/* Classic version: clean black and white, her green as the accent. */
+[data-theme="classic"] {
+  --cream: 255 255 255; --paper: 245 245 243; --ink: 17 17 17; --stone: 107 107 107;
+  --leaf: 17 17 17; --leaf-deep: 0 0 0; --leaf-soft: 241 241 239;
+  --blush: 30 107 62; --blush-deep: 18 74 42; --blush-soft: 232 241 234;
+  --butter: 30 107 62; --butter-soft: 243 241 236; --mint-soft: 238 242 239;
+  --font-display: "Montserrat Variable", system-ui, sans-serif;
+  --font-sans: "Montserrat Variable", system-ui, sans-serif;
+}
+[data-theme="classic"] .font-display { font-weight: 300 !important; letter-spacing: -0.01em; }
+[data-theme="classic"] [class*="rounded"]:not(.keep-round) { border-radius: 2px !important; }
+[data-theme="classic"] .btn, [data-theme="classic"] .btn-leaf, [data-theme="classic"] .btn-blush, [data-theme="classic"] .btn-ghost { border-radius: 2px !important; }
+[data-theme="classic"] .btn { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; font-weight: 600; }
+[data-theme="classic"] .shadow-card { box-shadow: none; }
+
+html { scroll-behavior: smooth; }
+body { @apply bg-cream text-ink font-sans antialiased; }
+.label { @apply text-[0.7rem] font-bold uppercase tracking-[0.18em]; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition active:scale-[.98]; }
+.btn-leaf { @apply btn bg-leaf text-white hover:bg-leaf-deep; }
+.btn-blush { @apply btn bg-blush text-white hover:bg-blush-deep; }
+.btn-ghost { @apply btn border border-ink/15 bg-paper hover:border-ink/40; }
+.field { @apply w-full rounded-2xl border border-ink/15 bg-paper px-4 py-3 text-[0.95rem] outline-none focus:border-leaf focus:ring-2 focus:ring-leaf/20; }
+:focus-visible { outline: 2px solid #E0457B; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

@@ -2,27 +2,33 @@
 User-agent: *
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 # AI search and assistants (listed explicitly so they know they are welcome)
 User-agent: GPTBot
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /open-call/admin
+Disallow: /demos/
 
 User-agent: Google-Extended
 Allow: /
