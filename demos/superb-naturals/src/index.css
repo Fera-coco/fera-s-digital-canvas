@@ -1,0 +1,17 @@
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/manrope";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-cream text-ink font-sans antialiased; }
+.label { @apply text-[0.7rem] font-bold uppercase tracking-[0.18em]; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition active:scale-[.98]; }
+.btn-leaf { @apply btn bg-leaf text-white hover:bg-leaf-deep; }
+.btn-blush { @apply btn bg-blush text-white hover:bg-blush-deep; }
+.btn-ghost { @apply btn border border-ink/15 bg-paper hover:border-ink/40; }
+.field { @apply w-full rounded-2xl border border-ink/15 bg-paper px-4 py-3 text-[0.95rem] outline-none focus:border-leaf focus:ring-2 focus:ring-leaf/20; }
+:focus-visible { outline: 2px solid #E0457B; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

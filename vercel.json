@@ -10,7 +10,15 @@
       "destination": "/concepts/brightdoor/"
     },
     {
-      "source": "/((?!api/)(?!concepts/)(?!.*\\.).*)",
+      "source": "/demos/superb-naturals",
+      "destination": "/demos/superb-naturals/"
+    },
+    {
+      "source": "/demos/superb-naturals/:path*",
+      "destination": "/demos/superb-naturals/"
+    },
+    {
+      "source": "/((?!api/)(?!concepts/)(?!demos/)(?!.*\\.).*)",
       "destination": "/"
     }
   ],
