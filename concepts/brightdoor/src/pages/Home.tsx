@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { img, listings, movingIn, naira, short, type Area } from "../data/listings";
+import { img, listings, movingIn, naira, short } from "../data/listings";
+import { AREAS } from "../data/listings";
 import { Check, FeeBar, LagosMap, ListingCard, cx } from "../components/ui";
 
-const AREAS: Area[] = ["Lekki Phase 1", "Ikoyi", "Victoria Island", "Ikate", "Ajah", "Yaba", "Gbagada", "Ikeja GRA"];
-const RENT_BUDGETS = [3_000_000, 6_000_000, 12_000_000, 35_000_000];
-const SALE_BUDGETS = [150_000_000, 300_000_000, 500_000_000];
+const RENT_BUDGETS = [1_000_000, 2_000_000, 3_000_000, 6_000_000, 12_000_000, 35_000_000];
+const SALE_BUDGETS = [50_000_000, 150_000_000, 300_000_000, 500_000_000];
 
 export default function Home() {
   const nav = useNavigate();
@@ -75,6 +75,11 @@ export default function Home() {
             </div>
           </form>
 
+          <div className="mt-5 flex flex-wrap gap-2" aria-label="Quick searches">
+            {[["Under ₦1m a year", "/homes?deal=rent&max=1000000"], ["Under ₦2m", "/homes?deal=rent&max=2000000"], ["Family homes, 3+ beds", "/homes?beds=3"], ["Verified only", "/homes?verified=1"]].map(([t, to]) => (
+              <Link key={t} to={to} className="rounded-full border border-cream/30 bg-cream/10 px-3.5 py-1.5 text-[13px] font-semibold text-cream backdrop-blur hover:bg-cream hover:text-forest">{t}</Link>
+            ))}
+          </div>
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-cream/90">
             {["No inspection fees", "Fees shown upfront", "Title documents checked"].map((t) => (
               <li key={t} className="flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-gold text-ink"><Check /></span>{t}</li>

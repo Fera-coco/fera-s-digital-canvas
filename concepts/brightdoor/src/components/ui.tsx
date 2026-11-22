@@ -176,7 +176,12 @@ export const Check = () => (
 
 /* A schematic Lagos map: mainland, lagoon, the island and Lekki peninsula. */
 export const AREA_POS: Record<Area, [number, number]> = {
-  "Ikeja GRA": [22, 16],
+  Ikorodu: [80, 13],
+  Ogba: [14, 9],
+  Egbeda: [7, 30],
+  Surulere: [31, 45],
+  Sangotedo: [79, 83],
+  "Ikeja GRA": [24, 19],
   Gbagada: [33, 34],
   Yaba: [43, 47],
   Ikoyi: [50, 66],

@@ -9,7 +9,7 @@ export type Enquiry = {
   slug: string;
   name: string;
   phone: string;
-  kind: "Inspection" | "Question";
+  kind: "Inspection" | "Question" | "Report";
   when?: string;
   message?: string;
   status: "New" | "Contacted" | "Inspection booked" | "Closed";

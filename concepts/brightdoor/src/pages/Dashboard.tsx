@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { IMG, agents, img, movingIn, naira, short, type Area, type Kind, type Listing } from "../data/listings";
+import { AREAS } from "../data/listings";
 import { FeeBar, cx } from "../components/ui";
 import { actions, allListings, useStore, type Enquiry } from "../lib/store";
 
@@ -56,7 +57,7 @@ export default function Dashboard() {
             return (
               <div key={e.id} className="grid gap-3 rounded-2xl bg-paper p-4 shadow-card md:grid-cols-[1fr_1.2fr_auto] md:items-center">
                 <div>
-                  <p className="font-bold">{e.name} <span className="font-normal text-stone">· {e.phone}</span></p>
+                  <p className="font-bold">{e.kind === "Report" ? <span className="mr-1.5 rounded-full bg-clay px-2 py-0.5 text-[11px] text-white">Report</span> : null}{e.name} {e.kind !== "Report" && <span className="font-normal text-stone">· {e.phone}</span>}</p>
                   <p className="text-[13px] text-stone">{e.at} · {e.kind}{e.when ? ` for ${e.when}` : ""}</p>
                 </div>
                 <div className="text-sm">
@@ -107,8 +108,7 @@ export default function Dashboard() {
   );
 }
 
-const AREAS: Area[] = ["Lekki Phase 1", "Ikoyi", "Victoria Island", "Ikate", "Ajah", "Yaba", "Gbagada", "Ikeja GRA"];
-const KINDS: Kind[] = ["Flat", "Mini flat", "Terrace duplex", "Semi-detached duplex", "Detached duplex"];
+const KINDS: Kind[] = ["Self contain", "Room and parlour", "Mini flat", "Flat", "Bungalow", "Terrace duplex", "Semi-detached duplex", "Detached duplex"];
 
 function AddListing({ onDone }: { onDone: () => void }) {
   const [f, setF] = useState({

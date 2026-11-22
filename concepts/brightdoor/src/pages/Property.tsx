@@ -54,7 +54,7 @@ export default function Property() {
             {[`${l.beds} bedrooms`, `${l.baths} bathrooms`, `${l.sqm} m²`, l.kind].map((f) => <span key={f} className="chip">{f}</span>)}
           </div>
 
-          {l.deal === "rent" ? <TotalPackage l={l} /> : <TitleCheck l={l} />}
+          {l.deal === "rent" ? <><TotalPackage l={l} /><SavingsPlan l={l} /></> : <TitleCheck l={l} />}
 
           <section className="mt-12">
             <h2 className="font-display text-2xl font-semibold">Living here</h2>
@@ -83,6 +83,7 @@ export default function Property() {
           <div className="rounded-3xl bg-paper p-5 shadow-card">
             <PriceLine l={l} big />
             <Booker l={l} />
+            <ShareAndReport l={l} />
             <button onClick={() => actions.toggleCompare(l.slug)} aria-pressed={inCompare} className={cx("btn-ghost mt-3 w-full", inCompare && "!border-forest !bg-forest-soft text-forest")}>
               {inCompare ? "✓ In your comparison" : "Add to compare"}
             </button>
@@ -312,6 +313,77 @@ function Lightbox({ l, start, onClose }: { l: Listing; start: number; onClose: (
         <button aria-label="Previous photo" onClick={() => setI((i - 1 + n) % n)} className="absolute left-0 grid h-12 w-12 place-items-center rounded-full bg-cream/90 text-xl font-bold">‹</button>
         <button aria-label="Next photo" onClick={() => setI((i + 1) % n)} className="absolute right-0 grid h-12 w-12 place-items-center rounded-full bg-cream/90 text-xl font-bold">›</button>
       </div>
+    </div>
+  );
+}
+
+function SavingsPlan({ l }: { l: Listing }) {
+  const total = movingIn(l)!.total;
+  const [months, setMonths] = useState(6);
+  const [people, setPeople] = useState(1);
+  const perMonth = Math.ceil(total / months / people / 1000) * 1000;
+  return (
+    <section className="mt-5 rounded-3xl bg-gold-soft p-6 md:p-8">
+      <p className="label !text-ink/60">Plan for it</p>
+      <h2 className="mt-2 font-display text-2xl font-semibold leading-snug">
+        Save <span className="text-clay-ink">{naira(perMonth)}</span> a month{people > 1 ? " each" : ""} and you're ready in {months} months.
+      </h2>
+      <div className="mt-5 grid gap-5 sm:grid-cols-2">
+        <label className="block">
+          <span className="flex justify-between text-sm font-semibold"><span>Months to save</span><span>{months}</span></span>
+          <input type="range" min={3} max={12} value={months} onChange={(e) => setMonths(Number(e.target.value))} className="mt-2 w-full accent-forest" />
+        </label>
+        <div>
+          <p className="text-sm font-semibold">Splitting with</p>
+          <div className="mt-2 flex gap-1.5" role="radiogroup" aria-label="People sharing">
+            {[1, 2, 3].map((n) => (
+              <button key={n} type="button" role="radio" aria-checked={people === n} onClick={() => setPeople(n)}
+                className={cx("flex-1 rounded-xl border py-2 text-sm font-semibold", people === n ? "border-forest bg-forest text-cream" : "border-ink/20 bg-paper")}>
+                {n === 1 ? "Just me" : `${n} people`}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <p className="mt-4 text-[13px] text-stone">Based on the {naira(total)} move-in total, rounded up to the nearest thousand.</p>
+    </section>
+  );
+}
+
+const REPORT_REASONS = ["Looks like a scam", "Already rented or sold", "Price or fees are wrong", "Photos don't match", "Something else"];
+
+function ShareAndReport({ l }: { l: Listing }) {
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState(REPORT_REASONS[0]);
+  const [sent, setSent] = useState(false);
+  const share = `https://wa.me/?text=${encodeURIComponent(`Look at this: ${l.title} in ${l.area}, ${short(l.price)}${l.deal === "rent" ? " a year" : ""}. ${typeof window !== "undefined" ? window.location.href : ""}`)}`;
+  return (
+    <div className="mt-3">
+      <div className="grid grid-cols-2 gap-2">
+        <a href={share} target="_blank" rel="noopener noreferrer" className="btn-ghost !px-3 text-[13px]">Share on WhatsApp</a>
+        <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="btn-ghost !px-3 text-[13px]">Report listing</button>
+      </div>
+      {open && (
+        <div className="mt-2 rounded-2xl bg-cream p-3">
+          {sent ? (
+            <p className="text-sm font-semibold text-forest">Thanks. Our team will check this listing today.</p>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                actions.addEnquiry({ slug: l.slug, name: "Anonymous", phone: "–", kind: "Report", message: reason });
+                setSent(true);
+              }}
+            >
+              <label className="block text-sm font-semibold" htmlFor="reason">What's wrong?</label>
+              <select id="reason" className="field mt-1.5" value={reason} onChange={(e) => setReason(e.target.value)}>
+                {REPORT_REASONS.map((r) => <option key={r}>{r}</option>)}
+              </select>
+              <button className="btn mt-2 w-full bg-clay text-white hover:bg-clay-ink">Send report</button>
+            </form>
+          )}
+        </div>
+      )}
     </div>
   );
 }

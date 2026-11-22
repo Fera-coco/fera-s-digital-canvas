@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { movingIn, short, type Area } from "../data/listings";
+import { movingIn, short } from "../data/listings";
+import { AREAS } from "../data/listings";
 import { LagosMap, ListingCard, cx } from "../components/ui";
 import { allListings, useStore } from "../lib/store";
 
-const AREAS: Area[] = ["Lekki Phase 1", "Ikoyi", "Victoria Island", "Ikate", "Ajah", "Yaba", "Gbagada", "Ikeja GRA"];
 
 export default function Search() {
   const [q, setQ] = useSearchParams();
@@ -38,7 +38,7 @@ export default function Search() {
     return r;
   }, [store, deal, area, max, beds, verified, sort]);
 
-  const budgets = deal === "sale" ? [150_000_000, 300_000_000, 500_000_000] : [3_000_000, 6_000_000, 12_000_000, 35_000_000];
+  const budgets = deal === "sale" ? [50_000_000, 150_000_000, 300_000_000, 500_000_000] : [1_000_000, 2_000_000, 3_000_000, 6_000_000, 12_000_000, 35_000_000];
 
   return (
     <main className="mx-auto max-w-7xl px-4 pt-6 md:px-6">
