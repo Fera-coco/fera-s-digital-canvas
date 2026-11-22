@@ -13,6 +13,7 @@ import Product from "./pages/Product";
 import Routine from "./pages/Routine";
 import { Cart, OrderDone } from "./pages/Cart";
 import { waLink } from "./data/products";
+import Watermark from "./components/Watermark";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -46,6 +47,7 @@ export default function App() {
         </Routes>
       </main>
       <Foot />
+      <Watermark />
       <a
         href={waLink("Hello Superb Naturals 👋")}
         target="_blank"
