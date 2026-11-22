@@ -24,7 +24,7 @@ export default function Dashboard() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="label">Owner dashboard · demo</p>
-          <h1 className="mt-1 font-display text-4xl font-semibold">Good morning, Ilémi team</h1>
+          <h1 className="mt-1 font-display text-4xl font-semibold">Good morning, Brightdoor team</h1>
         </div>
         <button onClick={actions.reset} className="text-sm font-semibold text-stone underline-offset-2 hover:underline">Reset demo data</button>
       </div>

@@ -18,7 +18,7 @@ export type Enquiry = {
 
 type State = { saved: string[]; compare: string[]; enquiries: Enquiry[]; added: Listing[]; hidden: string[] };
 
-const KEY = "ilemi-demo-v1";
+const KEY = "brightdoor-demo-v1";
 const sampleEnquiries: Enquiry[] = [
   { id: "e1", slug: "3-bed-flat-lekki-phase-1", name: "Adaeze N.", phone: "0803 000 0000", kind: "Inspection", when: "Sat, 10:00", status: "New", at: "Today, 9:12" },
   { id: "e2", slug: "mini-flat-yaba", name: "Kunle S.", phone: "0812 000 0000", kind: "Question", message: "Is the caution refundable in full?", status: "Contacted", at: "Yesterday" },

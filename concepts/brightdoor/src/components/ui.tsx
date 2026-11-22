@@ -6,13 +6,13 @@ export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Bool
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link to="/" className={cx("flex items-center gap-2", light ? "text-cream" : "text-ink")} aria-label="Ilémi Homes, home">
+    <Link to="/" className={cx("flex items-center gap-2", light ? "text-cream" : "text-ink")} aria-label="Brightdoor Homes, home">
       <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden>
         <rect width="64" height="64" rx="16" fill={light ? "#F6F1E7" : "#1F4D3A"} />
         <path d="M14 34 32 18l18 16v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2Z" fill={light ? "#1F4D3A" : "#F6F1E7"} />
         <circle cx="32" cy="38" r="5" fill="#D2603A" />
       </svg>
-      <span className="font-display text-[22px] font-semibold tracking-tight">Ilémi</span>
+      <span className="font-display text-[22px] font-semibold tracking-tight">Brightdoor</span>
     </Link>
   );
 }

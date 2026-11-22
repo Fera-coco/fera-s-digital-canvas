@@ -1,4 +1,4 @@
-# Ilémi Homes (concept)
+# Brightdoor Homes (concept)
 
 A concept real estate website for a Lagos agency, designed and built by [Fera's Studio](https://ferasportfolio.vercel.app).
 

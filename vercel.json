@@ -2,12 +2,12 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/concepts/ilemi",
-      "destination": "/concepts/ilemi/index.html"
+      "source": "/concepts/brightdoor",
+      "destination": "/concepts/brightdoor/index.html"
     },
     {
-      "source": "/concepts/ilemi/:path*",
-      "destination": "/concepts/ilemi/index.html"
+      "source": "/concepts/brightdoor/:path*",
+      "destination": "/concepts/brightdoor/index.html"
     },
     {
       "source": "/((?!api/)(?!concepts/)(?!.*\\.).*)",

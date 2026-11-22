@@ -22,7 +22,7 @@ function Shell() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/concepts/ilemi">
+    <BrowserRouter basename="/concepts/brightdoor">
       <Routes>
         <Route element={<Shell />}>
           <Route path="/" element={<Home />} />
