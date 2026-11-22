@@ -123,15 +123,15 @@ export function ProductCard({ p }: { p: Product }) {
           {loved ? "💖" : "🤍"}
         </button>
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <Link to={`/shop/${p.slug}`} className="font-display text-xl font-semibold leading-tight hover:text-leaf">{p.name}</Link>
-        <p className="mt-1.5 text-sm text-stone">{p.benefits[0] ?? p.tagline}</p>
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5">
+        <Link to={`/shop/${p.slug}`} className="font-display text-[1.05rem] font-semibold leading-tight hover:text-leaf sm:text-xl">{p.name}</Link>
+        <p className="mt-1.5 line-clamp-2 text-[0.82rem] text-stone sm:text-sm">{p.benefits[0] ?? p.tagline}</p>
         {(p.size || p.sizes) && <p className="mt-1 text-xs font-bold text-leaf">{p.size ?? p.sizes!.map((x) => x.label).join(" · ")}</p>}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-          <Price p={p} className="text-lg" />
+        <div className="mt-auto flex flex-col gap-2.5 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:pt-5">
+          <Price p={p} className="text-[1.05rem] sm:text-lg" />
           {!p.sizes ? (
             <button
-              className="btn-leaf !px-4 !py-2.5"
+              className="btn-leaf w-full whitespace-nowrap !px-4 !py-2.5 sm:w-auto"
               onClick={() => {
                 addToCart(p.slug);
                 setAdded(true);
@@ -141,7 +141,7 @@ export function ProductCard({ p }: { p: Product }) {
               {added ? "Added ✓" : "Add to bag"}
             </button>
           ) : (
-            <Link className="btn-ghost !px-4 !py-2.5" to={`/shop/${p.slug}`}>
+            <Link className="btn-ghost w-full whitespace-nowrap !px-4 !py-2.5 sm:w-auto" to={`/shop/${p.slug}`}>
               Choose size
             </Link>
           )}
