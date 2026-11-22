@@ -1,3 +1,6 @@
+/** Prices are hidden for now: every project is quoted after a chat. Set to true to show them again. */
+export const SHOW_PRICES = false;
+
 /*
   The Fera's Studio price list (introductory guide prices).
   Source: "Fera's Studio Services and Pricing Catalogue". Edit prices here and the

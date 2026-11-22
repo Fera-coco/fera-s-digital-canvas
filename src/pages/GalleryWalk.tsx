@@ -80,7 +80,7 @@ const SPOTS: Spot[] = [
     label: `Commission ${c.no}: ${c.title}`,
     i,
   })),
-  { id: "prices", kind: "prices", x: studioRoom.from + PRICE_BOARD_X, label: "The price list" },
+  { id: "prices", kind: "prices", x: studioRoom.from + PRICE_BOARD_X, label: "Services" },
   { id: "guestbook", kind: "guestbook", x: exitRoom.from + 400, label: "The guestbook" },
   { id: "exitdoor", kind: "exitdoor", x: exitRoom.from + 820, label: "Exit door" },
 ];
@@ -394,7 +394,7 @@ const GalleryWalk = () => {
                 className="absolute -top-16 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-ink px-4 py-2 text-[15px] font-medium text-cream shadow-lg"
               >
                 <kbd className="hidden rounded bg-cream/20 px-1.5 font-mono text-xs md:inline">E</kbd>
-                {near.kind === "prices" ? t("See prices") : t("Look closer")}
+                {near.kind === "prices" ? t("See services") : t("Look closer")}
               </button>
             )}
           </div>
@@ -739,7 +739,7 @@ const Hall = () => (
       );
     })}
     <p className="absolute font-mono text-[13px] uppercase tracking-[0.18em] text-stone" style={{ left: studioRoom.from + 200, top: 470 }}>
-      {t("Now taking commissions · look closer at a poster or the price list")}
+      {t("Now taking commissions · look closer at a poster or the services")}
     </p>
     <PriceBoard />
 
@@ -1088,12 +1088,12 @@ const PriceBoard = () => (
     className="absolute bg-ink p-7 text-cream shadow-[0_24px_40px_-22px_rgba(40,38,36,.7)]"
     style={{ left: studioRoom.from + PRICE_BOARD_X - 160, top: 140, width: 320, height: 280, transform: "rotate(0.6deg)" }}
   >
-    <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-butter">{t("The price list")}</p>
-    <p className="mt-3 font-serif text-[34px] leading-[1.02]">{t("What it costs, in naira or CFA.")}</p>
+    <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-butter">{t("Services")}</p>
+    <p className="mt-3 font-serif text-[34px] leading-[1.02]">{t("What I can build for you.")}</p>
     <p className="mt-4 text-[15px] leading-relaxed text-cream/75">
-      {t("Every service and price is waiting in the Studio. Step closer to see them.")}
+      {t("Every service is waiting in the Studio. Step closer to see them.")}
     </p>
-    <p className="absolute bottom-6 left-7 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/60">{t("See prices →")}</p>
+    <p className="absolute bottom-6 left-7 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/60">{t("See services →")}</p>
   </div>
 );
 

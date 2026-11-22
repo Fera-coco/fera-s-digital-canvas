@@ -1,5 +1,5 @@
 import { useCurrency } from "@/hooks/use-currency";
-import { formatPrice, howItWorks, priceGroups, terms, whatsapp, type Currency, type PriceItem } from "@/content/pricing";
+import { SHOW_PRICES, formatPrice, howItWorks, priceGroups, terms, whatsapp, type Currency, type PriceItem } from "@/content/pricing";
 import { WHATSAPP_DISPLAY } from "@/content/openCall";
 import { mailto, site } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -56,14 +56,20 @@ export const CurrencySwitch = ({
 const Row = ({ item, currency }: { item: PriceItem; currency: Currency }) => {
   const p = formatPrice(item, currency);
   const ask = whatsapp(
-    `Hi Fera, I'm interested in "${item.name}" (${[p.lead, p.amount, p.per].filter(Boolean).join(" ")}). Here's a bit about my business:\n`,
+    SHOW_PRICES
+      ? `Hi Fera, I'm interested in "${item.name}" (${[p.lead, p.amount, p.per].filter(Boolean).join(" ")}). Here's a bit about my business:\n`
+      : `Hi Fera, I'm interested in "${item.name}". Here's a bit about my business:\n`,
   );
   return (
     <li className="group py-4">
       <div className="flex items-baseline gap-3">
         <h4 className="text-[1.05rem] font-medium">{t(item.name)}</h4>
-        <span aria-hidden className="mb-1 min-w-6 flex-1 border-b border-dotted border-ink/30" />
-        <Price item={item} currency={currency} />
+        {SHOW_PRICES && (
+          <>
+            <span aria-hidden className="mb-1 min-w-6 flex-1 border-b border-dotted border-ink/30" />
+            <Price item={item} currency={currency} />
+          </>
+        )}
       </div>
       <div className="mt-1.5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         <p className="max-w-xl text-sm leading-relaxed text-stone">{t(item.includes)}</p>
@@ -90,17 +96,19 @@ const PriceList = () => {
       <div className="gallery-x">
         <header className="grid gap-8 lg:grid-cols-12 lg:items-end" data-reveal>
           <div className="lg:col-span-7">
-            <p className="label text-stone">{t("Services & prices")}</p>
+            <p className="label text-stone">{t(SHOW_PRICES ? "Services & prices" : "Services")}</p>
             <h2 id="prices-title" className="display mt-4 text-[clamp(3rem,7vw,5.75rem)]">
-              {t("The price list")}
+              {t(SHOW_PRICES ? "The price list" : "What I can build for you")}
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/85">
               {t(
-                "Introductory guide prices for businesses in Nigeria and Benin. Your final quote depends on the scope, how ready your content is and any technical requirements.",
+                SHOW_PRICES
+                  ? "Introductory guide prices for businesses in Nigeria and Benin. Your final quote depends on the scope, how ready your content is and any technical requirements."
+                  : "Every project is quoted after a quick chat about your business. Tap \"Ask about this\" on anything you need and I'll reply on WhatsApp with a quote.",
               )}
             </p>
           </div>
-          <div className="lg:col-span-5 lg:justify-self-end">
+          <div className={cn("lg:col-span-5 lg:justify-self-end", !SHOW_PRICES && "hidden")}>
             <p id="currency-label" className="label mb-2 text-stone">
               {t("Show prices in")}
             </p>

@@ -1,5 +1,14 @@
 /* French translations. Keys are the English text exactly as it appears in the code. */
 export const fr: Record<string, string> = {
+  "Services": "Services",
+  "What I can build for you": "Ce que je peux créer pour vous",
+  "Every project is quoted after a quick chat about your business. Tap \"Ask about this\" on anything you need and I'll reply on WhatsApp with a quote.": "Chaque projet fait l'objet d'un devis après une courte discussion sur votre entreprise. Appuyez sur « Se renseigner » pour ce dont vous avez besoin et je vous réponds sur WhatsApp avec un devis.",
+  "See services": "Voir les services",
+  "Now taking commissions · look closer at a poster or the services": "Commandes ouvertes · approchez-vous d'une affiche ou des services",
+  "What I can build for you.": "Ce que je peux créer pour vous.",
+  "Every service is waiting in the Studio. Step closer to see them.": "Tous les services vous attendent dans le Studio. Approchez-vous pour les voir.",
+  "See services →": "Voir les services →",
+  "In a hurry? See services": "Pressé ? Voir les services",
   "The Open Call · Application": "L'Appel ouvert · Candidature",
   "Apply for a free website": "Postulez pour un site web gratuit",
   "Three short cards, about three minutes. Fera's Studio reviews every application and replies by WhatsApp or email.": "Trois courtes fiches, environ trois minutes. Fera's Studio étudie chaque candidature et répond par WhatsApp ou par e-mail.",

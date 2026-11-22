@@ -7,7 +7,7 @@
 */
 import { exhibits, type Exhibit } from "./exhibits";
 import { site } from "./site";
-import { priceGroups } from "./pricing";
+import { SHOW_PRICES, priceGroups } from "./pricing";
 
 export interface PageMeta {
   path: string;
@@ -81,7 +81,7 @@ export const PAGES = {
     path: "/",
     title: "Fera's Studio: website design for small businesses in Nigeria & Benin",
     description:
-      "Fera's Studio designs and builds websites, online shops and SEO for small businesses in Nigeria and Benin Republic (Lagos, Cotonou and beyond), in English and French, with prices in naira and CFA.",
+      "Fera's Studio designs and builds websites, online shops and SEO for small businesses in Nigeria and Benin Republic (Lagos, Cotonou and beyond), in English and French.",
     heading: "Fera's Studio: a digital exhibition of design and development work",
   },
   visit: {
@@ -109,10 +109,10 @@ export const PAGES = {
   },
   studio: {
     path: "/studio",
-    title: "Services & prices: websites, SEO and social media | Fera's Studio",
+    title: "Services: websites, online shops, SEO and social media | Fera's Studio",
     description:
-      "Fera's Studio services and prices in naira and CFA francs: websites, e-commerce, website audits and SEO, workflow automation, social media and Google Business for businesses in Nigeria and Benin.",
-    heading: "The Studio: services and prices",
+      "Fera's Studio services: websites, online shops, website audits and SEO, workflow automation, social media and Google Business for businesses in Nigeria and Benin. Quotes on request.",
+    heading: "The Studio: services",
     crumb: "The Studio",
   },
   contact: {
@@ -204,13 +204,13 @@ const studioNode = () => ({
   ],
   availableLanguage: ["English", "French"],
   currenciesAccepted: "NGN, XOF",
-  priceRange: "₦20,000 – ₦400,000+",
+  ...(SHOW_PRICES ? { priceRange: "₦20,000 – ₦400,000+" } : {}),
   founder: { "@id": PERSON_ID },
   sameAs: site.studioProfiles,
   knowsAbout: ["Website design", "Web development", "E-commerce websites", "SEO", "Google Business Profile", "UX/UI design", "Social media design"],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Fera's Studio services and prices",
+    name: "Fera's Studio services",
     url: abs("/studio"),
     itemListElement: priceGroups.map((g) => ({
       "@type": "OfferCatalog",
@@ -218,11 +218,11 @@ const studioNode = () => ({
       itemListElement: g.items.map((it) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name: it.name, description: it.includes },
-        priceSpecification: {
+        ...(SHOW_PRICES ? { priceSpecification: {
           "@type": "PriceSpecification",
           ...(it.from ? { minPrice: it.ngn } : { price: it.ngn }),
           priceCurrency: "NGN",
-        },
+        } } : {}),
       })),
     })),
   },
