@@ -22,7 +22,7 @@ export const journeys: Record<VisitorId, Journey> = {
     routeTitle: "From idea to website",
     intro: "Your route shows real websites built for businesses, what you can commission, and what it costs.",
     route: ["gracelink-empire", "sweetsips", "service-A", "service-C", "service-D", "prices", "guestbook"],
-    shortcut: { label: "In a hurry? See services and prices", to: "/studio" },
+    shortcut: { label: "In a hurry? See services", to: "/studio" },
     finale: {
       title: "Ready to get your business online?",
       text: "Start a project with Fera's Studio, or apply for one of five free websites in The Open Call.",
@@ -86,7 +86,7 @@ export const stopInfo = (id: string): { label: string; room: string } => {
     const c = commissions.find((x) => `service-${x.no}` === id);
     return { label: c?.title ?? id, room: "Room 03" };
   }
-  if (id === "prices") return { label: "The price list", room: "Room 03" };
+  if (id === "prices") return { label: "Services", room: "Room 03" };
   if (id === "guestbook") return { label: "The visitors' book", room: "Room 04" };
   return { label: "Exit door", room: "Room 04" };
 };

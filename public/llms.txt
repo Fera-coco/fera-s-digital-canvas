@@ -1,6 +1,6 @@
 # Fera's Studio
 
-> Fera's Studio is a web design and development studio for small businesses in Nigeria and Benin Republic, run by Fera (Peace Oluwaferanmi Segun-Babs), a UX/UI designer and front-end developer based in Cotonou. Websites are designed and built in English and French, with prices in Nigerian naira (NGN) and CFA francs (XOF).
+> Fera's Studio is a web design and development studio for small businesses in Nigeria and Benin Republic, run by Fera (Peace Oluwaferanmi Segun-Babs), a UX/UI designer and front-end developer based in Cotonou. Websites are designed and built in English and French.
 
 ## What the studio does
 - Business websites, landing pages and product catalogue websites
@@ -13,15 +13,15 @@
 ## Who it is for
 Small businesses that sell through WhatsApp and Instagram and want to be found on Google, look professional and take orders more easily. Clients are mainly in Lagos and across Nigeria, and in Cotonou and across Benin Republic. International clients are quoted in US dollars on request.
 
-## Prices (guide)
-From about 20,000 NGN / 9,000 XOF for small services, 90,000 NGN / 40,000 XOF for a landing page, 180,000 NGN / 80,000 XOF for a starter business website, and 350,000 NGN / 155,000 XOF for a starter online shop. Full, current price list: https://ferasportfolio.vercel.app/studio
+## Prices
+Every project is quoted after a short chat. Message Fera on WhatsApp for a quote.
 
 ## The Open Call
 Five businesses in Nigeria and Benin Republic get a website with no design or development fee (the business covers domain and hosting). Details: https://ferasportfolio.vercel.app/open-call (in French: https://ferasportfolio.vercel.app/site-web-gratuit) · Apply: https://ferasportfolio.vercel.app/apply
 
 ## Key pages
 - Home: https://ferasportfolio.vercel.app/
-- Services and prices: https://ferasportfolio.vercel.app/studio
+- Services: https://ferasportfolio.vercel.app/studio
 - Work: https://ferasportfolio.vercel.app/collection
 - About Fera: https://ferasportfolio.vercel.app/curator
 - Contact: https://ferasportfolio.vercel.app/contact
