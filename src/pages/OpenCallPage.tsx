@@ -21,7 +21,7 @@ import {
 } from "@/content/openCall";
 import { getVisitor, loadVisitor, type VisitorType } from "@/content/visitors";
 import { usePageMeta } from "@/hooks/use-exhibition";
-import { PAGES } from "@/content/seo";
+import { PAGES, OPEN_CALL_FAQ_EN } from "@/content/seo";
 import { cn, SWIPE } from "@/lib/utils";
 import { t, tf } from "@/lib/i18n";
 
@@ -595,6 +595,29 @@ const OpenCallPage = () => {
         </div>
       </section>
 
+      {/* ---------- G2. Questions ---------- */}
+      <section aria-labelledby="faq-title" className="py-20 md:py-28">
+        <div className="gallery-x grid grid-cols-1 gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHead no="07" id="faq-title" title={t("Questions, answered")} />
+            <Reveal as="p" delay={150} className="mt-4 text-stone">
+              {t("Everything people ask about The Open Call. Still curious? Ask on WhatsApp.")}
+            </Reveal>
+          </div>
+          <div className="divide-y divide-ink/10 border-y border-ink/10 lg:col-span-8">
+            {OPEN_CALL_FAQ_EN.map((f) => (
+              <details key={f.q} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-lg font-medium leading-snug">
+                  {t(f.q)}
+                  <span aria-hidden className="mt-0.5 text-2xl leading-none text-stone transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 max-w-2xl leading-relaxed text-ink/85">{t(f.a)}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ---------- H. Apply ---------- */}
       <section
         id="apply"
@@ -602,7 +625,7 @@ const OpenCallPage = () => {
         className="scroll-mt-[var(--header-h)] py-20 md:py-28"
       >
         <div className="gallery-x">
-          <SectionHead no="07" id="apply-title" title={t("Apply for a spot")} />
+          <SectionHead no="08" id="apply-title" title={t("Apply for a spot")} />
           {sum && !sum.open ? (
             <div className="mt-10 max-w-2xl bg-paper p-8">
               <p className="display text-4xl">

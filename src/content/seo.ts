@@ -27,18 +27,34 @@ export interface PageMeta {
   faq?: { q: string; a: string }[];
 }
 
-const OPEN_CALL_FAQ_EN = [
+export const OPEN_CALL_FAQ_EN = [
   {
-    q: "Is the website really free?",
-    a: "Yes. For the five businesses selected through The Open Call, Fera's Studio waives the website design and development fee. The business only pays for its own domain name and hosting.",
+    q: "Is the website really free? Is there a catch?",
+    a: "Yes, it's free, and there's no catch. For the five businesses selected through The Open Call, Fera's Studio waives the website design and development fee. The business only pays for its own domain name and hosting, directly to the provider, not to Fera's Studio.",
   },
   {
     q: "Who can apply for a free website?",
     a: "Small businesses in Nigeria and Benin Republic, for example in Lagos, Abuja, Ibadan, Port Harcourt, Cotonou, Porto-Novo or Abomey-Calavi. The website can be in English, French or both.",
   },
   {
+    q: "Does my business need to be registered?",
+    a: "No. Your business doesn't need to be registered (for example with the CAC) to apply or to have a website.",
+  },
+  {
     q: "What kind of website do I get?",
     a: "A standard business website, service website or product catalogue that works well on phones and computers, with your products or services, contact details and a WhatsApp button. Complex online shops, custom integrations and inventory systems may need a separate agreement.",
+  },
+  {
+    q: "What is a domain?",
+    a: "Your website's address, like yourbrand.com.ng. You pay for it once a year to a domain provider, a bit like rent for your name online.",
+  },
+  {
+    q: "What is hosting?",
+    a: "Hosting is where your website lives so people can visit it. If the domain is your address, hosting is the house. For most small business websites it's low-cost, and Fera's Studio explains the options before you pay for anything.",
+  },
+  {
+    q: "Is a website the same as a Google Business Profile?",
+    a: "No. A Google Business Profile is your free listing on Google Search and Maps, with your location, opening hours, phone number and reviews. It's separate from your website, but the two work well together.",
   },
   {
     q: "How do I apply?",
@@ -50,18 +66,34 @@ const OPEN_CALL_FAQ_EN = [
   },
 ];
 
-const OPEN_CALL_FAQ_FR = [
+export const OPEN_CALL_FAQ_FR = [
   {
-    q: "Le site web est-il vraiment gratuit ?",
-    a: "Oui. Pour les cinq entreprises sélectionnées dans le cadre de The Open Call, Fera's Studio offre la conception et le développement du site. L'entreprise paie seulement son nom de domaine et son hébergement.",
+    q: "Le site web est-il vraiment gratuit ? Y a-t-il un piège ?",
+    a: "Oui, il est gratuit, et il n'y a pas de piège. Pour les cinq entreprises sélectionnées dans le cadre de The Open Call, Fera's Studio offre la conception et le développement du site. L'entreprise paie seulement son nom de domaine et son hébergement, directement au fournisseur, pas à Fera's Studio.",
   },
   {
     q: "Qui peut demander un site web gratuit ?",
     a: "Les petites entreprises au Bénin et au Nigeria, par exemple à Cotonou, Porto-Novo, Abomey-Calavi, Parakou, Lagos ou Abuja. Le site peut être en français, en anglais ou dans les deux langues.",
   },
   {
+    q: "Mon entreprise doit-elle être enregistrée ?",
+    a: "Non. Votre entreprise n'a pas besoin d'être enregistrée officiellement pour postuler ou pour avoir un site web.",
+  },
+  {
     q: "Quel type de site vais-je recevoir ?",
     a: "Un site vitrine, un site de services ou un catalogue de produits adapté au téléphone et à l'ordinateur, avec vos produits ou services, vos contacts et un bouton WhatsApp. Une boutique en ligne complexe, des intégrations sur mesure ou une gestion de stock peuvent faire l'objet d'un accord séparé.",
+  },
+  {
+    q: "Qu'est-ce qu'un nom de domaine ?",
+    a: "C'est l'adresse de votre site, par exemple votremarque.bj ou votremarque.com. Vous le payez une fois par an à un fournisseur de domaines, un peu comme un loyer pour votre nom en ligne.",
+  },
+  {
+    q: "Qu'est-ce que l'hébergement ?",
+    a: "L'hébergement, c'est l'endroit où vit votre site pour que les gens puissent le visiter. Si le domaine est votre adresse, l'hébergement est la maison. Pour la plupart des petites entreprises, il coûte peu, et Fera's Studio vous explique les options avant tout paiement.",
+  },
+  {
+    q: "Un site web, est-ce la même chose qu'une fiche Google Business Profile ?",
+    a: "Non. Une fiche Google Business Profile est votre présence gratuite sur la recherche Google et Google Maps, avec votre adresse, vos horaires, votre numéro et vos avis. Elle est distincte de votre site web, mais les deux se complètent très bien.",
   },
   {
     q: "Comment postuler ?",
