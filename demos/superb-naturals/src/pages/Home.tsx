@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_60%_55%_at_8%_18%,rgb(var(--blush-soft))_0%,transparent_70%),radial-gradient(ellipse_55%_60%_at_95%_45%,rgb(var(--butter-soft))_0%,transparent_70%),radial-gradient(ellipse_50%_45%_at_55%_100%,rgb(var(--leaf-soft))_0%,transparent_75%)]">
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-10 md:grid-cols-[1.05fr_1fr] md:pt-16">
           <div>
             <p className="inline-flex items-center gap-2 text-[0.8rem] font-bold uppercase tracking-[0.14em] text-leaf"><Leaf size={16} /> Made with raw herbs & active oils</p>

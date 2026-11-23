@@ -25,6 +25,7 @@ export function Header() {
   const loc = useLocation();
   useEffect(() => setOpen(false), [loc.pathname]);
   const links = [
+    ["/", "Home"],
     ["/shop", "Shop"],
     ["/routine", "Find my routine"],
     ["/#wash-day", "Wash day"],
@@ -41,7 +42,7 @@ export function Header() {
           <Logo />
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
             {links.map(([to, label]) => (
-              <NavLink key={to} to={to} className={({ isActive }) => `rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-leaf-soft ${isActive && !to.includes("#") ? "bg-leaf-soft text-leaf-deep" : ""}`}>
+              <NavLink key={to} to={to} end={to === "/"} className={({ isActive }) => `rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-leaf-soft ${isActive && !to.includes("#") ? "bg-leaf-soft text-leaf-deep" : ""}`}>
                 {label}
               </NavLink>
             ))}
