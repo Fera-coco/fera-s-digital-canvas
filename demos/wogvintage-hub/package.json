@@ -1,0 +1,29 @@
+{
+  "name": "wogvintage-hub-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:clean": "VITE_NO_WATERMARK=1 tsc -b && VITE_NO_WATERMARK=1 vite build",
+    "publish-demo": "npm run build && rm -rf ../../public/demos/wogvintage-hub && cp -r dist ../../public/demos/wogvintage-hub",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/jost": "^5.2.0",
+    "@fontsource/dm-serif-display": "^5.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vite": "^7.0.0"
+  }
+}

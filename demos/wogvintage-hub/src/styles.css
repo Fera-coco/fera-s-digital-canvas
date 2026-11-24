@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #fbf6f0;
+  --color-cream: #f7efe6;
+  --color-ink: #1e0a0c;
+  --color-muted: #6e4f51;
+  --color-line: #ead9cf;
+  --color-crimson: #c1121f;
+  --color-rail: #9e0f1a;
+  --color-oxblood: #5a0b12;
+  --color-gold: #d4a537;
+  --color-gold-deep: #a88324;
+  --color-mist: #f3e6dc;
+  --color-whatsapp: #0f8a4c;
+  --color-whatsapp-deep: #0b6d3b;
+
+  --font-sans: "Jost Variable", "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "DM Serif Display", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 8rem;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* Film grain: a fine noise layer for the hero, like a scanned print. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Masking tape on a print. */
+@utility tape {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 92px;
+    height: 26px;
+    transform: translateX(-50%) rotate(-3deg);
+    background: rgb(212 165 55 / 0.55);
+    box-shadow: 0 1px 2px rgb(30 10 12 / 0.12);
+    z-index: 2;
+  }
+}
+
+/* The price tag: notched end with a punched hole. */
+@utility hang-tag {
+  position: relative;
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%);
+  padding-left: 22px;
+}
+
+/* Film strip edge: sprocket holes along the top and bottom. */
+@utility film {
+  background-color: #1a0a0c;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--color-paper) 3.5px, transparent 4px),
+    radial-gradient(circle at 50% 50%, var(--color-paper) 3.5px, transparent 4px);
+  background-size: 22px 18px, 22px 18px;
+  background-position: 0 0, 0 100%;
+  background-repeat: repeat-x;
+}
+
+/* Ticket with perforated edges. */
+@utility ticket {
+  -webkit-mask: radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 9px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
