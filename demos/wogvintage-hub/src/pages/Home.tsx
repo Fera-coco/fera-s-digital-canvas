@@ -73,8 +73,8 @@ export function Home() {
 
         <div className="sticky top-16 z-20 -mx-4 mt-6 border-y border-line bg-paper/95 px-4 py-3 backdrop-blur sm:mx-0 sm:px-0">
           <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
-            <Chip label="All styles" active={!cat} onClick={() => set('style', null)} />
-            {allCategories.map((c) => (
+            {allCategories.length > 1 ? <Chip label="All styles" active={!cat} onClick={() => set('style', null)} /> : null}
+            {allCategories.length > 1 && allCategories.map((c) => (
               <Chip key={c.slug} label={c.title} count={c.count} active={cat === c.slug} onClick={() => set('style', cat === c.slug ? null : c.slug)} />
             ))}
             {allSizes.length > 0 ? (

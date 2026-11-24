@@ -45,9 +45,8 @@ const img = (file: string, alt: string, key = file): ImageField => ({_type: 'ima
 const ref = (id: string): Ref => ({_type: 'reference', _ref: id})
 
 export const categories: CategoryDoc[] = [
-  {_id: 'cat-camp', _type: 'category', title: 'Camp collar', slug: {current: 'camp-collar'}, order: 1},
-  {_id: 'cat-band', _type: 'category', title: 'Band collar', slug: {current: 'band-collar'}, order: 2},
-  {_id: 'cat-over', _type: 'category', title: 'Oversized', slug: {current: 'oversized'}, order: 3},
+  // He sells shirts only, so there is one category. Filters stay hidden until there are more.
+  {_id: 'cat-shirts', _type: 'category', title: 'Shirts', slug: {current: 'shirts'}, order: 1},
 ]
 
 const piece = (n: number, slug: string, name: string, cat: string, photo: string): PieceDoc => ({
@@ -64,27 +63,27 @@ const piece = (n: number, slug: string, name: string, cat: string, photo: string
 })
 
 export const pieces: PieceDoc[] = [
-  piece(1, 'red-geometric-camp-shirt', 'Red geometric print camp shirt', 'cat-camp', 'p1'),
-  piece(2, 'green-marble-camp-shirt', 'Green marble print camp shirt', 'cat-camp', 'p8'),
-  piece(3, 'red-tribal-band-collar-shirt', 'Red tribal print band-collar shirt', 'cat-band', 'p3'),
-  piece(4, 'brown-abstract-camp-shirt', 'Brown abstract block camp shirt', 'cat-camp', 'p4'),
-  piece(5, 'teal-gold-tie-dye-shirt', 'Teal and gold tie-dye pocket shirt', 'cat-camp', 'p10'),
-  piece(6, 'yellow-blue-colour-block-shirt', 'Yellow and blue colour-block shirt', 'cat-over', 'p2'),
-  piece(7, 'green-tan-brushstroke-shirt', 'Green and tan brushstroke camp shirt', 'cat-camp', 'p5'),
-  piece(8, 'rust-print-camp-shirt', 'Rust and red print camp shirt', 'cat-camp', 'p6'),
-  piece(9, 'black-grey-stripe-shirt', 'Black and grey stripe oversized shirt', 'cat-over', 'p7'),
+  piece(1, 'red-geometric-print-shirt', 'Red geometric print shirt', 'cat-shirts', 'p1'),
+  piece(2, 'green-marble-print-shirt', 'Green marble print shirt', 'cat-shirts', 'p8'),
+  piece(3, 'red-tribal-print-shirt', 'Red tribal print shirt', 'cat-shirts', 'p3'),
+  piece(4, 'brown-abstract-block-shirt', 'Brown abstract block shirt', 'cat-shirts', 'p4'),
+  piece(5, 'teal-gold-tie-dye-shirt', 'Teal and gold tie-dye shirt', 'cat-shirts', 'p10'),
+  piece(6, 'yellow-blue-colour-block-shirt', 'Yellow and blue colour-block shirt', 'cat-shirts', 'p2'),
+  piece(7, 'green-tan-brushstroke-shirt', 'Green and tan brushstroke shirt', 'cat-shirts', 'p5'),
+  piece(8, 'rust-red-print-shirt', 'Rust and red print shirt', 'cat-shirts', 'p6'),
+  piece(9, 'black-grey-stripe-shirt', 'Black and grey stripe shirt', 'cat-shirts', 'p7'),
 ]
 
 export const settings: SettingsDoc = {
   _id: 'settings',
   shopName: 'WOGVINTAGE HUB',
   tagline: 'Unisex vintage clothing',
-  whatsappNumber: '',
+  whatsappNumber: '2347064436708', // +234 706 443 6708, shared by Fera 24 Nov 2026
 }
 
 /** Lookbook: customer photos and rail videos he sent (customerPhotos / reels in Sanity settings). */
 export const lookbook = {
-  photos: [img('c1', 'Customer in a leaf print camp shirt'), img('c2', 'Customer in a teal floral camp shirt')],
+  photos: [img('c1', 'Customer in a leaf print shirt'), img('c2', 'Customer in a teal floral shirt')],
   reels: [
     {url: 'reel1.mp4', poster: 'reel1.jpg'},
     {url: 'reel2.mp4', poster: 'reel2.jpg'},

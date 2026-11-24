@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react'
+import {useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {allPieces, getPiece, orderText, photo, photoSet, pieceUrl, priceLabel, shop, similarText, wa, type Piece} from '../lib/shop'
 import {ArrowLeftIcon, BellIcon, ChatIcon, ShareIcon} from '../components/Icons'
@@ -66,7 +66,7 @@ export function BluePiece() {
                 ['Size', p.size || 'Ask us'],
                 ['Fit', 'Unisex'],
                 ['Status', p.sold ? 'Sold' : 'On the rail'],
-                ['Condition', 'Vintage, pre-loved'],
+                ['Delivery', 'Arranged on WhatsApp'],
               ].map(([k, v]) => (
                 <div key={k} className="bg-cobalt-deep px-3 py-2.5">
                   <dt className="text-white/65">{k}</dt>
@@ -110,8 +110,8 @@ export function BluePiece() {
             Also hanging
           </h2>
           <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-4 sm:gap-x-5">
-            {more.map((m) => (
-              <GridPiece key={m.id} p={m} />
+            {more.map((m, n) => (
+              <GridPiece key={m.id} p={m} i={n + 1} />
             ))}
           </ul>
         </section>
@@ -121,24 +121,31 @@ export function BluePiece() {
 }
 
 function Gallery({p}: {p: Piece}) {
+  // Photos are shown as a mounted print on a colour stage, near their real size,
+  // so small source photos stay crisp instead of being stretched.
   const [i, setI] = useState(0)
-  const t = useRef<HTMLDivElement>(null)
+  const ph = p.photos[i]
   return (
     <div>
-      <div className="relative border-2 border-ink shadow-[6px_6px_0_var(--color-sun)]">
-        <div ref={t} role="region" aria-label={`${p.name} photos`} tabIndex={0} onScroll={(e) => setI(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))} className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto">
-          {p.photos.map((ph, n) => (
-            <img key={ph._key} src={photo(ph, 960)} srcSet={photoSet(ph)} sizes="(min-width: 768px) 55vw, 100vw" alt={p.photos.length > 1 ? `${p.name}, photo ${n + 1}` : p.name} width={900} height={1125} loading={n ? 'lazy' : 'eager'} className={`aspect-[4/5] w-full shrink-0 snap-center bg-mist object-cover ${p.sold ? 'grayscale' : ''}`} />
-          ))}
-        </div>
+      <div className="relative grid aspect-[4/5] place-items-center overflow-hidden border-2 border-ink bg-sun p-[9%] shadow-[6px_6px_0_var(--color-ink)]">
+        <svg aria-hidden="true" viewBox="0 0 400 500" className="absolute inset-0 size-full text-cobalt/15" preserveAspectRatio="none">
+          <path d="M-20 420 C 120 340, 260 520, 420 380" fill="none" stroke="currentColor" strokeWidth="60" />
+        </svg>
+        <img
+          src={photo(ph, 960)}
+          srcSet={photoSet(ph)}
+          sizes="(min-width: 768px) 45vw, 85vw"
+          alt={p.photos.length > 1 ? `${p.name}, photo ${i + 1}` : p.name}
+          className={`relative h-full max-h-full w-auto max-w-full -rotate-[1.2deg] border-[8px] border-white object-contain shadow-[0_14px_30px_rgba(18,21,42,0.3)] [filter:contrast(1.06)_saturate(1.1)] ${p.sold ? 'grayscale' : ''}`}
+        />
         {p.sold ? <SoldSticker big /> : null}
       </div>
       {p.photos.length > 1 ? (
         <ul className="mt-3 flex gap-2">
-          {p.photos.map((ph, n) => (
-            <li key={ph._key}>
-              <button type="button" aria-label={`Show photo ${n + 1}`} aria-current={i === n} onClick={() => t.current?.scrollTo({left: n * t.current.clientWidth, behavior: 'smooth'})} className={`block border-2 ${i === n ? 'border-cobalt' : 'border-transparent opacity-70'}`}>
-                <img src={photo(ph, 480)} alt="" width={60} height={75} className="h-[75px] w-[60px] object-cover" />
+          {p.photos.map((x, n) => (
+            <li key={x._key}>
+              <button type="button" aria-label={`Show photo ${n + 1}`} aria-current={i === n} onClick={() => setI(n)} className={`block border-2 ${i === n ? 'border-cobalt' : 'border-transparent opacity-70'}`}>
+                <img src={photo(x, 480)} alt="" width={60} height={75} className="h-[75px] w-[60px] object-cover" />
               </button>
             </li>
           ))}

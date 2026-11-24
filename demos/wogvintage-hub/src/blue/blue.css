@@ -82,6 +82,15 @@
   padding-bottom: calc(var(--z) + 1.5rem);
 }
 
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@utility ticker {
+  animation: ticker 28s linear infinite;
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
