@@ -36,7 +36,7 @@ export type SettingsDoc = {
   shopName: string
   tagline?: string
   whatsappNumber: string // country code first, digits only
-  bank: {bankName: string; accountName: string; accountNumber: string} // for transfers. Empty until he sends them.
+  banks: {bankName: string; accountName: string; accountNumber: string}[] // accounts customers can pay into
   instagram?: string
   location?: string
   about?: string
@@ -80,8 +80,11 @@ export const settings: SettingsDoc = {
   shopName: 'WOGVINTAGE HUB',
   tagline: 'Unisex vintage clothing',
   whatsappNumber: '2347064436708', // +234 706 443 6708, shared by Fera 24 Nov 2026
-  // His account for customer transfers. Not sent yet: checkout shows "coming soon" until filled in.
-  bank: {bankName: '', accountName: '', accountNumber: ''},
+  // Accounts customers pay into, shared by Fera 24 Nov 2026.
+  banks: [
+    {bankName: 'Moniepoint MFB', accountName: 'Alagbo Justus Iseoluwa', accountNumber: '6551578127'},
+    {bankName: 'Opay', accountName: 'Alagbo Justus Iseoluwa', accountNumber: '9063076135'},
+  ],
 }
 
 /** Lookbook: customer photos and rail videos he sent (customerPhotos / reels in Sanity settings). */

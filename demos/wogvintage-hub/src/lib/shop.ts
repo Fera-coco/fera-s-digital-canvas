@@ -89,7 +89,7 @@ export const similarText = (p: Piece) =>
 // ---- Checkout (bank transfer, then receipt and address on WhatsApp) ----
 
 export const formatNaira = (n: number) => naira.format(n)
-export const bankReady = () => Boolean(shop.bank.accountNumber && shop.bank.bankName && shop.bank.accountName)
+export const payAccounts = () => shop.banks.filter((b) => b.bankName && b.accountName && b.accountNumber)
 
 /** Short order reference used as the transfer narration, e.g. WOG-7KQ2M. */
 export function newOrderRef() {
