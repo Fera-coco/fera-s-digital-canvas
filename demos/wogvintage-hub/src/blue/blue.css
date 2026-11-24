@@ -1,0 +1,100 @@
+@import "tailwindcss";
+@source "../components";
+@source "./";
+
+@theme {
+  --color-paper: #ffffff;
+  --color-ink: #12152a;
+  --color-muted: #555b78;
+  --color-line: #e1e4f2;
+  --color-mist: #f1f3fb;
+  --color-cream: #fff8e2;
+  --color-cobalt: #1d3bd1;
+  --color-cobalt-deep: #142a99;
+  --color-sun: #ffc531;
+  --color-sun-deep: #d9a21a;
+  --color-gold: #ffc531;
+  --color-tomato: #ee3f2a;
+  --color-whatsapp: #0f8a4c;
+  --color-whatsapp-deep: #0b6d3b;
+
+  --font-sans: "Archivo Variable", "Archivo", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    line-height: 1.55;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-sun);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-sun);
+  }
+}
+
+@utility font-wide {
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+@utility font-narrow {
+  font-stretch: 75%;
+  font-variation-settings: "wdth" 75;
+}
+
+/* The hero tag: pointed top on phones, pointed left from tablet up. */
+@utility tag-v {
+  clip-path: polygon(50% 0, 100% 64px, 100% 100%, 0 100%, 0 64px);
+}
+@utility tag-h {
+  clip-path: polygon(0 50%, 90px 0, 100% 0, 100% 100%, 90px 100%);
+}
+
+/* Small price tag with a punched hole. */
+@utility hang-tag {
+  position: relative;
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%);
+  padding-left: 22px;
+}
+
+/* Chrome clothes rail. */
+@utility rail-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f4f6fb 0%, #a9aec4 45%, #6c7290 55%, #d5d9e8 100%);
+  box-shadow: 0 2px 3px rgb(18 21 42 / 0.25);
+}
+
+/* Receipt: torn zigzag bottom edge. */
+@utility receipt {
+  --z: 12px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%;
+  padding-bottom: calc(var(--z) + 1.5rem);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

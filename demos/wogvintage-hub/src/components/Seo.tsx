@@ -6,7 +6,7 @@ type Props = {title: string; description: string; path?: string; image?: string;
 export function Seo({title, description, path = '', image, type = 'website', jsonLd}: Props) {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://ferasportfolio.vercel.app'
   const url = `${origin}${BASE}${path.replace(/^\//, '')}`
-  const og = image ? (image.startsWith('http') ? image : origin + image) : `${origin}${BASE}og.png`
+  const og = image ? (image.startsWith('http') ? image : origin + image) : `${origin}${BASE}${import.meta.env.VITE_THEME === 'blue' ? 'brand-blue/og.png' : 'og.png'}`
   return (
     <>
       <title>{title}</title>

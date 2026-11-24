@@ -8,9 +8,13 @@
     "build": "tsc -b && vite build",
     "build:clean": "VITE_NO_WATERMARK=1 tsc -b && VITE_NO_WATERMARK=1 vite build",
     "publish-demo": "npm run build && rm -rf ../../public/demos/wogvintage-hub && cp -r dist ../../public/demos/wogvintage-hub",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:blue": "VITE_THEME=blue vite",
+    "build:blue": "VITE_THEME=blue tsc -b && VITE_THEME=blue vite build",
+    "publish-demo:blue": "npm run build:blue && rm -rf ../../public/demos/wogvintage-hub-blue && cp -r dist-blue ../../public/demos/wogvintage-hub-blue"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
     "@fontsource-variable/jost": "^5.2.0",
     "@fontsource/dm-serif-display": "^5.2.0",
     "react": "^19.0.0",
