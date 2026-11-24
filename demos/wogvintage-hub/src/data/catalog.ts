@@ -35,7 +35,8 @@ export type SettingsDoc = {
   _id: 'settings'
   shopName: string
   tagline?: string
-  whatsappNumber: string // country code first, digits only. Empty until he confirms it.
+  whatsappNumber: string // country code first, digits only
+  bank: {bankName: string; accountName: string; accountNumber: string} // for transfers. Empty until he sends them.
   instagram?: string
   location?: string
   about?: string
@@ -79,6 +80,8 @@ export const settings: SettingsDoc = {
   shopName: 'WOGVINTAGE HUB',
   tagline: 'Unisex vintage clothing',
   whatsappNumber: '2347064436708', // +234 706 443 6708, shared by Fera 24 Nov 2026
+  // His account for customer transfers. Not sent yet: checkout shows "coming soon" until filled in.
+  bank: {bankName: '', accountName: '', accountNumber: ''},
 }
 
 /** Lookbook: customer photos and rail videos he sent (customerPhotos / reels in Sanity settings). */

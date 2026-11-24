@@ -65,7 +65,7 @@ export function BlueHome() {
                 {priceLabel(onePrice)}
               </h2>
               <p className="mt-5 max-w-[30ch] font-wide text-2xl leading-tight sm:text-3xl">Every shirt on the rail. One price.</p>
-              <p className="mt-4 max-w-[42ch] text-lg text-white/85">You know the price before you ask. Pick the print you love and send one WhatsApp message.</p>
+              <p className="mt-4 max-w-[42ch] text-lg text-white/85">You know the price before you ask. Bag the print you love, pay by transfer and send your receipt on WhatsApp.</p>
               <a href="#rail" className="mt-8 inline-flex rounded-full border-2 border-ink bg-sun px-7 py-3.5 font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
                 Pick your print
               </a>
@@ -184,12 +184,13 @@ export function BlueHome() {
           <h2 id="how-h" className="mt-4 text-center font-wide text-2xl">
             How to order
           </h2>
-          <p className="mt-1 text-center text-sm text-muted">No cart. No card. Just WhatsApp.</p>
+          <p className="mt-1 text-center text-sm text-muted">Transfer, then WhatsApp. No card needed.</p>
           <ol className="mt-6 space-y-4 border-y-2 border-dashed border-ink/40 py-5 font-narrow text-[1.05rem] font-semibold">
             {[
-              ['Pick a shirt', onePrice ? priceLabel(onePrice) : 'tap it'],
-              ['Order on WhatsApp', '1 message'],
-              ['Payment and delivery', 'sorted together'],
+              ['Bag a shirt', onePrice ? priceLabel(onePrice) : 'tap it'],
+              ['Add your address', 'checkout'],
+              ['Pay by transfer', 'bank app'],
+              ['Send receipt on WhatsApp', 'delivery price'],
             ].map(([a, b], i) => (
               <li key={a} className="flex items-baseline gap-2">
                 <span className="text-cobalt">{i + 1}</span>
@@ -203,8 +204,8 @@ export function BlueHome() {
             <span>Total effort</span>
             <span className="text-cobalt">Easy</span>
           </p>
-          <a href={wa(`Hi ${shop.shopName}, I'd like to order a shirt.`)} target="_blank" rel="noopener noreferrer" className="mt-6 flex items-center justify-center gap-2 rounded-full bg-whatsapp px-5 py-3 font-bold text-white hover:bg-whatsapp-deep">
-            <ChatIcon /> Start on WhatsApp
+          <a href="#rail" className="mt-6 flex items-center justify-center gap-2 rounded-full border-2 border-ink bg-sun px-5 py-3 font-bold text-ink">
+            Pick a shirt
           </a>
           <p className="mt-4 text-center text-sm text-muted">Thank you. Come again.</p>
         </div>

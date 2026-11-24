@@ -1,7 +1,8 @@
 import {useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import {allPieces, getPiece, orderText, photo, photoSet, pieceUrl, priceLabel, shop, similarText, wa, type Piece} from '../lib/shop'
-import {ArrowLeftIcon, BellIcon, ChatIcon, ShareIcon} from '../components/Icons'
+import {ArrowLeftIcon, BagIcon, BellIcon, ChatIcon, CheckIcon, ShareIcon} from '../components/Icons'
+import {useBag} from '../lib/bag'
 import {Seo} from '../components/Seo'
 import {GridPiece, SoldSticker} from './parts'
 import {BlueNotFound} from './NotFound'
@@ -9,7 +10,15 @@ import {BlueNotFound} from './NotFound'
 export function BluePiece() {
   const {slug = ''} = useParams()
   const p = getPiece(slug)
+  const bag = useBag()
+  const navigate = useNavigate()
   if (!p) return <BlueNotFound piece />
+  const inBag = bag.has(p.id)
+  const add = () => bag.add({id: p.id, slug: p.slug})
+  const buyNow = () => {
+    add()
+    navigate('/checkout')
+  }
   const order = wa(orderText(p))
   const similar = wa(similarText(p))
   const more = allPieces.filter((x) => x.id !== p.id && !x.sold).slice(0, 4)
@@ -81,13 +90,27 @@ export function BluePiece() {
                   <BellIcon /> Notify me about similar
                 </a>
               ) : (
-                <a href={order} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-full border-2 border-ink bg-whatsapp px-6 py-4 text-lg font-bold text-white shadow-[3px_3px_0_var(--color-ink)] hover:bg-whatsapp-deep">
-                  <ChatIcon /> Order on WhatsApp
-                </a>
+                <>
+                  <button type="button" onClick={buyNow} className="flex items-center justify-center gap-2 rounded-full border-2 border-ink bg-sun px-6 py-4 text-lg font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
+                    Buy now
+                  </button>
+                  {inBag ? (
+                    <Link to="/checkout" className="flex items-center justify-center gap-2 rounded-full border-2 border-white px-6 py-3 font-bold text-white hover:bg-white hover:text-ink">
+                      <CheckIcon /> In your bag. Check out
+                    </Link>
+                  ) : (
+                    <button type="button" onClick={add} className="flex items-center justify-center gap-2 rounded-full border-2 border-white px-6 py-3 font-bold text-white hover:bg-white hover:text-ink">
+                      <BagIcon /> Add to bag
+                    </button>
+                  )}
+                  <a href={order} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-6 py-2 font-semibold text-white/90 underline-offset-4 hover:underline">
+                    <ChatIcon /> Ask about it on WhatsApp first
+                  </a>
+                </>
               )}
               <Share name={p.name} url={pieceUrl(p.slug)} />
             </div>
-            <p className="mt-5 text-sm text-white/75">{p.sold ? 'This one found a new home. Ask and you hear first when something like it lands.' : 'Most pieces are one of a kind. Like it? Ask before someone else does.'}</p>
+            <p className="mt-5 text-sm text-white/75">{p.sold ? 'This one found a new home. Ask and you hear first when something like it lands.' : 'Pay by bank transfer, then send your receipt and address on WhatsApp. Delivery price is confirmed after payment.'}</p>
           </div>
         </div>
       </article>
@@ -98,9 +121,19 @@ export function BluePiece() {
             <p className="truncate text-sm font-bold">{p.name}</p>
             <p className="text-sm">{p.sold ? 'Sold' : priceLabel(p.price)}</p>
           </div>
-          <a href={p.sold ? similar : order} target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-ink bg-whatsapp px-5 py-2.5 font-bold text-white">
-            {p.sold ? <BellIcon /> : <ChatIcon />} {p.sold ? 'Notify me' : 'Order'}
-          </a>
+          {p.sold ? (
+            <a href={similar} target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-ink bg-whatsapp px-5 py-2.5 font-bold text-white">
+              <BellIcon /> Notify me
+            </a>
+          ) : inBag ? (
+            <Link to="/checkout" className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-ink bg-ink px-5 py-2.5 font-bold text-white">
+              <CheckIcon /> Check out
+            </Link>
+          ) : (
+            <button type="button" onClick={add} className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-ink bg-cobalt px-5 py-2.5 font-bold text-white">
+              <BagIcon /> Add to bag
+            </button>
+          )}
         </div>
       </div>
 
