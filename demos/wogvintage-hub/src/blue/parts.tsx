@@ -68,6 +68,28 @@ export function GridPiece({p}: {p: Piece}) {
 
 const reduced = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
+/** Full-bleed background video. Phones get one clip; wide screens get three side by side,
+    so each plays near its real size instead of being stretched and blurry. */
+export function BackgroundVideo({clips}: {clips: {url: string; poster: string}[]}) {
+  const [wide, setWide] = useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const on = () => setWide(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  const shown = wide ? clips.slice(0, 3) : clips.slice(0, 1)
+  return (
+    <div aria-hidden="true" className="absolute inset-0 flex gap-[3px] bg-ink">
+      {shown.map((c) => (
+        <div key={c.url} className="h-full min-w-0 flex-1">
+          <LoopVideo file={c.url} poster={c.poster} label="" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function LoopVideo({file, poster, label}: {file: string; poster: string; label: string}) {
   const ref = useRef<HTMLVideoElement>(null)
   const [still] = useState(reduced)
@@ -77,7 +99,7 @@ export function LoopVideo({file, poster, label}: {file: string; poster: string; 
       ref.current.play().catch(() => {})
     }
   }, [still])
-  return <video ref={ref} src={video(file)} poster={video(poster)} muted loop playsInline autoPlay={!still} preload="metadata" aria-label={label} className="size-full object-cover" />
+  return <video ref={ref} src={video(file)} poster={video(poster)} muted loop playsInline autoPlay={!still} preload="auto" aria-label={label || undefined} aria-hidden={label ? undefined : true} className="size-full object-cover" />
 }
 
 /** Rail TV: tap a screen to play. One at a time. */
