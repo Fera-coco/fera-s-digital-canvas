@@ -7,8 +7,8 @@
     category: title, slug, order
     settings: shopName, whatsappNumber, instagram, location, about
 
-  Only what the client sent is here. He sent photos, no prices or sizes yet,
-  so price and size are null and the site shows "Price on request".
+  Only what the client sent is here: his photos, and a price of 13,000 naira per piece
+  (confirmed 24 Nov 2026). No sizes yet, so size is null and the site says "Ask us".
   Names describe what is in each photo.
 */
 
@@ -56,7 +56,7 @@ const piece = (n: number, slug: string, name: string, cat: string, photo: string
   _createdAt: `2026-11-24T13:${String(60 - n).padStart(2, '0')}:00Z`, // demo order: first listed shows first
   name,
   slug: {_type: 'slug', current: slug},
-  price: null,
+  price: 13000,
   size: null,
   category: ref(cat),
   photos: [img(photo, name)],
@@ -91,5 +91,12 @@ export const lookbook = {
     {url: 'reel3.mp4', poster: 'reel3.jpg'},
   ],
   hero: {url: 'hero.mp4', poster: 'hero.jpg'},
+  // Background hero (blue look): the sharpest clip he sent, cut into three steady segments
+  // at native resolution. Phones play the first; wide screens show all three side by side.
+  heroBg: [
+    {url: 'bg-a.mp4', poster: 'bg-a.jpg'},
+    {url: 'bg-b.mp4', poster: 'bg-b.jpg'},
+    {url: 'bg-c.mp4', poster: 'bg-c.jpg'},
+  ],
   railPhoto: img('rail', 'Shirts hanging on the WOGVINTAGE HUB rail'),
 }

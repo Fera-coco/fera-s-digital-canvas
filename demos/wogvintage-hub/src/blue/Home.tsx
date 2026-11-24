@@ -3,7 +3,7 @@ import {useSearchParams} from 'react-router-dom'
 import {allCategories, allPieces, allSizes, media, photo, photoSet, shop, wa} from '../lib/shop'
 import {ChatIcon} from '../components/Icons'
 import {Seo} from '../components/Seo'
-import {GridPiece, HangingPiece, LoopVideo, RailTV} from './parts'
+import {BackgroundVideo, GridPiece, HangingPiece, RailTV} from './parts'
 
 export function BlueHome() {
   const [params, setParams] = useSearchParams()
@@ -25,33 +25,25 @@ export function BlueHome() {
     <>
       <Seo title={`${shop.shopName} | Loud prints for everyone`} description="Unisex vintage shirts and prints in Nigeria. One-of-a-kind pieces, ordered straight on WhatsApp." path="/" />
 
-      {/* Hero: one giant price tag. The punched hole is a window onto the rail. */}
-      <section className="overflow-hidden bg-sun px-4 pb-12 pt-10 sm:px-6 md:pb-16 md:pt-14">
-        <div className="mx-auto max-w-6xl">
-          <div className="relative [filter:drop-shadow(6px_6px_0_var(--color-ink))]">
-            <svg aria-hidden="true" viewBox="0 0 120 80" className="absolute -top-9 left-1/2 h-12 w-24 -translate-x-1/2 text-ink md:hidden">
-              <path d="M60 78c-10-20 30-30 10-76" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-            <div className="tag-v bg-cobalt px-6 pb-10 pt-24 text-white md:tag-h md:flex md:items-center md:gap-12 md:py-14 md:pl-32 md:pr-12">
-              <div className="mx-auto size-44 shrink-0 overflow-hidden rounded-full border-[10px] border-sun bg-ink sm:size-52 md:mx-0 md:size-72">
-                <LoopVideo file={media.hero.url} poster={media.hero.poster} label="Shirts on the WOGVINTAGE HUB rail" />
-              </div>
-              <div className="mt-8 md:mt-0">
-                <h1 className="font-wide text-[clamp(2.4rem,11vw,5.2rem)] leading-[0.9] [overflow-wrap:anywhere]">
-                  Loud prints for <span className="text-sun">everyone.</span>
-                </h1>
-                <p className="mt-5 max-w-[40ch] text-lg text-white/90">
-                  Unisex vintage shirts. Most pieces are one of a kind, so when one sells, it is gone.
-                </p>
-                <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
-                  <a href="#rail" className="rounded-full border-2 border-ink bg-sun px-6 py-3 font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
-                    See the rail
-                  </a>
-                  <span className="font-semibold text-white/85">{onRail} pieces hanging now</span>
-                </div>
-              </div>
-            </div>
+      {/* Hero: the rail itself, playing full-bleed behind the headline */}
+      <section className="relative isolate flex min-h-[calc(100svh-6.5rem)] items-end overflow-hidden bg-ink text-white md:min-h-[78vh] md:items-center">
+        <BackgroundVideo clips={media.heroBg} />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/20 md:bg-ink/45" />
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-24 text-center sm:px-6 md:py-24">
+          <p className="inline-flex items-center rounded-full border-2 border-white/80 px-4 py-1 text-sm font-bold">Unisex vintage, fresh on the rail</p>
+          <h1 className="mx-auto mt-5 max-w-4xl font-wide text-[clamp(2.6rem,12vw,6.2rem)] leading-[0.9] [text-shadow:0_2px_18px_rgba(0,0,0,0.35)]">
+            Loud prints for <span className="text-sun">everyone.</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-[38ch] text-lg text-white/90">Most pieces are one of a kind. When one sells, it is gone.</p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a href="#rail" className="rounded-full border-2 border-ink bg-sun px-7 py-3.5 font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
+              Shop the rail
+            </a>
+            <a href={wa(`Hi ${shop.shopName}, what's new on the rail?`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-white px-6 py-3.5 font-bold hover:bg-white hover:text-ink">
+              <ChatIcon /> Ask what's new
+            </a>
           </div>
+          <p className="mt-6 text-sm font-semibold text-white/80">{onRail} pieces hanging now</p>
         </div>
       </section>
 
