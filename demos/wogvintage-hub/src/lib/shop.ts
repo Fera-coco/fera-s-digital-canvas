@@ -107,7 +107,7 @@ export function paidText(ref: string, items: Line[], total: number, d: Delivery)
   return [
     `Hi ${shop.shopName}, I just paid for my order ${ref}:`,
     '',
-    ...items.map((p, i) => `${i + 1}. ${p.name}, ${priceLabel(p.price)}\n   ${pieceUrl(p.slug)}`),
+    ...items.map((p, i) => `${i + 1}. ${p.name}, ${priceLabel(p.price)}`),
     '',
     `Total paid: ${formatNaira(total)}`,
     '',
