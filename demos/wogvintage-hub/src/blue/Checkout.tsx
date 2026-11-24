@@ -1,6 +1,6 @@
 import {useEffect, useState, type FormEvent, type ReactElement} from 'react'
 import {Link} from 'react-router-dom'
-import {allPieces, bankReady, formatNaira, newOrderRef, paidText, photo, priceLabel, shop, wa, type Delivery} from '../lib/shop'
+import {allPieces, formatNaira, newOrderRef, paidText, payAccounts, photo, priceLabel, shop, wa, type Delivery} from '../lib/shop'
 import {useBag} from '../lib/bag'
 import {BagIcon, ChatIcon, CheckIcon, CloseIcon, CopyIcon} from '../components/Icons'
 import {Seo} from '../components/Seo'
@@ -193,11 +193,14 @@ export function BlueCheckout() {
               <div className="mt-5 grid gap-px overflow-hidden border-2 border-ink bg-ink">
                 <Row label="Amount" value={formatNaira(total)} copy={String(total)} big />
                 <Row label="Order reference" hint="Use this as your transfer narration" value={ref} copy={ref} />
-                {bankReady() ? (
+                {payAccounts().length ? (
                   <>
-                    <Row label="Bank" value={shop.bank.bankName} />
-                    <Row label="Account name" value={shop.bank.accountName} />
-                    <Row label="Account number" value={shop.bank.accountNumber} copy={shop.bank.accountNumber} big />
+                    <div className="bg-cream px-4 py-2.5 text-sm">
+                      Pay into {payAccounts().length > 1 ? 'either account' : 'this account'}. Account name: <strong>{payAccounts()[0].accountName}</strong>
+                    </div>
+                    {payAccounts().map((b) => (
+                      <Row key={b.accountNumber} label={b.bankName} value={b.accountNumber} copy={b.accountNumber} big />
+                    ))}
                   </>
                 ) : (
                   <div className="bg-cream px-4 py-4">
