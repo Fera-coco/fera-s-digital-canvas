@@ -1,7 +1,8 @@
 import {useEffect} from 'react'
 import {Link, Outlet, useLocation} from 'react-router-dom'
 import {BASE, shop, wa} from '../lib/shop'
-import {ChatIcon, InstagramIcon} from '../components/Icons'
+import {BagIcon, ChatIcon, InstagramIcon} from '../components/Icons'
+import {useBag} from '../lib/bag'
 import {DemoBanner, Watermark} from '../components/Watermark'
 
 function ScrollManager() {
@@ -15,6 +16,7 @@ function ScrollManager() {
 
 export function BlueLayout() {
   const chat = wa(`Hi ${shop.shopName}, I have a question.`)
+  const {items} = useBag()
   return (
     <>
       <ScrollManager />
@@ -31,9 +33,13 @@ export function BlueLayout() {
             <Link to="/#worn" className="hidden px-3 py-2 text-sm font-semibold hover:text-cobalt sm:inline">
               Worn by you
             </Link>
-            <a href={chat} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-sun px-3.5 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--color-ink)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0_var(--color-ink)]">
-              <ChatIcon className="size-4" /> Message us
+            <a href={chat} target="_blank" rel="noopener noreferrer" aria-label="Message us on WhatsApp" className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink px-3 py-1.5 text-sm font-bold hover:bg-mist">
+              <ChatIcon className="size-4" /> <span className="hidden sm:inline">Message us</span>
             </a>
+            <Link to="/checkout" aria-label={`Bag, ${items.length} ${items.length === 1 ? 'shirt' : 'shirts'}`} className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-sun px-3.5 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--color-ink)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0_var(--color-ink)]">
+              <BagIcon className="size-4" /> Bag
+              {items.length ? <span className="grid min-w-5 place-items-center rounded-full bg-ink px-1 text-xs text-white">{items.length}</span> : null}
+            </Link>
           </nav>
         </div>
       </header>

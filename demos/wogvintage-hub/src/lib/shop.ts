@@ -85,3 +85,40 @@ export const orderText = (p: Piece) =>
 
 export const similarText = (p: Piece) =>
   `Hi ${shop.shopName}, I missed "${p.name}" (sold). Please let me know when something similar comes in.\n\n${pieceUrl(p.slug)}`
+
+// ---- Checkout (bank transfer, then receipt and address on WhatsApp) ----
+
+export const formatNaira = (n: number) => naira.format(n)
+export const bankReady = () => Boolean(shop.bank.accountNumber && shop.bank.bankName && shop.bank.accountName)
+
+/** Short order reference used as the transfer narration, e.g. WOG-7KQ2M. */
+export function newOrderRef() {
+  const abc = '23456789ABCDEFGHJKMNPQRSTUVWXYZ'
+  const bytes = new Uint8Array(5)
+  crypto.getRandomValues(bytes)
+  return 'WOG-' + Array.from(bytes, (b) => abc[b % abc.length]).join('')
+}
+
+export type Delivery = {name: string; phone: string; address: string; city: string; state: string; note: string}
+type Line = {name: string; price: number | null; slug: string}
+
+/** The message he receives after the customer pays. They attach their receipt in the chat. */
+export function paidText(ref: string, items: Line[], total: number, d: Delivery) {
+  return [
+    `Hi ${shop.shopName}, I just paid for my order ${ref}:`,
+    '',
+    ...items.map((p, i) => `${i + 1}. ${p.name}, ${priceLabel(p.price)}\n   ${pieceUrl(p.slug)}`),
+    '',
+    `Total paid: ${formatNaira(total)}`,
+    '',
+    "Here's my delivery address:",
+    `Name: ${d.name}`,
+    `Phone: ${d.phone}`,
+    `Address: ${d.address}`,
+    `City/Town: ${d.city}`,
+    `State: ${d.state}`,
+    ...(d.note ? [`Note: ${d.note}`] : []),
+    '',
+    'Please let me know the delivery price. My payment receipt is attached.',
+  ].join('\n')
+}

@@ -34,3 +34,25 @@ export const InstagramIcon = ({className = 'size-5'}: P) => (
     <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
   </svg>
 )
+export const BagIcon = ({className = 'size-5'}: P) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+    <path {...s} d="M5 8h14l-1.2 11.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3L5 8Z" />
+    <path {...s} d="M9 10V7a3 3 0 0 1 6 0v3" />
+  </svg>
+)
+export const CopyIcon = ({className = 'size-4'}: P) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+    <rect {...s} x="8" y="8" width="12" height="12" rx="2" />
+    <path {...s} d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+  </svg>
+)
+export const CloseIcon = ({className = 'size-5'}: P) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+    <path {...s} strokeWidth={2} d="M6 6l12 12M18 6 6 18" />
+  </svg>
+)
+export const CheckIcon = ({className = 'size-5'}: P) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+    <path {...s} strokeWidth={2.2} d="m5 12.5 4.5 4.5L19 7.5" />
+  </svg>
+)

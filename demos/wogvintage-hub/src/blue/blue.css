@@ -82,6 +82,15 @@
   padding-bottom: calc(var(--z) + 1.5rem);
 }
 
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@utility ticker {
+  animation: ticker 28s linear infinite;
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -96,5 +105,26 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Checkout fields */
+@layer components {
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    border: 2px solid var(--color-ink);
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem;
+    font-size: 1rem;
+  }
+  .field :is(input, textarea, select):focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-sun);
+  }
+  .field [aria-invalid="true"] {
+    border-color: var(--color-tomato);
   }
 }
