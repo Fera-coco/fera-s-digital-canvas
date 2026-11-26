@@ -42,11 +42,11 @@ export function Mount({p, i, large, className = ''}: {p: Piece; i: number; large
     <div className={`relative grid aspect-[4/5] place-items-center overflow-hidden ${STAGES[i % STAGES.length]} ${large ? 'p-[8%]' : 'p-[10%]'} ${className}`}>
       <img
         src={photo(ph, large ? 960 : 480)}
-        srcSet={photoSet(ph)}
-        sizes={large ? '(min-width: 768px) 40vw, 85vw' : '240px'}
+        srcSet={ph.cutout && large ? undefined : photoSet(ph)}
+        sizes={ph.cutout && large ? undefined : large ? '(min-width: 768px) 40vw, 85vw' : '240px'}
         alt={p.name}
         loading={i < 3 || large ? 'eager' : 'lazy'}
-        className={`h-full max-h-full w-auto max-w-full border-[6px] border-white object-contain shadow-[0_10px_24px_rgba(18,21,42,0.28)] [filter:contrast(1.06)_saturate(1.1)] ${TILTS[i % TILTS.length]} ${p.sold ? 'grayscale' : ''}`}
+        className={ph.cutout ? `${large ? 'h-auto' : 'h-full'} max-h-full w-auto max-w-full object-contain [filter:drop-shadow(8px_12px_10px_rgba(18,21,42,0.28))_contrast(1.04)_saturate(1.08)] transition-transform duration-500 group-hover:scale-[1.04] ${p.sold ? 'grayscale' : ''}` : `h-full max-h-full w-auto max-w-full border-[6px] border-white object-contain shadow-[0_10px_24px_rgba(18,21,42,0.28)] [filter:contrast(1.06)_saturate(1.1)] ${TILTS[i % TILTS.length]} ${p.sold ? 'grayscale' : ''}`}
       />
       {p.sold ? <SoldSticker big={large} /> : null}
     </div>

@@ -12,7 +12,8 @@
   Names describe what is in each photo.
 */
 
-export type ImageField = {_type: 'image'; _key: string; asset: {url: string}; alt?: string}
+// cutout: background removed (transparent), shown on a flat colour stage
+export type ImageField = {_type: 'image'; _key: string; asset: {url: string}; alt?: string; cutout?: boolean}
 export type Ref = {_type: 'reference'; _ref: string}
 
 export type CategoryDoc = {_id: string; _type: 'category'; title: string; slug: {current: string}; order?: number}
@@ -59,7 +60,8 @@ const piece = (n: number, slug: string, name: string, cat: string, photo: string
   price: 13000,
   size: null,
   category: ref(cat),
-  photos: [img(photo, name)],
+  // 1: clean cut-out made from his photo (background removed), 2: his original photo
+  photos: [{...img(`${photo}-cut`, name), cutout: true}, img(photo, `${name}, original photo`)],
   sold: false,
 })
 

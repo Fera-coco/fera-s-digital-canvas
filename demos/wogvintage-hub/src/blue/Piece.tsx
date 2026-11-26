@@ -166,10 +166,10 @@ function Gallery({p}: {p: Piece}) {
         </svg>
         <img
           src={photo(ph, 960)}
-          srcSet={photoSet(ph)}
-          sizes="(min-width: 768px) 45vw, 85vw"
-          alt={p.photos.length > 1 ? `${p.name}, photo ${i + 1}` : p.name}
-          className={`relative h-full max-h-full w-auto max-w-full -rotate-[1.2deg] border-[8px] border-white object-contain shadow-[0_14px_30px_rgba(18,21,42,0.3)] [filter:contrast(1.06)_saturate(1.1)] ${p.sold ? 'grayscale' : ''}`}
+          srcSet={ph.cutout ? undefined : photoSet(ph)}
+          sizes={ph.cutout ? undefined : '(min-width: 768px) 45vw, 85vw'}
+          alt={ph.alt || p.name}
+          className={`relative max-h-full max-w-full object-contain ${ph.cutout ? 'h-auto w-auto' : 'h-full w-auto'} ${ph.cutout ? '[filter:drop-shadow(10px_16px_14px_rgba(18,21,42,0.3))_contrast(1.04)_saturate(1.08)]' : '-rotate-[1.2deg] border-[8px] border-white shadow-[0_14px_30px_rgba(18,21,42,0.3)] [filter:contrast(1.06)_saturate(1.1)]'} ${p.sold ? 'grayscale' : ''}`}
         />
         {p.sold ? <SoldSticker big /> : null}
       </div>
@@ -177,8 +177,11 @@ function Gallery({p}: {p: Piece}) {
         <ul className="mt-3 flex gap-2">
           {p.photos.map((x, n) => (
             <li key={x._key}>
-              <button type="button" aria-label={`Show photo ${n + 1}`} aria-current={i === n} onClick={() => setI(n)} className={`block border-2 ${i === n ? 'border-cobalt' : 'border-transparent opacity-70'}`}>
-                <img src={photo(x, 480)} alt="" width={60} height={75} className="h-[75px] w-[60px] object-cover" />
+              <button type="button" aria-label={x.cutout ? 'Show the shirt' : 'Show the original photo'} aria-current={i === n} onClick={() => setI(n)} className={`grid gap-1 text-center text-xs font-bold ${i === n ? 'text-cobalt' : 'text-muted'}`}>
+                <span className={`block border-2 ${x.cutout ? 'bg-sun' : 'bg-mist'} ${i === n ? 'border-cobalt' : 'border-ink/20 opacity-80'}`}>
+                  <img src={photo(x, 480)} alt="" width={60} height={75} className={`h-[75px] w-[60px] ${x.cutout ? 'object-contain p-1' : 'object-cover'}`} />
+                </span>
+                {x.cutout ? 'Shirt' : 'Real photo'}
               </button>
             </li>
           ))}
