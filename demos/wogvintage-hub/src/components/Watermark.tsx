@@ -1,6 +1,6 @@
-/* Demo watermark: tiled "FERA'S STUDIO · DEMO" over every page, so screenshots and screen
+/* Demo watermark and banner: tiled "FERA'S STUDIO · DEMO" over every page, so screenshots and screen
    recordings carry it. Clicks pass straight through.
-   Turn off for launch or clean recordings: build with VITE_NO_WATERMARK=1 (npm run build:clean). */
+   VITE_NO_WATERMARK=1 turns off both the watermark and the demo banner (launch, or clean recordings). */
 export const SHOW_WATERMARK = import.meta.env.VITE_NO_WATERMARK !== '1'
 
 const svg = encodeURIComponent(
@@ -19,6 +19,7 @@ export function Watermark() {
 }
 
 export function DemoBanner() {
+  if (!SHOW_WATERMARK) return null
   return (
     <p className="bg-ink px-4 py-2 text-center text-xs font-medium tracking-wide text-cream/90 sm:text-sm">
       Demo website by{' '}

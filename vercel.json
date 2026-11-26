@@ -42,6 +42,14 @@
       "destination": "/demos/wogvintage-hub-blue/"
     },
     {
+      "source": "/demos/wogvintage-hub-blue-rec",
+      "destination": "/demos/wogvintage-hub-blue-rec/"
+    },
+    {
+      "source": "/demos/wogvintage-hub-blue-rec/:path*",
+      "destination": "/demos/wogvintage-hub-blue-rec/"
+    },
+    {
       "source": "/((?!api/)(?!concepts/)(?!demos/)(?!.*\\.).*)",
       "destination": "/"
     }

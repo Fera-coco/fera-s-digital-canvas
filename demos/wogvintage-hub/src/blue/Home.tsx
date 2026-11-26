@@ -3,7 +3,7 @@ import {Link, useSearchParams} from 'react-router-dom'
 import {allCategories, allPieces, allSizes, media, photo, photoSet, priceLabel, shop, wa} from '../lib/shop'
 import {ChatIcon} from '../components/Icons'
 import {Seo} from '../components/Seo'
-import {BackgroundVideo, GridPiece, HangingPiece, Mount, RailTV, Ticker} from './parts'
+import {GridPiece, HangingPiece, HeroPhotos, Mount, RailTile, RailTV, Ticker} from './parts'
 
 export function BlueHome() {
   const [params, setParams] = useSearchParams()
@@ -33,23 +33,31 @@ export function BlueHome() {
         path="/"
       />
 
-      {/* Hero: the rail itself, playing full-bleed behind the headline */}
-      <section className="relative isolate flex min-h-[calc(100svh-6.5rem)] items-end overflow-hidden bg-ink text-white md:min-h-[78vh] md:items-center">
-        <BackgroundVideo clips={media.heroBg} />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/20 md:bg-ink/45" />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-24 text-center sm:px-6 md:py-24">
-          <p className="inline-flex items-center rounded-full border-2 border-white/80 px-4 py-1 text-sm font-bold">Unisex vintage shirts</p>
-          <h1 className="mx-auto mt-5 max-w-4xl font-wide text-[clamp(2.6rem,12vw,6.2rem)] leading-[0.9] [text-shadow:0_2px_18px_rgba(0,0,0,0.35)]">
-            Loud prints for <span className="text-sun">everyone.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-[38ch] text-lg text-white/90">Most pieces are one of a kind. When one sells, it is gone.</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a href="#rail" className="rounded-full border-2 border-ink bg-sun px-7 py-3.5 font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
-              Shop the rail
-            </a>
-            <a href={wa(`Hi ${shop.shopName}, what's new on the rail?`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-white px-6 py-3.5 font-bold hover:bg-white hover:text-ink">
-              <ChatIcon /> Ask what's new
-            </a>
+      {/* Hero: his sharpest images up front. Phones: full-bleed photo, text over it.
+          Wide screens: cobalt panel with the headline beside the photos. */}
+      <section className="relative isolate flex min-h-[calc(100svh-6.5rem)] items-end overflow-hidden bg-cobalt text-white md:min-h-[86vh] md:items-center">
+        <div className="absolute inset-0 md:left-[46%]">
+          <HeroPhotos photos={media.heroPhotos} />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/25 to-transparent md:bg-gradient-to-r md:from-cobalt/35 md:via-transparent" />
+        </div>
+        <RailTile clip={media.heroBg[0]} className="absolute right-4 top-5 md:bottom-10 md:right-8 md:top-auto" />
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-40 sm:px-6 md:py-20">
+          <div className="max-w-[34rem] md:max-w-[44%]">
+            <p className="inline-flex items-center rounded-full border-2 border-white/80 px-4 py-1 text-sm font-bold">Unisex vintage shirts</p>
+            <h1 className="mt-5 font-wide text-[clamp(2.7rem,12.5vw,5.6rem)] leading-[0.9] [text-shadow:0_2px_18px_rgba(0,0,0,0.3)] md:text-[clamp(3.2rem,5.6vw,5.6rem)]">
+              Loud prints for <span className="text-sun">everyone.</span>
+            </h1>
+            <p className="mt-5 max-w-[36ch] text-lg text-white/90">
+              {onePrice ? `Every shirt ${priceLabel(onePrice)}. ` : ''}Most are one of a kind. When one sells, it is gone.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a href="#rail" className="rounded-full border-2 border-ink bg-sun px-7 py-3.5 font-bold text-ink shadow-[3px_3px_0_var(--color-ink)] hover:bg-white">
+                Shop the rail
+              </a>
+              <a href={wa(`Hi ${shop.shopName}, what's new on the rail?`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-white px-6 py-3.5 font-bold hover:bg-white hover:text-ink">
+                <ChatIcon /> Ask what's new
+              </a>
+            </div>
           </div>
         </div>
       </section>

@@ -104,4 +104,6 @@ export const lookbook = {
     {url: 'bg-c.mp4', poster: 'bg-c.jpg'},
   ],
   railPhoto: img('rail', 'Shirts hanging on the WOGVINTAGE HUB rail'),
+  // Blue hero: his sharpest images (customer photos), crossfading. The rail video plays in a small tile.
+  heroPhotos: [img('c1', 'Customer in a leaf print shirt', 'hero-c1'), img('c2', 'Customer in a teal floral shirt', 'hero-c2')],
 }

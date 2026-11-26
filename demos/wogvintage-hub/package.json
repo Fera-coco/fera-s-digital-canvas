@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "dev:blue": "VITE_THEME=blue vite",
     "build:blue": "VITE_THEME=blue tsc -b && VITE_THEME=blue vite build",
-    "publish-demo:blue": "npm run build:blue && rm -rf ../../public/demos/wogvintage-hub-blue && cp -r dist-blue ../../public/demos/wogvintage-hub-blue"
+    "publish-demo:blue": "npm run build:blue && rm -rf ../../public/demos/wogvintage-hub-blue && cp -r dist-blue ../../public/demos/wogvintage-hub-blue",
+    "publish-demo:blue-rec": "VITE_THEME=blue VITE_NO_WATERMARK=1 VITE_BASE=/demos/wogvintage-hub-blue-rec/ VITE_OUTDIR=dist-blue-rec sh -c 'tsc -b && vite build' && rm -rf ../../public/demos/wogvintage-hub-blue-rec && cp -r dist-blue-rec ../../public/demos/wogvintage-hub-blue-rec"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",

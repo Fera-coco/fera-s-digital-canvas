@@ -87,6 +87,18 @@
     transform: translateX(-50%);
   }
 }
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@utility hero-zoom {
+  animation: hero-zoom 7s ease-out forwards;
+}
+
 @utility ticker {
   animation: ticker 28s linear infinite;
 }

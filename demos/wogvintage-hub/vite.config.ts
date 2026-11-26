@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 //   default             crimson and gold  -> /demos/wogvintage-hub/
 //   VITE_THEME=blue     cobalt and sunflower -> /demos/wogvintage-hub-blue/
 const blue = process.env.VITE_THEME === 'blue'
-const base = blue ? '/demos/wogvintage-hub-blue/' : '/demos/wogvintage-hub/'
+const base = process.env.VITE_BASE || (blue ? '/demos/wogvintage-hub-blue/' : '/demos/wogvintage-hub/')
 
 const themedHtml = (): Plugin => ({
   name: 'themed-html',
@@ -23,5 +23,5 @@ const themedHtml = (): Plugin => ({
 export default defineConfig({
   base,
   plugins: [react(), tailwindcss(), themedHtml()],
-  build: {assetsInlineLimit: 0, target: 'es2020', outDir: blue ? 'dist-blue' : 'dist'},
+  build: {assetsInlineLimit: 0, target: 'es2020', outDir: process.env.VITE_OUTDIR || (blue ? 'dist-blue' : 'dist')},
 })

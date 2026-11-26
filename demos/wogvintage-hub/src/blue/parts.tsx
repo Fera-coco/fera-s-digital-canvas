@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {photo, photoSet, priceLabel, video, type Piece} from '../lib/shop'
+import type {ImageField} from '../data/catalog'
 import {PlayIcon} from '../components/Icons'
 
 export function Tag({price, sold, className = ''}: {price: number | null; sold?: boolean; className?: string}) {
@@ -111,6 +112,49 @@ export function Ticker({items}: {items: string[]}) {
 }
 
 const reduced = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+/** Hero photos: sharp customer shots crossfading with a slow zoom. Holds still for reduced motion. */
+export function HeroPhotos({photos}: {photos: ImageField[]}) {
+  const [still] = useState(reduced)
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (still || photos.length < 2) return
+    const t = setInterval(() => setI((n) => (n + 1) % photos.length), 5500)
+    return () => clearInterval(t)
+  }, [still, photos.length])
+  return (
+    <div className="absolute inset-0 overflow-hidden bg-ink">
+      {photos.map((ph, n) => (
+        <img
+          key={ph._key}
+          src={photo(ph, 960)}
+          srcSet={photoSet(ph)}
+          sizes="(min-width: 768px) 55vw, 100vw"
+          alt={n === i ? ph.alt || '' : ''}
+          aria-hidden={n === i ? undefined : true}
+          fetchPriority={n === 0 ? 'high' : undefined}
+          className={`absolute inset-0 size-full object-cover object-[50%_18%] transition-opacity duration-[1400ms] ${n === i ? 'opacity-100' : 'opacity-0'} ${
+            still ? '' : n === i ? 'hero-zoom' : ''
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
+
+/** Small round tile with the rail video, sized so the low-resolution footage stays crisp. */
+export function RailTile({clip, className = ''}: {clip: {url: string; poster: string}; className?: string}) {
+  return (
+    <figure className={`flex items-center gap-3 ${className}`}>
+      <div className="size-24 shrink-0 overflow-hidden rounded-full border-4 border-sun bg-ink shadow-[3px_3px_0_var(--color-ink)] sm:size-32">
+        <LoopVideo file={clip.url} poster={clip.poster} label="Shirts moving on the WOGVINTAGE HUB rail" />
+      </div>
+      <figcaption className="rounded-full border-2 border-ink bg-sun px-3 py-1 text-xs font-bold text-ink shadow-[2px_2px_0_var(--color-ink)] sm:text-sm">
+        Fresh on the rail
+      </figcaption>
+    </figure>
+  )
+}
 
 /** Full-bleed background video. Phones get one clip; wide screens get three side by side,
     so each plays near its real size instead of being stretched and blurry. */
