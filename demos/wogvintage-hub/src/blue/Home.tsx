@@ -3,7 +3,7 @@ import {Link, useSearchParams} from 'react-router-dom'
 import {allCategories, allPieces, allSizes, media, photo, photoSet, priceLabel, shop, wa} from '../lib/shop'
 import {ChatIcon} from '../components/Icons'
 import {Seo} from '../components/Seo'
-import {GridPiece, HangingPiece, HeroPhotos, Mount, RailTile, RailTV, Ticker} from './parts'
+import {GridPiece, HangingPiece, HeroPhotos, Mount, RailTile, RailTV} from './parts'
 
 export function BlueHome() {
   const [params, setParams] = useSearchParams()
@@ -62,7 +62,6 @@ export function BlueHome() {
         </div>
       </section>
 
-      <Ticker items={['Loud prints', 'Unisex fits', ...(onePrice ? [`${priceLabel(onePrice)} a shirt`] : []), 'Order on WhatsApp', 'One of a kind']} />
 
       {/* One price: his strongest selling point, said big */}
       {onePrice && pick ? (

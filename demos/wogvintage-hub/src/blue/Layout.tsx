@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import {Link, Outlet, useLocation} from 'react-router-dom'
+import {Link, NavLink, Outlet, useLocation} from 'react-router-dom'
 import {BASE, shop, wa} from '../lib/shop'
 import {BagIcon, ChatIcon, InstagramIcon} from '../components/Icons'
 import {useBag} from '../lib/bag'
@@ -27,6 +27,9 @@ export function BlueLayout() {
             <img src={`${BASE}brand-blue/logo.svg`} alt={shop.shopName} width={190} height={50} className="h-10 w-auto sm:h-11" />
           </Link>
           <nav aria-label="Main" className="flex items-center gap-1">
+            <NavLink to="/" end className={({isActive}) => `px-2.5 py-2 text-sm font-bold underline-offset-[6px] decoration-2 hover:text-cobalt sm:px-3 ${isActive ? 'text-cobalt underline decoration-sun' : ''}`}>
+              Home
+            </NavLink>
             <Link to="/#rail" className="hidden px-3 py-2 text-sm font-semibold hover:text-cobalt sm:inline">
               The rail
             </Link>
