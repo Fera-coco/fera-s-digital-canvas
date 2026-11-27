@@ -3,10 +3,10 @@
   site's strict security policy. Adds the visitor's country from Vercel's
   edge (two letters only, never the IP address) and passes it to Supabase.
 */
+import { SUPABASE_KEY, SUPABASE_URL } from "./_supabase";
+
 export const config = { runtime: "edge" };
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
-const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 const ID = /^[a-z0-9]{8,32}$/;
 const DEVICES = new Set(["Mobile", "Tablet", "Desktop"]);
 const BOTS = /bot|crawl|spider|slurp|preview|headless|lighthouse|facebookexternalhit|whatsapp|vercel/i;
@@ -15,7 +15,6 @@ const done = (status = 204) => new Response(null, { status, headers: { "cache-co
 
 export default async function handler(req: Request) {
   if (req.method !== "POST") return done(405);
-  if (!SUPABASE_URL || !SUPABASE_KEY) return done();
   const origin = req.headers.get("origin");
   if (origin && new URL(origin).host !== new URL(req.url).host) return done(403);
   if (BOTS.test(req.headers.get("user-agent") ?? "")) return done();
@@ -37,7 +36,7 @@ export default async function handler(req: Request) {
   if (!path.startsWith("/") || !ID.test(visitor_id) || !ID.test(session_id)) return done(400);
   const cc = req.headers.get("x-vercel-ip-country") ?? "";
 
-  await fetch(`${SUPABASE_URL}/rest/v1/site_visits`, {
+  const saved = await fetch(`${SUPABASE_URL}/rest/v1/site_visits`, {
     method: "POST",
     headers: { apikey: SUPABASE_KEY, authorization: `Bearer ${SUPABASE_KEY}`, "content-type": "application/json", prefer: "return=minimal" },
     body: JSON.stringify({
@@ -50,6 +49,7 @@ export default async function handler(req: Request) {
       entry: body.entry === true,
       new_visitor: body.isNew === true,
     }),
-  }).catch(() => undefined);
-  return done();
+  }).catch(() => null);
+  // Say so when the save fails, instead of pretending it worked.
+  return done(saved?.ok ? 204 : 502);
 }
