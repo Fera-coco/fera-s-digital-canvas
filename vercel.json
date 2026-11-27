@@ -2,6 +2,14 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/demos/sn-343438a344d1",
+      "destination": "/demos/sn-343438a344d1/"
+    },
+    {
+      "source": "/demos/sn-343438a344d1/:path*",
+      "destination": "/demos/sn-343438a344d1/"
+    },
+    {
       "source": "/concepts/brightdoor",
       "destination": "/concepts/brightdoor/"
     },

@@ -34,9 +34,9 @@ export function Header() {
   ];
   return (
     <>
-      <div className="bg-leaf px-4 py-2 text-center text-[0.78rem] font-medium text-white">
+      {import.meta.env.VITE_NO_WATERMARK !== "1" && <div className="bg-leaf px-4 py-2 text-center text-[0.78rem] font-medium text-white">
         Demo website by <a href="/" className="font-bold text-butter underline-offset-2 hover:underline">Fera's Studio</a>. Launching soon on its own domain.
-      </div>
+      </div>}
       <header className="sticky top-0 z-40 border-b border-ink/10 bg-cream/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <Logo />
