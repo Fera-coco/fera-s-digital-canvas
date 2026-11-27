@@ -2,13 +2,17 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CONCERNS, img, keyOf, naira, routine, waLink, type Concern, type Product } from "../data/products";
 import { WaIcon } from "../components/ui";
+import ConcernIcon from "../components/ConcernIcon";
+import { Braid, Bubbles, Curl, Straight } from "../components/icons";
+
+const STYLE_ICON = { out: Curl, protective: Braid, relaxed: Straight };
 import { addToCart } from "../lib/store";
 
 type Style = "out" | "protective" | "relaxed";
-const STYLES: { id: Style; label: string; emoji: string; text: string }[] = [
-  { id: "out", label: "Natural, worn out", emoji: "🌀", text: "Afro, puff, twist-out, wash and go" },
-  { id: "protective", label: "In a protective style", emoji: "🧶", text: "Braids, twists, cornrows or under a wig" },
-  { id: "relaxed", label: "Relaxed or texturised", emoji: "💇🏾‍♀️", text: "Chemically straightened hair" },
+const STYLES: { id: Style; label: string; text: string }[] = [
+  { id: "out", label: "Natural, worn out", text: "Afro, puff, twist-out, wash and go" },
+  { id: "protective", label: "In a protective style", text: "Braids, twists, cornrows or under a wig" },
+  { id: "relaxed", label: "Relaxed or texturised", text: "Chemically straightened hair" },
 ];
 const WASH = ["Every week", "Every two weeks", "Once a month or less"];
 
@@ -31,7 +35,7 @@ export default function Routine() {
 
   const done = step === 3 && concern && style && wash;
   const picks: Product[] = done
-    ? routine.filter((p) => p.slug === "shampoo-deep-conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
+    ? routine.filter((p) => p.slug === "shampoo-conditioner" || PICKS[concern].includes(p.slug) || (style === "protective" && p.kind === "Oil"))
     : [];
 
   const tips: string[] = [];
@@ -46,8 +50,7 @@ export default function Routine() {
 
   return (
     <section className="mx-auto max-w-3xl px-5 pt-10">
-      <p className="label text-blush">Routine finder</p>
-      <h1 className="mt-2 font-display text-5xl font-semibold tracking-tight">{done ? "Your Superb routine ✨" : "Let's find your routine"}</h1>
+      <h1 className="font-display text-5xl font-semibold tracking-tight">{done ? "Your routine" : "Let's find your routine"}</h1>
 
       {!done && (
         <>
@@ -63,21 +66,21 @@ export default function Routine() {
       {step === 0 && (
         <Question title="What does your hair need most right now?">
           {CONCERNS.map((x) => (
-            <Option key={x.id} on={concern === x.id} emoji={x.emoji} label={x.label} text={x.blurb} onClick={() => { setConcern(x.id); setStep(1); }} />
+            <Option key={x.id} on={concern === x.id} icon={<ConcernIcon id={x.id} />} label={x.label} text={x.blurb} onClick={() => { setConcern(x.id); setStep(1); }} />
           ))}
         </Question>
       )}
       {step === 1 && (
         <Question title="How do you usually wear your hair?" back={() => setStep(0)}>
           {STYLES.map((x) => (
-            <Option key={x.id} on={style === x.id} emoji={x.emoji} label={x.label} text={x.text} onClick={() => { setStyle(x.id); setStep(2); }} />
+            <Option key={x.id} on={style === x.id} icon={(() => { const I = STYLE_ICON[x.id]; return <I />; })()} label={x.label} text={x.text} onClick={() => { setStyle(x.id); setStep(2); }} />
           ))}
         </Question>
       )}
       {step === 2 && (
         <Question title="How often do you wash your hair?" back={() => setStep(1)}>
           {WASH.map((x) => (
-            <Option key={x} on={wash === x} emoji="🫧" label={x} onClick={() => { setWash(x); setStep(3); }} />
+            <Option key={x} on={wash === x} icon={<Bubbles />} label={x} onClick={() => { setWash(x); setStep(3); }} />
           ))}
         </Question>
       )}
@@ -109,7 +112,7 @@ export default function Routine() {
               <p className="label">Little tips</p>
               <ul className="mt-3 space-y-2">
                 {tips.map((t) => (
-                  <li key={t}>💛 {t}</li>
+                  <li key={t} className="flex gap-2"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blush" />{t}</li>
                 ))}
               </ul>
             </div>
@@ -178,10 +181,10 @@ function Question({ title, children, back }: { title: string; children: React.Re
   );
 }
 
-function Option({ on, emoji, label, text, onClick }: { on: boolean; emoji: string; label: string; text?: string; onClick: () => void }) {
+function Option({ on, icon, label, text, onClick }: { on: boolean; icon: React.ReactNode; label: string; text?: string; onClick: () => void }) {
   return (
     <button onClick={onClick} className={`flex items-center gap-4 rounded-3xl p-4 text-left transition ${on ? "bg-leaf text-white" : "bg-paper ring-1 ring-ink/10 hover:-translate-y-0.5 hover:ring-blush"}`}>
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blush-soft text-2xl">{emoji}</span>
+      <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${on ? "bg-white/15 text-white" : "bg-blush-soft text-blush-deep"}`}>{icon}</span>
       <span>
         <span className="block font-display text-lg font-semibold">{label}</span>
         {text && <span className={`block text-sm ${on ? "text-white/80" : "text-stone"}`}>{text}</span>}

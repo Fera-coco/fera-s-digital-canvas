@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CONCERNS, img, products, routine, bySlug, naira, waLink } from "../data/products";
 import { ProductCard, SectionTitle } from "../components/ui";
+import ConcernIcon from "../components/ConcernIcon";
+import { Bank, Check, Leaf, Truck } from "../components/icons";
 import { addToCart } from "../lib/store";
 
 const FAQ = [
@@ -15,11 +17,19 @@ const FAQ = [
   },
   {
     q: "How much is delivery?",
-    a: "It depends on where you are. Superb Naturals confirms your delivery fee on WhatsApp once your address is in.",
+    a: "It depends on where you are, from ₦3,000 in Asaba and Warri to ₦7,000 for the Northern States, Calabar, Uyo and Port Harcourt. You pick your location at checkout and the fee is added to your total. We also ship internationally, quoted on WhatsApp.",
   },
   {
     q: "Which products are right for me?",
     a: "Take the one-minute routine finder. It asks what your hair needs and builds a routine from the range.",
+  },
+  {
+    q: "How soon will my order arrive?",
+    a: "Orders are dispatched within 2–3 days after your payment is confirmed.",
+  },
+  {
+    q: "What if my order arrives damaged or wrong?",
+    a: "Report it within 24 hours of delivery with clear pictures or videos, and we'll arrange a replacement or a refund once it's verified. Read the full refund policy for details.",
   },
   {
     q: "Can I drink or swallow the oils?",
@@ -33,33 +43,30 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-blush-soft blur-2xl" />
-        <div className="pointer-events-none absolute right-0 top-40 h-80 w-80 rounded-full bg-butter-soft blur-2xl" />
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_60%_55%_at_8%_18%,rgb(var(--blush-soft))_0%,transparent_70%),radial-gradient(ellipse_55%_60%_at_95%_45%,rgb(var(--butter-soft))_0%,transparent_70%),radial-gradient(ellipse_50%_45%_at_55%_100%,rgb(var(--leaf-soft))_0%,transparent_75%)]">
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-10 md:grid-cols-[1.05fr_1fr] md:pt-16">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full bg-leaf-soft px-4 py-2 text-[0.8rem] font-bold text-leaf-deep">🌿 Made with raw herbs & active oils</p>
+            <p className="inline-flex items-center gap-2 text-[0.8rem] font-bold uppercase tracking-[0.14em] text-leaf"><Leaf size={16} /> Made with raw herbs & active oils</p>
             <h1 className="mt-6 font-display text-[3.1rem] font-semibold leading-[0.98] tracking-tight md:text-[4.6rem]">
               Unlock your hair's <span className="italic text-blush">full</span> potential.
             </h1>
             <p className="mt-6 max-w-md text-[1.08rem] leading-relaxed text-stone">
-              Growth oil, edge oil, shampoo, deep conditioner and growth butter, made with raw herbs. Plus beard care for the men.
+              Growth oil, edge oil, shampoo, conditioner and growth butter, made with raw herbs. Plus beard care for the men.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/shop" className="btn-leaf !px-7 !py-3.5 text-base">Shop the range</Link>
-              <Link to="/routine" className="btn-ghost !px-7 !py-3.5 text-base">Find my routine ✨</Link>
+              <Link to="/routine" className="btn-ghost !px-7 !py-3.5 text-base">Find my routine</Link>
             </div>
             <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-stone">
-              <li>💚 For all hair types</li>
-              <li>🛵 Delivery confirmed on WhatsApp</li>
-              <li>🏦 Pay by bank transfer</li>
+              <li className="flex items-center gap-2"><Truck size={18} className="text-leaf" /> Delivery across Nigeria & abroad</li>
+              <li className="flex items-center gap-2"><Bank size={18} className="text-leaf" /> Pay by bank transfer</li>
             </ul>
           </div>
           <div className="relative mx-auto w-full max-w-md">
-            <div className="overflow-hidden rounded-[2.5rem] shadow-card ring-8 ring-white">
+            <div className="overflow-hidden rounded-3xl">
               <img src={img("hair-pink")} alt="A woman in a pink top holds a bottle of Superb Naturals Hair Growth Oil above her full, curly natural hair" className="aspect-[4/5] w-full object-cover" />
             </div>
-            <div className="absolute -bottom-8 left-2 w-40 animate-floaty overflow-hidden rounded-3xl bg-white p-2 shadow-card [--r:-6deg] md:-left-14 md:w-48">
+            <div className="absolute -bottom-8 left-2 w-40 -rotate-3 overflow-hidden rounded-2xl bg-white p-2 shadow-card md:-left-14 md:w-48">
               <img src={img("growth-oil-trio")} alt="Three bottles of Superb Naturals Hair Growth Oil" className="aspect-square w-full rounded-2xl object-cover" />
               <p className="px-1 pb-1 pt-2 text-center text-xs font-bold">Hair Growth Oil</p>
             </div>
@@ -75,25 +82,25 @@ export default function Home() {
       <div className="overflow-hidden bg-blush py-3 text-white" aria-hidden>
         <div className="flex w-max animate-[marquee_28s_linear_infinite] gap-10 whitespace-nowrap font-display text-lg italic">
           {Array.from({ length: 2 }).flatMap((_, k) =>
-            ["Faster, thicker growth", "Stronger edges", "No more itching", "Less breakage", "Softer hair", "Restoring confidence in beauty"].map((t) => <span key={t + k}>✿ {t}</span>),
+            ["Faster, thicker growth", "Stronger edges", "No more itching", "Less breakage", "Softer hair", "Restoring confidence in beauty"].map((t) => <span key={t + k} className="flex items-center gap-10">{t}<span className="h-1.5 w-1.5 rounded-full bg-white/60" /></span>),
           )}
         </div>
       </div>
 
       {/* Concerns */}
       <section className="mx-auto max-w-6xl px-5 pt-20">
-        <SectionTitle kicker="Shop by concern" title="What does your hair need?" />
+        <SectionTitle title="What does your hair need?" />
         <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-5">
           {CONCERNS.map((c, i) => (
             <Link
               key={c.id}
               to={`/shop?concern=${c.id}`}
-              className={`group rounded-3xl p-5 transition hover:-translate-y-1 hover:shadow-card ${["bg-leaf-soft", "bg-blush-soft", "bg-mint-soft", "bg-butter-soft", "bg-paper ring-1 ring-ink/10"][i]}`}
+              className={`group flex flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:shadow-card ${["bg-leaf-soft", "bg-blush-soft", "bg-mint-soft", "bg-butter-soft", "bg-paper ring-1 ring-ink/10"][i]}`}
             >
-              <span className="text-3xl">{c.emoji}</span>
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-white/80 text-leaf-deep"><ConcernIcon id={c.id} /></span>
               <p className="mt-3 font-display text-lg font-semibold leading-tight">{c.label}</p>
               <p className="mt-1 text-sm text-stone">{c.blurb}</p>
-              <p className="mt-3 text-sm font-bold text-leaf group-hover:underline">Shop →</p>
+              <p className="mt-auto pt-3 text-sm font-bold text-leaf group-hover:underline">Shop →</p>
             </Link>
           ))}
         </div>
@@ -102,11 +109,11 @@ export default function Home() {
       {/* Products */}
       <section className="mx-auto max-w-6xl px-5 pt-20">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionTitle kicker="The range" title="Everything for healthy hair, from wash day to edges." />
+          <SectionTitle title="Everything for healthy hair, from wash day to edges." />
           <Link to="/shop" className="btn-ghost">See all</Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {products.filter((p) => p.kind !== "Beard" && p.kind !== "Tool" && p.slug !== "anti-dandruff-shampoo").map((p) => (
+          {products.filter((p) => p.kind !== "Beard" && p.kind !== "Tool" && p.slug !== "anti-dandruff-shampoo" && p.slug !== "moisturizing-conditioner").map((p) => (
             <ProductCard key={p.slug} p={p} />
           ))}
         </div>
@@ -115,7 +122,7 @@ export default function Home() {
       {/* Men + tools */}
       <section className="mx-auto mt-10 max-w-6xl px-5">
         <div className="grid gap-4 md:grid-cols-2">
-          <Link to="/shop?kind=Beard" className="group flex items-center gap-5 rounded-[2rem] bg-ink p-4 pr-6 text-white">
+          <Link to="/shop?kind=Beard" className="group flex items-center gap-5 rounded-2xl bg-ink p-4 pr-6 text-white">
             <img src={img("beard-oil")} alt="Superb Naturals Beard Oil bottles" className="h-28 w-28 rounded-3xl object-cover" loading="lazy" />
             <span>
               <span className="label text-butter">For the men</span>
@@ -123,7 +130,7 @@ export default function Home() {
               <span className="mt-1 block text-sm text-white/70 group-hover:text-white">From ₦5,000 →</span>
             </span>
           </Link>
-          <Link to="/shop?kind=Tool" className="group flex items-center gap-5 rounded-[2rem] bg-paper p-4 pr-6 ring-1 ring-ink/10">
+          <Link to="/shop?kind=Tool" className="group flex items-center gap-5 rounded-2xl bg-paper p-4 pr-6 ring-1 ring-ink/10">
             <img src={img("scalp-massager")} alt="Superb Naturals scalp massager" className="h-28 w-28 rounded-3xl object-cover" loading="lazy" />
             <span>
               <span className="label text-blush">Tools</span>
@@ -136,12 +143,11 @@ export default function Home() {
 
       {/* Quiz teaser */}
       <section className="mx-auto mt-24 max-w-6xl px-5">
-        <div className="grid items-center gap-8 overflow-hidden rounded-[2.5rem] bg-butter-soft md:grid-cols-[1fr_.8fr]">
+        <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-butter-soft md:grid-cols-[1fr_.8fr]">
           <div className="p-8 md:p-14">
-            <p className="label text-blush">One minute, three questions</p>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight md:text-5xl">Not sure where to start?</h2>
-            <p className="mt-4 max-w-md text-stone">Tell us what your hair needs and how you wear it. We'll put together a routine from the Superb Naturals range, in the order you use it.</p>
-            <Link to="/routine" className="btn-blush mt-7 !px-7 !py-3.5 text-base">Find my routine ✨</Link>
+            <h2 className=" font-display text-4xl font-semibold leading-tight md:text-5xl">Not sure where to start?</h2>
+            <p className="mt-4 max-w-md text-stone">Three quick questions. Tell us what your hair needs and how you wear it. We'll put together a routine from the Superb Naturals range, in the order you use it.</p>
+            <Link to="/routine" className="btn-blush mt-7 !px-7 !py-3.5 text-base">Find my routine</Link>
           </div>
           <img src={img("hair-puff")} alt="Side view of a full natural-hair puff tied with a white bow" className="h-full max-h-[460px] w-full object-cover object-[center_75%]" />
         </div>
@@ -149,7 +155,7 @@ export default function Home() {
 
       {/* Wash day */}
       <section id="wash-day" className="mx-auto max-w-6xl scroll-mt-24 px-5 pt-24">
-        <SectionTitle kicker="Wash day, step by step" title="Use them in this order" sub="A suggested routine with the full range. Start with a clean scalp and finish with your edges." center />
+        <SectionTitle kicker="Wash day" title="Use them in this order" sub="A suggested routine with the full range. Start with a clean scalp and finish with your edges." center />
         <ol className="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
           {routine.map((p) => (
             <li key={p.slug}>
@@ -169,15 +175,15 @@ export default function Home() {
 
       {/* Mini kit */}
       <section className="mx-auto mt-24 max-w-6xl px-5">
-        <div className="grid items-center gap-10 rounded-[2.5rem] bg-blush-soft p-6 md:grid-cols-2 md:p-12">
-          <img src={img("mini-kit")} alt="The Superb Naturals Mini Kit: shampoo, conditioner and a small oil beside a gift bag" className="w-full rounded-[2rem] object-cover shadow-card" />
+        <div className="grid items-center gap-10 rounded-3xl bg-blush-soft p-6 md:grid-cols-2 md:p-12">
+          <img src={img("mini-kit")} alt="The Superb Naturals Mini Kit: shampoo, conditioner and a small oil beside a gift bag" className="w-full rounded-2xl object-cover" />
           <div>
             <p className="label text-blush-deep">Start here</p>
             <h2 className="mt-3 font-display text-4xl font-semibold md:text-5xl">The Mini Kit</h2>
             <p className="mt-3 font-display text-3xl font-semibold text-blush-deep">{naira(kit.price)}</p>
             <ul className="mt-6 space-y-2">
               {kit.benefits.map((b) => (
-                <li key={b} className="flex gap-2 font-medium">✅ {b}</li>
+                <li key={b} className="flex items-start gap-2 font-medium"><Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-blush-deep" /> {b}</li>
               ))}
             </ul>
             <p className="mt-5 text-sm text-stone">Inside: {kit.includes!.join(", ").toLowerCase()}.</p>
@@ -200,14 +206,14 @@ export default function Home() {
 
       {/* Gallery */}
       <section className="mx-auto max-w-6xl px-5 pt-24">
-        <SectionTitle kicker="Healthy hair, every texture" title="Your crown, cared for" center />
+        <SectionTitle title="Healthy hair. Happy you." sub="Every texture, cared for with raw herbs and active oils." center />
         <div className="mt-10 grid grid-cols-3 gap-3 md:gap-5">
           {[
             ["hair-blowout", "Side view of long, stretched natural hair"],
             ["hair-pink", "Full, curly natural hair with a bottle of growth oil"],
             ["hair-puff", "A full natural-hair puff with a white bow"],
           ].map(([src, alt], i) => (
-            <div key={src} className={`overflow-hidden rounded-[2rem] ${i === 1 ? "md:-translate-y-6" : ""}`}>
+            <div key={src} className={`overflow-hidden rounded-2xl ${i === 1 ? "md:-translate-y-6" : ""}`}>
               <img src={img(src)} alt={alt} className="aspect-[3/4] w-full object-cover object-top transition duration-700 hover:scale-105" />
             </div>
           ))}
@@ -216,10 +222,10 @@ export default function Home() {
 
       {/* FAQ */}
       <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-5 pt-24">
-        <SectionTitle kicker="Good to know" title="Questions, answered" center />
+        <SectionTitle title="Good to know" center />
         <div className="mt-10 space-y-3">
           {FAQ.map((f) => (
-            <details key={f.q} className="group rounded-3xl bg-paper p-5 ring-1 ring-ink/10 open:ring-leaf/40">
+            <details key={f.q} className="group rounded-2xl bg-paper p-5 ring-1 ring-ink/10 open:ring-leaf/40">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-semibold">
                 {f.q}
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-leaf-soft text-leaf transition group-open:rotate-45">+</span>

@@ -1,21 +1,20 @@
 /*
   Every claim below is copied from Superb Naturals' own labels or WhatsApp catalogue.
   Prices, sizes and names come from her WhatsApp catalogue (22 Nov 2026).
-  Beard oil photo is still a crop of a catalogue thumbnail; ask for the original.
 */
 
 export const WHATSAPP = "2348020866239";
-export const BASE = import.meta.env.BASE_URL;
+export const BASE: string = import.meta.env?.BASE_URL ?? "/";
 export const img = (name: string) => `${BASE}img/${name}.webp`;
 
 export type Concern = "growth" | "edges" | "dandruff" | "breakage" | "softness";
 
-export const CONCERNS: { id: Concern; label: string; emoji: string; blurb: string }[] = [
-  { id: "growth", label: "Growth & thickness", emoji: "🌱", blurb: "You want more length and fuller hair." },
-  { id: "edges", label: "Thin edges", emoji: "✨", blurb: "Your edges need some love." },
-  { id: "dandruff", label: "Dandruff & itching", emoji: "🍃", blurb: "Your scalp flakes or itches." },
-  { id: "breakage", label: "Breakage", emoji: "💪", blurb: "Your hair snaps or sheds a lot." },
-  { id: "softness", label: "Dry, hard hair", emoji: "🧴", blurb: "Your hair feels dry and hard to detangle." },
+export const CONCERNS: { id: Concern; label: string; blurb: string }[] = [
+  { id: "growth", label: "Growth & thickness", blurb: "You want more length and fuller hair." },
+  { id: "edges", label: "Thin edges", blurb: "Your edges need some love." },
+  { id: "dandruff", label: "Dandruff & itching", blurb: "Your scalp flakes or itches." },
+  { id: "breakage", label: "Breakage", blurb: "Your hair snaps or sheds a lot." },
+  { id: "softness", label: "Dry, hard hair", blurb: "Your hair feels dry and hard to detangle." },
 ];
 
 export interface Size {
@@ -76,8 +75,8 @@ export const products: Product[] = [
     tone: "blush",
   },
   {
-    slug: "shampoo-deep-conditioner",
-    name: "Shampoo & Deep Conditioner",
+    slug: "shampoo-conditioner",
+    name: "Shampoo & Conditioner Set",
     short: "Wash Duo",
     kind: "Wash",
     price: 8000,
@@ -87,9 +86,9 @@ export const products: Product[] = [
     concerns: ["dandruff", "softness", "breakage"],
     step: 1,
     stepLabel: "Cleanse & condition",
-    images: ["shampoo-conditioner-garden", "conditioner-close", "full-set"],
+    images: ["shampoo-conditioner-sun", "shampoo-conditioner-garden", "conditioner-close"],
     tone: "mint",
-    includes: ["Anti-Dandruff Shampoo (500ml)", "Deep Conditioner (500ml)"],
+    includes: ["Anti-Dandruff Shampoo (500ml)", "Moisturizing Conditioner (500ml)"],
   },
   {
     slug: "anti-dandruff-shampoo",
@@ -101,8 +100,21 @@ export const products: Product[] = [
     tagline: "Deeply cleanses hair. A clean scalp is where healthy hair starts.",
     benefits: ["Cleans hair and scalp", "Exfoliates dead skin cells", "Stops itching and dandruff", "Prevents hair damage"],
     concerns: ["dandruff"],
-    images: ["shampoo-conditioner-garden", "full-set"],
+    images: ["shampoo-conditioner-sun", "shampoo-conditioner-garden"],
     tone: "mint",
+  },
+  {
+    slug: "moisturizing-conditioner",
+    name: "Moisturizing Conditioner",
+    short: "Conditioner",
+    kind: "Wash",
+    price: 4000,
+    size: "500ml",
+    tagline: "For all hair types.",
+    benefits: ["Promotes healthy hair growth", "Promotes softness", "Helps to strengthen and detangle hair", "Prevents hair damage"],
+    concerns: ["softness", "breakage", "growth"],
+    images: ["conditioner-close", "shampoo-conditioner-sun"],
+    tone: "butter",
   },
   {
     slug: "hair-growth-butter",
@@ -110,12 +122,13 @@ export const products: Product[] = [
     short: "Growth Butter",
     kind: "Butter",
     price: 7500,
-    tagline: "Infused with raw herbs and active oils.",
-    benefits: ["Nourishes hair for growth", "Helps restore damaged hair", "Reduces itching and breakage"],
+    size: "250g",
+    tagline: "Infused with raw herbs and over 10 active oils.",
+    benefits: ["Promotes thicker hair growth", "Prevents hair loss", "Repairs damaged and dry hair"],
     concerns: ["growth", "breakage", "softness"],
     step: 2,
     stepLabel: "Moisturise & seal",
-    images: ["butter-close", "full-set", "butter-jar"],
+    images: ["butter-stack", "butter-close", "full-set"],
     tone: "butter",
   },
   {
@@ -174,8 +187,8 @@ export const products: Product[] = [
     short: "Beard Oil",
     kind: "Beard",
     price: 10000,
-    tagline: "For the men.",
-    benefits: ["Specifically adds shine to the beard"],
+    tagline: "100% natural, made for the men.",
+    benefits: ["Nutrient-rich oils promote a fuller, thicker-looking beard", "Adds a healthy, non-greasy shine", "Moisturises the skin and helps prevent beard dandruff"],
     concerns: [],
     images: ["beard-oil"],
     tone: "butter",

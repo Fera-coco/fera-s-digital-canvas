@@ -12,11 +12,14 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Routine from "./pages/Routine";
 import { Cart, OrderDone } from "./pages/Cart";
+import { Delivery, Refunds } from "./pages/Policies";
 import { waLink } from "./data/products";
+import { useRouteMeta } from "./seo/usePageMeta";
 import Watermark from "./components/Watermark";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
+  useRouteMeta();
   useEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1));
@@ -43,6 +46,8 @@ export default function App() {
           <Route path="/routine" element={<Routine />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order/:ref" element={<OrderDone />} />
+          <Route path="/delivery" element={<Delivery />} />
+          <Route path="/refund-policy" element={<Refunds />} />
           <Route path="*" element={<Landing />} />
         </Routes>
       </main>

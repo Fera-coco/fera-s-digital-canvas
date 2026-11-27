@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { img, naira, toneBg, waLink, type Product } from "../data/products";
 import { cartCount, toggleLove, useStore, addToCart } from "../lib/store";
+import { Heart } from "./icons";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -24,22 +25,24 @@ export function Header() {
   const loc = useLocation();
   useEffect(() => setOpen(false), [loc.pathname]);
   const links = [
+    ["/", "Home"],
     ["/shop", "Shop"],
     ["/routine", "Find my routine"],
     ["/#wash-day", "Wash day"],
+    ["/delivery", "Delivery"],
     ["/#faq", "FAQ"],
   ];
   return (
     <>
       <div className="bg-leaf px-4 py-2 text-center text-[0.78rem] font-medium text-white">
-        Demo website by <a href="/" className="font-bold text-butter underline-offset-2 hover:underline">Fera's Studio</a>. Bank details will be added by Superb Naturals.
+        Demo website by <a href="/" className="font-bold text-butter underline-offset-2 hover:underline">Fera's Studio</a>. Launching soon on its own domain.
       </div>
       <header className="sticky top-0 z-40 border-b border-ink/10 bg-cream/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <Logo />
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
             {links.map(([to, label]) => (
-              <NavLink key={to} to={to} className={({ isActive }) => `rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-leaf-soft ${isActive && !to.includes("#") ? "bg-leaf-soft text-leaf-deep" : ""}`}>
+              <NavLink key={to} to={to} end={to === "/"} className={({ isActive }) => `rounded-full px-4 py-2 text-sm font-semibold transition hover:bg-leaf-soft ${isActive && !to.includes("#") ? "bg-leaf-soft text-leaf-deep" : ""}`}>
                 {label}
               </NavLink>
             ))}
@@ -84,6 +87,8 @@ export function Footer() {
             <li><Link to="/shop?concern=dandruff" className="hover:text-white">For dandruff & itching</Link></li>
             <li><Link to="/shop?kind=Beard" className="hover:text-white">For men</Link></li>
             <li><Link to="/routine" className="hover:text-white">Find my routine</Link></li>
+            <li><Link to="/delivery" className="hover:text-white">Delivery</Link></li>
+            <li><Link to="/refund-policy" className="hover:text-white">Refund policy</Link></li>
           </ul>
         </div>
         <div className="text-sm">
@@ -91,7 +96,7 @@ export function Footer() {
           <a href={waLink("Hello Superb Naturals 👋 I have a question about your products.")} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 font-bold text-leaf-deep">
             <WaIcon /> +234 802 086 6239
           </a>
-          <p className="mt-3 text-white/70">Orders, questions and delivery on WhatsApp.</p>
+          <p className="mt-3 text-white/70">Orders, questions and delivery on WhatsApp. We deliver across Nigeria and internationally.</p>
         </div>
       </div>
       <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/60">© 2026 Superb Natural Beauty Ventures · Website by Fera's Studio</div>
@@ -113,14 +118,14 @@ export function ProductCard({ p }: { p: Product }) {
   const loved = s.loved.includes(p.slug);
   const [added, setAdded] = useState(false);
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[1.75rem] bg-paper shadow-card ring-1 ring-ink/5">
+    <article className="group flex flex-col overflow-hidden rounded-2xl bg-paper ring-1 ring-ink/10">
       <div className={`relative aspect-[4/5] overflow-hidden ${toneBg[p.tone]}`}>
         <Link to={`/shop/${p.slug}`} aria-label={p.name}>
           <img src={img(p.images[0])} alt={p.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
         </Link>
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[0.7rem] font-bold text-leaf-deep">{p.kind}</span>
         <button onClick={() => toggleLove(p.slug)} aria-pressed={loved} aria-label={loved ? `Remove ${p.name} from favourites` : `Save ${p.name}`} className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-lg transition hover:scale-110">
-          {loved ? "💖" : "🤍"}
+          <Heart size={19} filled={loved} className={loved ? "text-blush" : "text-ink/70"} />
         </button>
       </div>
       <div className="flex flex-1 flex-col p-3.5 sm:p-5">
@@ -164,11 +169,11 @@ export const WaIcon = () => (
   </svg>
 );
 
-export function SectionTitle({ kicker, title, sub, center }: { kicker: string; title: string; sub?: string; center?: boolean }) {
+export function SectionTitle({ kicker, title, sub, center }: { kicker?: string; title: string; sub?: string; center?: boolean }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <p className="label text-blush">{kicker}</p>
-      <h2 className="mt-3 font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight md:text-5xl">{title}</h2>
+      {kicker && <p className="label mb-3 text-blush">{kicker}</p>}
+      <h2 className=" font-display text-[2.1rem] font-semibold leading-[1.05] tracking-tight md:text-5xl">{title}</h2>
       {sub && <p className="mt-4 text-[1.02rem] leading-relaxed text-stone">{sub}</p>}
     </div>
   );
