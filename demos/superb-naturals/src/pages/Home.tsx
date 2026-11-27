@@ -95,12 +95,12 @@ export default function Home() {
             <Link
               key={c.id}
               to={`/shop?concern=${c.id}`}
-              className={`group rounded-2xl p-5 transition hover:-translate-y-1 hover:shadow-card ${["bg-leaf-soft", "bg-blush-soft", "bg-mint-soft", "bg-butter-soft", "bg-paper ring-1 ring-ink/10"][i]}`}
+              className={`group flex flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:shadow-card ${["bg-leaf-soft", "bg-blush-soft", "bg-mint-soft", "bg-butter-soft", "bg-paper ring-1 ring-ink/10"][i]}`}
             >
               <span className="grid h-11 w-11 place-items-center rounded-full bg-white/80 text-leaf-deep"><ConcernIcon id={c.id} /></span>
               <p className="mt-3 font-display text-lg font-semibold leading-tight">{c.label}</p>
               <p className="mt-1 text-sm text-stone">{c.blurb}</p>
-              <p className="mt-3 text-sm font-bold text-leaf group-hover:underline">Shop →</p>
+              <p className="mt-auto pt-3 text-sm font-bold text-leaf group-hover:underline">Shop →</p>
             </Link>
           ))}
         </div>
